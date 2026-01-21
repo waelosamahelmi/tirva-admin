@@ -5,9 +5,9 @@ primary_region = "arn"
 [build]
   [build.args]
     NODE_VERSION = "20"
-    VITE_SUPABASE_URL = "https://qyzlovkegjjjgwoedruh.supabase.co"
-    VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5emxvdmtlZ2pqamd3b2VkcnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NTM3OTUsImV4cCI6MjA4MDUyOTc5NX0.pkCvUAT1SXhCL8BikKeNZYTe80kDEqC0rp3O5wtW20c"
-    VITE_SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5emxvdmtlZ2pqamd3b2VkcnVoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDk1Mzc5NSwiZXhwIjoyMDgwNTI5Nzk1fQ.PQ_hqlvFieXfw0x0xmO0UaS3mdIjqGSF_QDk29rgdac"
+    VITE_SUPABASE_URL = "https://bgthrhrwbxdcmwracvcj.supabase.co"
+    VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndGhyaHJ3YnhkY213cmFjdmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg3NjYsImV4cCI6MjA2NTQwNDc2Nn0.DuTAtqYjqYtApqaoTbszzKvvruh0F3qf8TS8iP1tu0s"
+    VITE_SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndGhyaHJ3YnhkY213cmFjdmNqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTgyODc2NiwiZXhwIjoyMDY1NDA0NzY2fQ.ZprVLS5TnDsxCRHPMHe0dxsp0Fhw1WCEdKL7rTzQenY"
     VITE_API_URL = "https://tirva-admin.fly.dev"
     VITE_WS_URL = "https://tirva-admin.fly.dev"
     VITE_SERVER_URL = "https://tirva-admin.fly.dev"

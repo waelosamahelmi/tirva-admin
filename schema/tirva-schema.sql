@@ -13,7 +13,28 @@ CREATE SEQUENCE IF NOT EXISTS public.users_id_seq;
 
 -- Create tables in dependency order
 
--- 1. Users table (no dependencies)
+-- 1. Branches table (for multi-location support - must be created first as other tables reference it)
+CREATE TABLE IF NOT EXISTS public.branches (
+  id serial PRIMARY KEY,
+  name text NOT NULL,
+  name_en text NOT NULL,
+  name_ru text,
+  name_sv text,
+  address text NOT NULL,
+  city text NOT NULL,
+  postal_code text NOT NULL,
+  latitude decimal(10, 8) NOT NULL,
+  longitude decimal(11, 8) NOT NULL,
+  phone text NOT NULL,
+  email text,
+  is_active boolean DEFAULT true,
+  display_order integer DEFAULT 0,
+  opening_hours jsonb,
+  created_at timestamp without time zone DEFAULT now(),
+  updated_at timestamp without time zone DEFAULT now()
+);
+
+-- 2. Users table (depends on branches)
 CREATE TABLE IF NOT EXISTS public.users (
   id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
   branch_id integer REFERENCES public.branches(id) ON DELETE SET NULL,
@@ -26,7 +47,7 @@ CREATE TABLE IF NOT EXISTS public.users (
   CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
--- 2. Categories table (no dependencies)
+-- 3. Categories table (no dependencies)
 CREATE TABLE IF NOT EXISTS public.categories (
   id integer NOT NULL DEFAULT nextval('categories_id_seq'::regclass),
   name text NOT NULL,
@@ -38,7 +59,7 @@ CREATE TABLE IF NOT EXISTS public.categories (
   CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
 
--- 3. Menu items table (depends on categories)
+-- 4. Menu items table (depends on categories and branches)
 CREATE TABLE IF NOT EXISTS public.menu_items (
   id integer NOT NULL DEFAULT nextval('menu_items_id_seq'::regclass),
   category_id integer,
@@ -70,7 +91,7 @@ CREATE TABLE IF NOT EXISTS public.menu_items (
   CONSTRAINT menu_items_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id) ON DELETE SET NULL
 );
 
--- 4. Orders table (no dependencies on other main tables)
+-- 5. Orders table (depends on branches)
 CREATE TABLE IF NOT EXISTS public.orders (
   id integer NOT NULL DEFAULT nextval('orders_id_seq'::regclass),
   branch_id integer REFERENCES public.branches(id),
@@ -98,7 +119,7 @@ CREATE TABLE IF NOT EXISTS public.orders (
   CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
 
--- 5. Order items table (depends on orders and menu_items)
+-- 6. Order items table (depends on orders and menu_items)
 CREATE TABLE IF NOT EXISTS public.order_items (
   id integer NOT NULL DEFAULT nextval('order_items_id_seq'::regclass),
   order_id integer NOT NULL,
@@ -112,7 +133,7 @@ CREATE TABLE IF NOT EXISTS public.order_items (
   CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id) ON DELETE CASCADE
 );
 
--- 6. Printers table (no dependencies)
+-- 7. Printers table (no dependencies)
 CREATE TABLE IF NOT EXISTS public.printers (
   id text NOT NULL,
   name text NOT NULL,
@@ -127,27 +148,6 @@ CREATE TABLE IF NOT EXISTS public.printers (
   created_at timestamp without time zone DEFAULT now(),
   updated_at timestamp without time zone DEFAULT now(),
   CONSTRAINT printers_pkey PRIMARY KEY (id)
-);
-
--- 7. Branches table (for multi-location support)
-CREATE TABLE IF NOT EXISTS public.branches (
-  id serial PRIMARY KEY,
-  name text NOT NULL,
-  name_en text NOT NULL,
-  name_ru text,
-  name_sv text,
-  address text NOT NULL,
-  city text NOT NULL,
-  postal_code text NOT NULL,
-  latitude decimal(10, 8) NOT NULL,
-  longitude decimal(11, 8) NOT NULL,
-  phone text NOT NULL,
-  email text,
-  is_active boolean DEFAULT true,
-  display_order integer DEFAULT 0,
-  opening_hours jsonb,
-  created_at timestamp without time zone DEFAULT now(),
-  updated_at timestamp without time zone DEFAULT now()
 );
 
 -- 8. Restaurant settings table (with optional printer reference)
