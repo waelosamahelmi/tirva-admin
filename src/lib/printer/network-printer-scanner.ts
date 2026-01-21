@@ -1,4 +1,4 @@
-// Complete network-printer-scanner.ts with all required interfaces
+﻿// Complete network-printer-scanner.ts with all required interfaces
 
 import { PrinterDevice } from './types';
 
@@ -813,3 +813,5 @@ export class NetworkPrinterScanner {
     return this.isScanning;
   }
 }
+
+

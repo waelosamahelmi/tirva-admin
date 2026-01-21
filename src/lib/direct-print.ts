@@ -1,4 +1,4 @@
-import { registerPlugin } from '@capacitor/core';
+ï»¿import { registerPlugin } from '@capacitor/core';
 import { Capacitor } from '@capacitor/core';
 
 export interface DirectPrintPlugin {
@@ -225,7 +225,7 @@ export class DirectPrintService {
           // Fallback to basic mapping for standard methods
           const paymentMap: { [key: string]: string } = {
             'card': 'KORTTI',
-            'cash': 'KÄTEINEN',
+            'cash': 'KÃ„TEINEN',
             'online': 'VERKKOMAKSU'
           };
           paymentText = paymentMap[order.paymentMethod.toLowerCase()] || order.paymentMethod.toUpperCase();
@@ -239,7 +239,7 @@ export class DirectPrintService {
           // Fallback to basic mapping for standard methods
           const paymentMap: { [key: string]: string } = {
             'card': 'KORTTI',
-            'cash': 'KÄTEINEN',
+            'cash': 'KÃ„TEINEN',
             'online': 'VERKKOMAKSU'
           };
           paymentText = paymentMap[order.paymentMethod.toLowerCase()] || order.paymentMethod.toUpperCase();
@@ -248,7 +248,7 @@ export class DirectPrintService {
         // Fallback to basic mapping for standard methods
         const paymentMap: { [key: string]: string } = {
           'card': 'KORTTI',
-          'cash': 'KÄTEINEN',
+          'cash': 'KÃ„TEINEN',
           'online': 'VERKKOMAKSU'
         };
         paymentText = paymentMap[order.paymentMethod.toLowerCase()] || order.paymentMethod.toUpperCase();
@@ -282,7 +282,7 @@ export class DirectPrintService {
         
         // Item name with quantity and price
         const itemLine = `${quantity}x ${itemName}`;
-        const priceText = `${itemPrice.toFixed(2)}€`;
+        const priceText = `${itemPrice.toFixed(2)}â‚¬`;
         lines.push(alignText(itemLine, priceText));
         
         // Toppings/additions - Check multiple sources
@@ -304,7 +304,7 @@ export class DirectPrintService {
               : 0;
             
             if (toppingPrice > 0) {
-              const toppingPriceText = `+${toppingPrice.toFixed(2)}€`;
+              const toppingPriceText = `+${toppingPrice.toFixed(2)}â‚¬`;
               lines.push(alignText(`  + ${toppingName}`, toppingPriceText));
             } else {
               lines.push(`  + ${toppingName}`);
@@ -374,7 +374,7 @@ export class DirectPrintService {
       total = parseFloat(order.totalPrice || order.total_price);
     } else {
       // Method 2: Calculate from items if no total field exists
-      console.log('?? No total field found, calculating from items...');
+      console.log('âš ï¸ No total field found, calculating from items...');
       totalWasCalculated = true;
       if (orderItems && orderItems.length > 0) {
         orderItems.forEach((item: any) => {
@@ -385,7 +385,7 @@ export class DirectPrintService {
                            (menuItem?.price * quantity) || 0;
           total += parseFloat(itemPrice);
         });
-        console.log(`? Calculated total from items: ${total}€`);
+        console.log(`âœ… Calculated total from items: ${total}â‚¬`);
       }
     }
     
@@ -395,11 +395,11 @@ export class DirectPrintService {
     const discount = order.discount ? parseFloat(order.discount) : null;
     
     if (subtotal && (deliveryFee || discount)) {
-      lines.push(alignText('Valisumma:', `${subtotal.toFixed(2)}€`));
+      lines.push(alignText('Valisumma:', `${subtotal.toFixed(2)}â‚¬`));
     }
     
     if (deliveryFee && deliveryFee > 0) {
-      lines.push(alignText('Toimitusmaksu:', `${deliveryFee.toFixed(2)}€`));
+      lines.push(alignText('Toimitusmaksu:', `${deliveryFee.toFixed(2)}â‚¬`));
       // Only add delivery fee if we calculated total from items (not from database)
       if (totalWasCalculated) {
         total += deliveryFee;
@@ -407,7 +407,7 @@ export class DirectPrintService {
     }
     
     if (discount && discount > 0) {
-      lines.push(alignText('Alennus:', `-${discount.toFixed(2)}€`));
+      lines.push(alignText('Alennus:', `-${discount.toFixed(2)}â‚¬`));
       // Only subtract discount if we calculated total from items (not from database)
       if (totalWasCalculated) {
         total -= discount;
@@ -415,7 +415,7 @@ export class DirectPrintService {
     }
     
     lines.push('================');
-    lines.push(alignText('YHTEENSA:', `${total.toFixed(2)}€`));
+    lines.push(alignText('YHTEENSA:', `${total.toFixed(2)}â‚¬`));
     lines.push('================');
     
     // Footer
@@ -456,3 +456,6 @@ export class DirectPrintService {
 }
 
 export const directPrint = DirectPrintService.getInstance();
+
+
+

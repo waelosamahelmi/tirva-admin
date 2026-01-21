@@ -18,7 +18,7 @@ export function useAppUpdater() {
   const [checking, setChecking] = useState(false);
   const [currentVersion, setCurrentVersion] = useState<string>('1.0.0');
 
-  const GITHUB_REPO = 'waelosamahelmi/antonio-app';
+  const GITHUB_REPO = 'waelosamahelmi/tirva-admin';
   const CHECK_INTERVAL = 1000 * 60 * 60; // Check every hour
 
   // Get current app version on mount
@@ -214,3 +214,6 @@ export function useAppUpdater() {
     skipUpdate
   };
 }
+
+
+

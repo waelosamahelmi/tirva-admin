@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -203,3 +203,6 @@ export function OrderAcceptDialog({ isOpen, onClose, onAccept, order }: OrderAcc
     </Dialog>
   );
 }
+
+
+

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+﻿import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { BleClient, BleDevice } from '@capacitor-community/bluetooth-le';
@@ -745,3 +745,6 @@ export function useAndroid() {
   }
   return context;
 }
+
+
+

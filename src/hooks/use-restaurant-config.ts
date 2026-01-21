@@ -1,34 +1,30 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase, handleSupabaseError, formatSupabaseResponse } from "@/lib/supabase-client";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 import { RestaurantConfig, InsertRestaurantConfig } from "../../shared/schema";
 
 // Transform camelCase fields to snake_case for database
 function transformToDatabase(formData: any): any {
-  const result: any = {};
-  
-  // Only include fields that are explicitly provided
-  if (formData.name !== undefined) result.name = formData.name;
-  if (formData.nameEn !== undefined) result.name_en = formData.nameEn;
-  if (formData.tagline !== undefined) result.tagline = formData.tagline;
-  if (formData.taglineEn !== undefined) result.tagline_en = formData.taglineEn;
-  if (formData.description !== undefined) result.description = formData.description;
-  if (formData.descriptionEn !== undefined) result.description_en = formData.descriptionEn;
-  if (formData.phone !== undefined) result.phone = formData.phone;
-  if (formData.email !== undefined) result.email = formData.email;
-  if (formData.address !== undefined) result.address = formData.address;
-  if (formData.socialMedia !== undefined) result.social_media = formData.socialMedia;
-  if (formData.hours !== undefined) result.hours = formData.hours;
-  if (formData.services !== undefined) result.services = formData.services;
-  if (formData.deliveryConfig !== undefined) result.delivery_config = formData.deliveryConfig;
-  if (formData.theme !== undefined) result.theme = formData.theme;
-  if (formData.logo !== undefined) result.logo = formData.logo;
-  if (formData.about !== undefined) result.about = formData.about;
-  if (formData.hero !== undefined) result.hero = formData.hero;
-  // Always ensure is_active is true
-  result.is_active = true;
-  
-  return result;
+  return {
+    name: formData.name,
+    name_en: formData.nameEn,
+    tagline: formData.tagline,
+    tagline_en: formData.taglineEn,
+    description: formData.description,
+    description_en: formData.descriptionEn,
+    phone: formData.phone,
+    email: formData.email,
+    address: formData.address,
+    social_media: formData.socialMedia,
+    hours: formData.hours,
+    services: formData.services,
+    delivery_config: formData.deliveryConfig,
+    theme: formData.theme,
+    logo: formData.logo,
+    about: formData.about,
+    hero: formData.hero,
+    is_active: formData.isActive || false,
+  };
 }
 
 // Transform snake_case database fields to camelCase
@@ -251,3 +247,5 @@ export function useActivateRestaurantConfig() {
     },
   });
 }
+
+

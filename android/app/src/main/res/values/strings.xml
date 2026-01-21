@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Restaurant Order Master</string>
-    <string name="title_activity_main">Restaurant Order Master</string>
-    <string name="package_name">com.restaurant.ordermaster</string>
-    <string name="custom_url_scheme">com.restaurant.ordermaster</string>
+    <string name="app_name">Tirvan Kahvila Admin</string>
+    <string name="title_activity_main">Tirvan Kahvila Admin</string>
+    <string name="package_name">fi.tirvankahvila.admin</string>
+    <string name="custom_url_scheme">fi.tirvankahvila.admin</string>
 </resources>

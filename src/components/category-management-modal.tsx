@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useSupabaseCategories, useSupabaseCreateCategory, useSupabaseUpdateCategory, useSupabaseDeleteCategory } from "@/hooks/use-supabase-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -270,3 +270,6 @@ export function CategoryManagementModal({ isOpen, onClose }: CategoryManagementM
     </Dialog>
   );
 }
+
+
+

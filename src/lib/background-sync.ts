@@ -1,4 +1,4 @@
-// Background sync utilities for maintaining realtime connection
+﻿// Background sync utilities for maintaining realtime connection
 // when the app is backgrounded
 
 // Extend ServiceWorkerRegistration to include sync property
@@ -149,3 +149,6 @@ export function useBackgroundSync() {
     enableRealtimeBackground: () => backgroundSyncManager.enableRealtimeBackground(),
   };
 }
+
+
+

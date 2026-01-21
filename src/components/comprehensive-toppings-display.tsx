@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -172,3 +172,5 @@ export function ComprehensiveToppingsDisplay({ onEdit, onDelete, onCreate }: Top
     </div>
   );
 }
+
+

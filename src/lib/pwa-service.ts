@@ -131,13 +131,13 @@ export class PWAService {
 
   // Persistent login management
   saveAuthToken(token: string): void {
-    localStorage.setItem('antonio_auth_token', token);
-    localStorage.setItem('antonio_auth_timestamp', Date.now().toString());
+    localStorage.setItem('tirva_auth_token', token);
+    localStorage.setItem('tirva_auth_timestamp', Date.now().toString());
   }
 
   getAuthToken(): string | null {
-    const token = localStorage.getItem('antonio_auth_token');
-    const timestamp = localStorage.getItem('antonio_auth_timestamp');
+    const token = localStorage.getItem('tirva_auth_token');
+    const timestamp = localStorage.getItem('tirva_auth_timestamp');
     
     if (token && timestamp) {
       const tokenAge = Date.now() - parseInt(timestamp);
@@ -154,8 +154,8 @@ export class PWAService {
   }
 
   clearAuthToken(): void {
-    localStorage.removeItem('antonio_auth_token');
-    localStorage.removeItem('antonio_auth_timestamp');
+    localStorage.removeItem('tirva_auth_token');
+    localStorage.removeItem('tirva_auth_timestamp');
   }
 
   // Background sync for offline support
@@ -185,3 +185,5 @@ if (typeof window !== 'undefined') {
     pwaService.init();
   });
 }
+
+

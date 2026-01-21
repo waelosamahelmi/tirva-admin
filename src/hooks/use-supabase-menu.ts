@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase, handleSupabaseError, formatSupabaseResponse, convertCamelToSnake } from "@/lib/supabase-client";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 
@@ -535,3 +535,6 @@ export function useSupabaseDeleteBranch() {
     },
   });
 }
+
+
+

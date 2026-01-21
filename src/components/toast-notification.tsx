@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { CheckCircle, AlertCircle, X } from "lucide-react";
 
 interface ToastProps {
@@ -52,3 +52,6 @@ export function Toast({ message, type = "success", duration = 3000, onClose }: T
     </div>
   );
 }
+
+
+

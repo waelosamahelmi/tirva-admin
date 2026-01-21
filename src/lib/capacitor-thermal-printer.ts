@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Capacitor Thermal Printer Integration
  * Proper implementation using capacitor-thermal-printer plugin
  */
@@ -424,3 +424,5 @@ export class CapacitorThermalPrinterService {
 
 // Create and export singleton instance
 export const capacitorThermalPrinter = new CapacitorThermalPrinterService();
+
+

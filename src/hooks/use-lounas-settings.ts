@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 
 export interface LounasSettings {
@@ -81,3 +81,6 @@ export function formatTime(time: string): string {
 export function formatTimeForDB(time: string): string {
   return `${time}:00`;
 }
+
+
+

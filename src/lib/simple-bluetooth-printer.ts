@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Simple Bluetooth Printer Service
  * Clean implementation focusing on actual printing to ESC/POS thermal printers
  */
@@ -275,3 +275,6 @@ export class SimpleBluetoothPrinter {
 }
 
 export default SimpleBluetoothPrinter;
+
+
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Z92 Built-in Printer Service
  * Uses Android's native printing framework for the Z92's built-in "BluetoothPrint" printer
  */
@@ -126,3 +126,6 @@ export class Z92PrinterService {
 }
 
 export default Z92Printer;
+
+
+

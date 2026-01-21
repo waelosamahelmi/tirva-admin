@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+﻿import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Capacitor } from '@capacitor/core';
 
 interface AndroidContextType {
@@ -471,3 +471,6 @@ export function useAndroid() {
   }
   return context;
 }
+
+
+

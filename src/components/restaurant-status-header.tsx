@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Clock, Store } from "lucide-react";
 
@@ -51,3 +51,5 @@ export function RestaurantStatusHeader() {
     </div>
   );
 }
+
+

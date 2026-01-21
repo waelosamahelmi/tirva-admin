@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase, handleSupabaseError, formatSupabaseResponse } from "@/lib/supabase-client";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 
@@ -30,28 +30,15 @@ export function useSupabaseOrders() {
       }
       
       const { data, error } = await query.order('created_at', { ascending: false });
-      
-      // Filter out online payment orders that are not paid
+
       if (error) {
         console.error('❌ Failed to fetch orders:', error);
         handleSupabaseError(error);
       }
-      
-      // Filter out online payment orders that are not paid
-      // Only show online orders if payment_status is 'paid'
-      // Cash/card orders (cash_or_card) should always show
-      const filteredData = data?.filter(order => {
-        // If it's an online payment (stripe/online), only show if paid
-        if (order.payment_method === 'online' || order.payment_method === 'stripe') {
-          return order.payment_status === 'paid';
-        }
-        // For cash/card payments, always show
-        return true;
-      });
 
-      console.log('✅ Orders fetched successfully:', data?.length || 0, 'total,', filteredData?.length || 0, 'after payment status filter');
-      console.log('📋 Orders branch_id values:', filteredData?.map(o => ({ id: o.id, orderNumber: o.order_number, branchId: o.branch_id })));
-      return formatSupabaseResponse(filteredData) || [];
+      console.log('✅ Orders fetched successfully:', data?.length || 0, 'orders');
+      console.log('📋 Orders branch_id values:', data?.map(o => ({ id: o.id, orderNumber: o.order_number, branchId: o.branch_id })));
+      return formatSupabaseResponse(data) || [];
     },
     enabled: !!user && !loading, // Wait for auth loading to complete before fetching orders
     refetchInterval: 30000, // Refetch every 30 seconds
@@ -174,3 +161,6 @@ export function useSupabaseDeleteOrder() {
     },
   });
 }
+
+
+

@@ -1,4 +1,4 @@
-import { useState } from "react";
+Ôªøimport { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -31,7 +31,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
     if (!email || !password) {
       toast({
         title: t("Virhe", "Error"),
-        description: t("T‰yt‰ kaikki kent‰t", "Please fill all fields"),
+        description: t("T√§yt√§ kaikki kent√§t", "Please fill all fields"),
         variant: "destructive",
       });
       return;
@@ -58,8 +58,8 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
-        title: t("Kirjautuminen ep‰onnistui", "Login failed"),
-        description: error.message || t("Tarkista s‰hkˆposti ja salasana", "Check your email and password"),
+        title: t("Kirjautuminen ep√§onnistui", "Login failed"),
+        description: error.message || t("Tarkista s√§hk√∂posti ja salasana", "Check your email and password"),
         variant: "destructive",
       });
     } finally {
@@ -73,7 +73,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2 text-center justify-center">
             <Lock className="w-5 h-5" />
-            <span>{t("Hallintapaneeli - Kirjaudu sis‰‰n", "Admin Panel - Login")}</span>
+            <span>{t("Hallintapaneeli - Kirjaudu sis√§√§n", "Admin Panel - Login")}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -83,7 +83,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
               Tirvan Kahvila
             </CardTitle>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {t("Kirjaudu sis‰‰n hallintapaneeliin", "Login to admin panel")}
+              {t("Kirjaudu sis√§√§n hallintapaneeliin", "Login to admin panel")}
             </p>
           </CardHeader>
           
@@ -92,7 +92,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
               <div className="space-y-2">
                 <Label htmlFor="email" className="flex items-center space-x-2">
                   <User className="w-4 h-4" />
-                  <span>{t("S‰hkˆposti", "Email")}</span>
+                  <span>{t("S√§hk√∂posti", "Email")}</span>
                 </Label>
                 <Input
                   id="email"
@@ -149,7 +149,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
                 ) : (
                   <div className="flex items-center space-x-2">
                     <LogIn className="w-4 h-4" />
-                    <span>{t("Kirjaudu sis‰‰n", "Login")}</span>
+                    <span>{t("Kirjaudu sis√§√§n", "Login")}</span>
                   </div>
                 )}
               </Button>
@@ -162,7 +162,7 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
                   info@tirvankahvila.fi
                 </p>
                 <p className="font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
-                  antonio@2025
+                  tirva@2025
                 </p>
               </div>
             </div>
@@ -172,3 +172,5 @@ export function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
     </Dialog>
   );
 }
+
+

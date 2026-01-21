@@ -1,4 +1,4 @@
-// Import Capacitor for native bridge access
+﻿// Import Capacitor for native bridge access
 declare global {
   interface Window {
     PrinterBridge?: {
@@ -125,3 +125,6 @@ export class NotificationSoundManager {
     }
   }
 }
+
+
+

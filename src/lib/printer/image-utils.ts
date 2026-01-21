@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Image utilities for thermal printer
  * Converts images and QR codes to thermal printer format
  */
@@ -313,3 +313,6 @@ export const ICONS = {
   BULLET: '•',
   BOX: '▪',
 };
+
+
+

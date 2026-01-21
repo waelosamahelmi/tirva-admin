@@ -1,4 +1,4 @@
-package com.restaurant.ordermaster;
+package fi.tirvankahvila.admin;
 
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -159,3 +159,4 @@ public class MainActivity extends BridgeActivity {
         return printerBridge;
     }
 }
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Database Printer Manager
  * Syncs printer configurations with the backend database
  * Works alongside LocalPrinterManager for offline-first functionality
@@ -208,3 +208,6 @@ export class DatabasePrinterManager {
     }
   }
 }
+
+
+

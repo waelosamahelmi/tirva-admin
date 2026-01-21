@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useRestaurantConfig, useUpdateRestaurantConfig } from "@/hooks/use-restaurant-config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -786,3 +786,6 @@ export function ThemeLayoutSettings({ onClose }: ThemeLayoutSettingsProps) {
     </div>
   );
 }
+
+
+

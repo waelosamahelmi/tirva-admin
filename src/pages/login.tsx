@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 import { useAndroid } from "@/lib/android-context";
 import { useLocation } from "wouter";
@@ -118,3 +118,6 @@ export default function Login() {
     </div>
   );
 }
+
+
+

@@ -1,4 +1,4 @@
-import { useState } from "react";
+Ôªøimport { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 import { useCart } from "@/lib/cart-context";
@@ -53,7 +53,7 @@ export function MobileNav() {
     },
     {
       href: "/about",
-      label: t("Meist‰", "About"),
+      label: t("Meist√§", "About"),
       icon: Info,
       active: location === "/about"
     },
@@ -180,7 +180,7 @@ export function MobileNav() {
                     {user ? (
                       <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {t("Kirjautunut sis‰‰n", "Logged in as")}
+                          {t("Kirjautunut sis√§√§n", "Logged in as")}
                         </p>
                         <p className="font-semibold">{user.email}</p>
                         <div className="mt-3 space-y-2">
@@ -206,7 +206,7 @@ export function MobileNav() {
                           className="w-full"
                         >
                           <User className="w-4 h-4 mr-2" />
-                          {t("Kirjaudu sis‰‰n", "Login")}
+                          {t("Kirjaudu sis√§√§n", "Login")}
                         </Button>
                       </div>
                     )}
@@ -236,15 +236,15 @@ export function MobileNav() {
                         <div className="flex items-center space-x-2">
                           <Phone className="w-4 h-4 text-green-600" />
                           <a href="tel:+35835899089" className="text-green-600">
-                            +358 41 3152619
+                            +358-3589-9089
                           </a>
                         </div>
                         
                         <div className="flex items-start space-x-2">
                           <MapPin className="w-4 h-4 text-red-600 mt-0.5" />
                           <div>
-                            <p>Pasintie 2</p>
-                            <p>45410 Utti</p>
+                            <p>Rauhankatu 19 c</p>
+                            <p>15110 Lahti</p>
                           </div>
                         </div>
                         
@@ -309,3 +309,5 @@ export function MobileNav() {
     </>
   );
 }
+
+

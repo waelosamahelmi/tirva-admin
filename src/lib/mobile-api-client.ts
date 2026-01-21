@@ -1,4 +1,4 @@
-// import { supabase } from './supabase-client';
+﻿// import { supabase } from './supabase-client';
 import { createClient } from '@supabase/supabase-js';
 import { Network } from '@capacitor/network';
 import { Toast } from '@capacitor/toast';
@@ -29,7 +29,7 @@ export class MobileApiClient {
     // Check for cloud/production API URL first
     const cloudApiUrl = import.meta.env.VITE_API_URL;
     if (cloudApiUrl) {
-      console.log('?? Using cloud API URL:', cloudApiUrl);
+      console.log('🌐 Using cloud API URL:', cloudApiUrl);
       return cloudApiUrl;
     }
 
@@ -37,19 +37,19 @@ export class MobileApiClient {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        console.log('?? Using local development API URL');
-        return 'https://tirvaadmin.fly.io/';
+        console.log('🏠 Using local development API URL');
+        return 'https://tirva-admin.fly.dev/';
       } else {
         // Use the same hostname as the frontend but port 5000
         const localUrl = `http://${hostname}:5000`;
-        console.log('?? Using local network API URL:', localUrl);
+        console.log('🏠 Using local network API URL:', localUrl);
         return localUrl;
       }
     }
     
     // Default fallback
-    console.log('?? Using default local API URL');
-    return 'https://tirvaadmin.fly.io/';
+    console.log('🏠 Using default local API URL');
+    return 'https://tirva-admin.fly.dev/';
   }
 
   static getInstance(): MobileApiClient {
@@ -354,3 +354,6 @@ export class MobileApiClient {
 
 // Create singleton instance
 export const mobileApi = MobileApiClient.getInstance();
+
+
+

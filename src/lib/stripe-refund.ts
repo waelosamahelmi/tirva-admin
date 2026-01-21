@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Stripe Refund Utilities
  * Handles automatic refunds for cancelled orders with Stripe payments
  */
@@ -99,3 +99,6 @@ export function getRefundStatusMessage(refundStatus: string, language: 'fi' | 'e
 
   return messages[refundStatus as keyof typeof messages]?.[language] || refundStatus;
 }
+
+
+

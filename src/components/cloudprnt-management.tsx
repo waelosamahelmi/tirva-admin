@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -56,7 +56,7 @@ export function CloudPRNTManagement() {
     // Get server URL from environment variables
     const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_SERVER_URL || 'https://tirva-admin.fly.dev';
     setServerUrl(apiUrl);
-    console.log('?? CloudPRNT Server URL:', apiUrl);
+    console.log('🌐 CloudPRNT Server URL:', apiUrl);
     
     loadStatus();
   }, []);
@@ -67,10 +67,10 @@ export function CloudPRNTManagement() {
       const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_SERVER_URL || 'https://tirva-admin.fly.dev';
       const client = createCloudPRNTClient(apiUrl);
       const statusData = await client.getStatus();
-      console.log('?? CloudPRNT Status:', statusData);
+      console.log('📊 CloudPRNT Status:', statusData);
       setStatus(statusData || {});
     } catch (error) {
-      console.error('? Failed to load CloudPRNT status:', error);
+      console.error('❌ Failed to load CloudPRNT status:', error);
       setStatus({});
     } finally {
       setIsLoading(false);
@@ -419,7 +419,7 @@ export function CloudPRNTManagement() {
                       <p className="text-sm font-medium font-mono">{printer.mac}</p>
                       <p className="text-xs text-muted-foreground">
                         {printer.model || 'Unknown Model'}
-                        {printer.lastPoll && ` � Last poll: ${new Date(printer.lastPoll).toLocaleTimeString()}`}
+                        {printer.lastPoll && ` • Last poll: ${new Date(printer.lastPoll).toLocaleTimeString()}`}
                       </p>
                     </div>
                   </div>
@@ -452,7 +452,7 @@ export function CloudPRNTManagement() {
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-              <span><strong>Modern Receipts:</strong> QR codes, logos, and proper Finnish character encoding (�, �, �)</span>
+              <span><strong>Modern Receipts:</strong> QR codes, logos, and proper Finnish character encoding (ä, ö, å)</span>
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
@@ -492,3 +492,6 @@ export function CloudPRNTManagement() {
     </div>
   );
 }
+
+
+

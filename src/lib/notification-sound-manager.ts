@@ -1,4 +1,4 @@
-export class NotificationSoundManager {
+﻿export class NotificationSoundManager {
   private static instance: NotificationSoundManager;
   private audio: HTMLAudioElement | null = null;
   private currentInterval: NodeJS.Timeout | null = null;
@@ -89,3 +89,6 @@ export class NotificationSoundManager {
     }
   }
 }
+
+
+

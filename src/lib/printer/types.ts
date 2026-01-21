@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Printer Types and Interfaces
  * Production-ready definitions for Android network printing
  */
@@ -205,3 +205,6 @@ export const ESC_POS = {
   FEED_LINE: [0x0A], // LF
   FEED_LINES: (lines: number) => [0x1B, 0x64, lines], // ESC d n
 } as const;
+
+
+

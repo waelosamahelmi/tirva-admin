@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+ï»¿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useRestaurantConfig, useUpdateRestaurantConfig, useCreateRestaurantConfig, useActivateRestaurantConfig } from "@/hooks/use-restaurant-config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -367,7 +367,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="tagline"
                   value={formData.tagline}
                   onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
-                  placeholder="Laadukkaita aterioita Lahden sydämessä"
+                  placeholder="Laadukkaita aterioita Lahden sydÃ¤messÃ¤"
                 />
               </div>
               <div className="space-y-2">
@@ -442,7 +442,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                       ...formData, 
                       address: { ...formData.address, street: e.target.value }
                     })}
-                    placeholder="Pasintie 2"
+                    placeholder="Rauhankatu 19 c"
                   />
                 </div>
                 <div className="space-y-2">
@@ -454,7 +454,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                       ...formData, 
                       address: { ...formData.address, postalCode: e.target.value }
                     })}
-                    placeholder="45410"
+                    placeholder="15110"
                   />
                 </div>
                 <div className="space-y-2">
@@ -845,7 +845,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                         />
                       </div>
                       <div className="flex-1">
-                        <Label>Delivery Fee (€)</Label>
+                        <Label>Delivery Fee (â‚¬)</Label>
                         <Input
                           type="number"
                           step="0.50"
@@ -1598,3 +1598,5 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
     </Card>
   );
 }
+
+

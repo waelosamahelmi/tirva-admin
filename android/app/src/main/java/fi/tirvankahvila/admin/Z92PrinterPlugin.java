@@ -1,4 +1,4 @@
-package com.restaurant.ordermaster;
+package fi.tirvankahvila.admin;
 
 import android.content.Context;
 import android.print.PrintManager;
@@ -164,3 +164,4 @@ public class Z92PrinterPlugin extends Plugin {
         }
     }
 }
+

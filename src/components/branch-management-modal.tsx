@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useSupabaseBranches, useSupabaseCreateBranch, useSupabaseUpdateBranch, useSupabaseDeleteBranch } from "@/hooks/use-supabase-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -470,3 +470,6 @@ export function BranchManagementModal({ isOpen, onClose }: BranchManagementModal
     </Dialog>
   );
 }
+
+
+

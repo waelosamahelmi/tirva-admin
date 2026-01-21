@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useAndroid } from "@/lib/android-context";
 import { PermissionsDialog } from "@/components/permissions-dialog";
 
@@ -46,3 +46,6 @@ export function AppWrapper({ children }: AppWrapperProps) {
     </>
   );
 }
+
+
+

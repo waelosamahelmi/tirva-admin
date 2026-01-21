@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase-client";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 import { useToast } from "@/hooks/use-toast";
@@ -135,3 +135,6 @@ export function useUpdatePrinterSettings() {
     },
   });
 }
+
+
+

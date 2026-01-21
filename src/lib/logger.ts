@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Centralized logging service for mobile app debugging
  * Captures all console logs and provides a UI to view them
  */
@@ -207,3 +207,6 @@ class LoggerService {
 }
 
 export const logger = new LoggerService();
+
+
+

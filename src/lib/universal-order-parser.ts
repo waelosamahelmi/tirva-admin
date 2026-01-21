@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Universal Order Parser
  * Handles multiple order formats and provides robust fallback mechanisms
  * Ensures every order can be printed regardless of data structure
@@ -23,7 +23,7 @@ export class UniversalOrderParser {
    * Parse any order format into standardized ReceiptData
    */
   static parseOrder(order: any): ReceiptData {
-    console.log('?? PARSER: Processing order:', JSON.stringify(order, null, 2));
+    console.log('🔍 PARSER: Processing order:', JSON.stringify(order, null, 2));
     
     // Debug the order structure first
     this.debugOrder(order);
@@ -39,27 +39,27 @@ export class UniversalOrderParser {
 
       for (let i = 0; i < strategies.length; i++) {
         try {
-          console.log(`?? PARSER: Trying strategy ${i + 1}/${strategies.length}`);
+          console.log(`📋 PARSER: Trying strategy ${i + 1}/${strategies.length}`);
           const result = strategies[i]();
           if (result && result.items && result.items.length > 0) {
-            console.log(`? PARSER: Strategy ${i + 1} succeeded with ${result.items.length} items`);
+            console.log(`✅ PARSER: Strategy ${i + 1} succeeded with ${result.items.length} items`);
             return result;
           } else {
-            console.log(`?? PARSER: Strategy ${i + 1} returned no items`);
+            console.log(`⚠️ PARSER: Strategy ${i + 1} returned no items`);
           }
         } catch (error) {
-          console.log(`?? PARSER: Strategy ${i + 1} failed:`, error);
+          console.log(`⚠️ PARSER: Strategy ${i + 1} failed:`, error);
           continue;
         }
       }
 
       // If all strategies fail, create fallback but with detailed logging
-      console.log('?? PARSER: All strategies failed, creating fallback');
-      console.log('?? PARSER: Order keys available:', Object.keys(order));
+      console.log('🚨 PARSER: All strategies failed, creating fallback');
+      console.log('🔍 PARSER: Order keys available:', Object.keys(order));
       return this.createFallbackReceipt(order);
       
     } catch (error) {
-      console.error('? PARSER: Critical error:', error);
+      console.error('❌ PARSER: Critical error:', error);
       return this.createEmergencyFallback(order);
     }
   }
@@ -68,12 +68,12 @@ export class UniversalOrderParser {
    * Parse Supabase format with nested menu_items
    */
   private static parseSupabaseOrder(order: any): ReceiptData {
-    console.log('?? PARSER: Trying Supabase format');
+    console.log('📋 PARSER: Trying Supabase format');
     
     const orderItems = order.order_items || [];
     if (!Array.isArray(orderItems) || orderItems.length === 0) {
-      console.log('? PARSER: No order_items array found or empty');
-      console.log('?? PARSER: Available order keys:', Object.keys(order));
+      console.log('❌ PARSER: No order_items array found or empty');
+      console.log('📋 PARSER: Available order keys:', Object.keys(order));
       throw new Error('No order_items found or not an array');
     }
 
@@ -112,13 +112,13 @@ export class UniversalOrderParser {
         const fee = parseFloat(String(order[field]));
         if (!isNaN(fee)) {
           deliveryFee = fee;
-          console.log(`?? PARSER: Found delivery fee ${fee} from field '${field}'`);
+          console.log(`📦 PARSER: Found delivery fee ${fee} from field '${field}'`);
           break;
         }
       }
     }
     
-    console.log('?? PARSER: Final delivery fee:', deliveryFee, 'Original order fields:', order);
+    console.log('📦 PARSER: Final delivery fee:', deliveryFee, 'Original order fields:', order);
     const total = subtotal + deliveryFee;
     
     // Create receipt data
@@ -163,16 +163,16 @@ export class UniversalOrderParser {
 
     return receiptData;
 
-    console.log(`?? PARSER: Found ${orderItems.length} order items`);
+    console.log(`📦 PARSER: Found ${orderItems.length} order items`);
 
     const items: OrderItem[] = orderItems.map((item: any, index: number) => {
-      console.log(`?? PARSER: Processing order item ${index + 1}:`, JSON.stringify(item, null, 2));
+      console.log(`📝 PARSER: Processing order item ${index + 1}:`, JSON.stringify(item, null, 2));
       
       // Handle nested menu_items structure - try multiple possible nested structures
       // Note: Supabase returns 'menu_items' (plural) as the relation name
       const menuItem = item.menu_items || item.menu_item || item.menuItems || item.menuItem || item;
       
-      console.log(`?? PARSER: Found menuItem for item ${index + 1}:`, JSON.stringify(menuItem, null, 2));
+      console.log(`📦 PARSER: Found menuItem for item ${index + 1}:`, JSON.stringify(menuItem, null, 2));
       
       const name = menuItem?.name || item.name || this.extractItemName(item, index);
       const quantity = parseInt(item.quantity || '1');
@@ -187,7 +187,7 @@ export class UniversalOrderParser {
       const specialInstructions = item.special_instructions || item.specialInstructions || '';
       
       if (specialInstructions) {
-        console.log(`?? PARSER: Processing special instructions for item ${index + 1}:`, specialInstructions);
+        console.log(`📋 PARSER: Processing special instructions for item ${index + 1}:`, specialInstructions);
         
         // Extract toppings from the special instructions
         toppings = this.extractToppingsFromInstructions(specialInstructions);
@@ -197,13 +197,13 @@ export class UniversalOrderParser {
         extractedSize = extractedInfo.size;
         extractedNotes = extractedInfo.notes;
         
-        console.log(`? PARSER: Extracted ${toppings.length} toppings, size: ${extractedSize || 'none'}, notes: ${extractedNotes || 'none'}`);
+        console.log(`✅ PARSER: Extracted ${toppings.length} toppings, size: ${extractedSize || 'none'}, notes: ${extractedNotes || 'none'}`);
       }
       
       // Fallback: also check for direct toppings field (for legacy compatibility)
       if (toppings.length === 0 && item.toppings) {
         try {
-          console.log(`?? PARSER: Fallback - processing direct toppings for item ${index + 1}:`, item.toppings);
+          console.log(`🍕 PARSER: Fallback - processing direct toppings for item ${index + 1}:`, item.toppings);
           const rawToppings = typeof item.toppings === 'string' 
             ? JSON.parse(item.toppings) 
             : Array.isArray(item.toppings) 
@@ -221,9 +221,9 @@ export class UniversalOrderParser {
             }
             return { name: 'Unknown Topping', price: 0 };
           });
-          console.log(`? PARSER: Parsed ${toppings.length} toppings from direct field`);
+          console.log(`✅ PARSER: Parsed ${toppings.length} toppings from direct field`);
         } catch (error) {
-          console.log(`?? PARSER: Failed to parse direct toppings for item ${index + 1}:`, error);
+          console.log(`⚠️ PARSER: Failed to parse direct toppings for item ${index + 1}:`, error);
           toppings = [];
         }
       }
@@ -246,7 +246,7 @@ export class UniversalOrderParser {
         notes: extractedNotes || '' // Use extracted notes instead of raw special instructions
       };
 
-      console.log(`? PARSER: Successfully parsed item ${index + 1}:`, {
+      console.log(`✅ PARSER: Successfully parsed item ${index + 1}:`, {
         originalName: name,
         finalName: parsedItem.name,
         quantity: parsedItem.quantity,
@@ -261,7 +261,7 @@ export class UniversalOrderParser {
       return parsedItem;
     });
 
-    console.log(`? PARSER: Successfully parsed ${items.length} items from Supabase format`);
+    console.log(`✅ PARSER: Successfully parsed ${items.length} items from Supabase format`);
     return this.createReceiptData(order, items);
   }
 
@@ -269,7 +269,7 @@ export class UniversalOrderParser {
    * Parse legacy format with direct items array
    */
   private static parseLegacyOrder(order: any): ReceiptData {
-    console.log('?? PARSER: Trying legacy format');
+    console.log('📋 PARSER: Trying legacy format');
     
     const orderItems = order.items || [];
     if (!Array.isArray(orderItems) || orderItems.length === 0) {
@@ -299,7 +299,7 @@ export class UniversalOrderParser {
    * Parse minimal order with basic data only
    */
   private static parseMinimalOrder(order: any): ReceiptData {
-    console.log('?? PARSER: Trying minimal format');
+    console.log('📋 PARSER: Trying minimal format');
     
     // Check if we have any recognizable item data
     const possibleItems = order.products || order.cart || order.line_items || [];
@@ -330,7 +330,7 @@ export class UniversalOrderParser {
    * Parse alternative order formats
    */
   private static parseAlternativeFormats(order: any): ReceiptData {
-    console.log('?? PARSER: Trying alternative formats');
+    console.log('📋 PARSER: Trying alternative formats');
     
     // Check for various possible item array locations
     const possibleItemArrays = [
@@ -348,7 +348,7 @@ export class UniversalOrderParser {
 
     for (const itemArray of possibleItemArrays) {
       if (Array.isArray(itemArray) && itemArray.length > 0) {
-        console.log(`?? PARSER: Found items array with ${itemArray.length} items`);
+        console.log(`📋 PARSER: Found items array with ${itemArray.length} items`);
         
         try {
           const items: OrderItem[] = itemArray.map((item: any, index: number) => {
@@ -360,7 +360,7 @@ export class UniversalOrderParser {
             const toppings = this.extractToppings(item);
             const notes = this.extractNotes(item);
 
-            console.log(`?? PARSER: Parsed item ${index + 1}:`, { name, quantity, price, totalPrice });
+            console.log(`📦 PARSER: Parsed item ${index + 1}:`, { name, quantity, price, totalPrice });
 
             return {
               name,
@@ -376,7 +376,7 @@ export class UniversalOrderParser {
             return this.createReceiptData(order, items);
           }
         } catch (error) {
-          console.log('?? PARSER: Failed to parse items from array:', error);
+          console.log('⚠️ PARSER: Failed to parse items from array:', error);
           continue;
         }
       }
@@ -494,7 +494,7 @@ export class UniversalOrderParser {
    * Extract toppings from various possible fields
    */
   private static extractToppings(item: any): Array<{ name: string; price: number }> {
-    console.log(`?? PARSER: Extracting toppings from item:`, JSON.stringify(item, null, 2));
+    console.log(`🍕 PARSER: Extracting toppings from item:`, JSON.stringify(item, null, 2));
     
     // First try direct toppings fields
     const possibleToppings = [
@@ -509,7 +509,7 @@ export class UniversalOrderParser {
     for (const toppings of possibleToppings) {
       if (toppings) {
         try {
-          console.log(`? PARSER: Found direct toppings field:`, toppings);
+          console.log(`✅ PARSER: Found direct toppings field:`, toppings);
           return this.parseToppings(toppings);
         } catch {
           continue;
@@ -520,15 +520,15 @@ export class UniversalOrderParser {
     // If no direct toppings found, extract from special instructions
     const specialInstructions = item.special_instructions || item.specialInstructions || '';
     if (specialInstructions) {
-      console.log(`?? PARSER: Extracting toppings from special instructions:`, specialInstructions);
+      console.log(`🔍 PARSER: Extracting toppings from special instructions:`, specialInstructions);
       const extractedToppings = this.extractToppingsFromInstructions(specialInstructions);
       if (extractedToppings.length > 0) {
-        console.log(`? PARSER: Extracted ${extractedToppings.length} toppings from instructions:`, extractedToppings);
+        console.log(`✅ PARSER: Extracted ${extractedToppings.length} toppings from instructions:`, extractedToppings);
         return extractedToppings;
       }
     }
 
-    console.log(`? PARSER: No toppings found for item`);
+    console.log(`❌ PARSER: No toppings found for item`);
     return [];
   }
 
@@ -536,7 +536,7 @@ export class UniversalOrderParser {
    * Extract notes from various possible fields
    */
   private static extractNotes(item: any): string {
-    console.log(`?? PARSER: Extracting notes from item:`, JSON.stringify(item, null, 2));
+    console.log(`📝 PARSER: Extracting notes from item:`, JSON.stringify(item, null, 2));
     
     const possibleNotes = [
       item.notes,
@@ -549,22 +549,22 @@ export class UniversalOrderParser {
 
     for (const notes of possibleNotes) {
       if (notes && typeof notes === 'string' && notes.trim()) {
-        console.log(`?? PARSER: Found notes field: "${notes}"`);
+        console.log(`🔍 PARSER: Found notes field: "${notes}"`);
         
         // If this looks like structured special instructions, extract clean notes
         if (notes.includes('Toppings:') || notes.includes('Size:') || notes.includes('Special:')) {
           const cleanNotes = this.extractCleanInstructionsFromText(notes);
-          console.log(`? PARSER: Extracted clean notes: "${cleanNotes}"`);
+          console.log(`✅ PARSER: Extracted clean notes: "${cleanNotes}"`);
           return cleanNotes || '';
         } else {
           // Return as-is if it's already clean notes
-          console.log(`? PARSER: Using notes as-is: "${notes.trim()}"`);
+          console.log(`✅ PARSER: Using notes as-is: "${notes.trim()}"`);
           return notes.trim();
         }
       }
     }
 
-    console.log(`? PARSER: No notes found for item`);
+    console.log(`❌ PARSER: No notes found for item`);
     return '';
   }
 
@@ -618,8 +618,8 @@ export class UniversalOrderParser {
       const toppingItems = toppingsText.split(',').map(t => t.trim());
       
       for (const item of toppingItems) {
-        // Check if it has a price pattern like "Extra Cheese (+�1.50)"
-        const priceMatch = item.match(/^(.+?)\s*\(\+�([0-9.]+)\)$/);
+        // Check if it has a price pattern like "Extra Cheese (+€1.50)"
+        const priceMatch = item.match(/^(.+?)\s*\(\+€([0-9.]+)\)$/);
         if (priceMatch) {
           toppings.push({
             name: priceMatch[1].trim(),
@@ -665,7 +665,7 @@ export class UniversalOrderParser {
    * Create fallback receipt when item parsing fails
    */
   private static createFallbackReceipt(order: any): ReceiptData {
-    console.log('?? PARSER: Creating fallback receipt');
+    console.log('📋 PARSER: Creating fallback receipt');
     
     const total = this.extractTotal(order);
     const orderNumber = this.extractOrderNumber(order);
@@ -691,7 +691,7 @@ export class UniversalOrderParser {
    * Emergency fallback when everything else fails
    */
   private static createEmergencyFallback(order: any): ReceiptData {
-    console.log('?? PARSER: Creating emergency fallback');
+    console.log('🚨 PARSER: Creating emergency fallback');
     
     const orderNumber = this.extractOrderNumber(order);
     const customerName = this.extractCustomerName(order);
@@ -699,7 +699,7 @@ export class UniversalOrderParser {
 
     return {
       header: {
-        text: 'Tirvan Kahvila\n================\nPasintie 2, 45410 Utti\n+358 41 3152619',
+        text: 'Tirvan Kahvila\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
         alignment: 'center',
         bold: true
       },
@@ -755,7 +755,7 @@ export class UniversalOrderParser {
 
     return {
       header: {
-        text: 'Tirvan Kahvila\n================\nPasintie 2, 45410 Utti\n+358 41 3152619',
+        text: 'Tirvan Kahvila\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
         alignment: 'center',
         bold: true
       },
@@ -921,7 +921,7 @@ export class UniversalOrderParser {
       if (order[field] !== undefined && order[field] !== null) {
         const fee = parseFloat(String(order[field]));
         if (!isNaN(fee) && fee >= 0) {
-          console.log(`?? PARSER: Found delivery fee ${fee} from field '${field}'`);
+          console.log(`📦 PARSER: Found delivery fee ${fee} from field '${field}'`);
           return fee;
         }
       }
@@ -936,7 +936,7 @@ export class UniversalOrderParser {
         for (const feeField of feeFields) {
           const fee = parseFloat(String(order[nested][feeField]));
           if (!isNaN(fee) && fee >= 0) {
-            console.log(`?? PARSER: Found delivery fee ${fee} from nested field '${nested}.${feeField}'`);
+            console.log(`📦 PARSER: Found delivery fee ${fee} from nested field '${nested}.${feeField}'`);
             return fee;
           }
         }
@@ -945,7 +945,7 @@ export class UniversalOrderParser {
 
     // If this is a delivery order but no fee was found, return the default fee (3.00)
     if (isDeliveryOrder) {
-      console.log('?? PARSER: No delivery fee found, using default fee 3.00 for delivery order');
+      console.log('📦 PARSER: No delivery fee found, using default fee 3.00 for delivery order');
       return 3.00;
     }
 
@@ -997,62 +997,65 @@ export class UniversalOrderParser {
    * Debug order structure
    */
   static debugOrder(order: any): void {
-    console.log('?? ORDER DEBUG - Full structure:');
-    console.log('?? Top-level keys:', Object.keys(order));
+    console.log('🔍 ORDER DEBUG - Full structure:');
+    console.log('📋 Top-level keys:', Object.keys(order));
     
     // Check for item arrays
     const itemArrayKeys = ['order_items', 'items', 'orderItems', 'lineItems', 'products', 'cart', 'menuItems'];
-    console.log('?? Item array analysis:');
+    console.log('📦 Item array analysis:');
     itemArrayKeys.forEach(key => {
       const value = order[key];
       if (Array.isArray(value)) {
-        console.log(`  ? ${key}: Array with ${value.length} items`);
+        console.log(`  ✅ ${key}: Array with ${value.length} items`);
         if (value.length > 0) {
-          console.log(`    ?? First item keys:`, Object.keys(value[0]));
-          console.log(`    ?? First item sample:`, JSON.stringify(value[0], null, 2));
+          console.log(`    📝 First item keys:`, Object.keys(value[0]));
+          console.log(`    📝 First item sample:`, JSON.stringify(value[0], null, 2));
         }
       } else if (value !== undefined) {
-        console.log(`  ?? ${key}: ${typeof value} (not array)`);
+        console.log(`  ⚠️ ${key}: ${typeof value} (not array)`);
       } else {
-        console.log(`  ? ${key}: undefined`);
+        console.log(`  ❌ ${key}: undefined`);
       }
     });
     
     // Check total and delivery fee fields
-    console.log('?? Total amount and delivery fee analysis:');
+    console.log('💰 Total amount and delivery fee analysis:');
     const totalFields = ['total_amount', 'totalAmount', 'total', 'amount', 'grand_total', 'sum'];
     const deliveryFields = ['deliveryFee', 'delivery_fee', 'deliveryfee', 'delivery', 'shippingFee', 'shipping_fee', 'shipping'];
     
     console.log('Total fields:');
     totalFields.forEach(field => {
       if (order[field] !== undefined) {
-        console.log(`  ? ${field}: ${order[field]} (${typeof order[field]})`);
+        console.log(`  ✅ ${field}: ${order[field]} (${typeof order[field]})`);
       }
     });
     
     console.log('Delivery fee fields:');
     deliveryFields.forEach(field => {
       if (order[field] !== undefined) {
-        console.log(`  ? ${field}: ${order[field]} (${typeof order[field]})`);
+        console.log(`  ✅ ${field}: ${order[field]} (${typeof order[field]})`);
       }
     });
     
     // Check order identification
-    console.log('?? Order identification:');
+    console.log('🆔 Order identification:');
     const idFields = ['order_number', 'orderNumber', 'id', 'order_id', 'orderId'];
     idFields.forEach(field => {
       if (order[field] !== undefined) {
-        console.log(`  ? ${field}: ${order[field]}`);
+        console.log(`  ✅ ${field}: ${order[field]}`);
       }
     });
     
     // Check customer info
-    console.log('?? Customer information:');
+    console.log('👤 Customer information:');
     const customerFields = ['customer_name', 'customerName', 'customer', 'name', 'user_name'];
     customerFields.forEach(field => {
       if (order[field] !== undefined) {
-        console.log(`  ? ${field}: ${order[field]}`);
+        console.log(`  ✅ ${field}: ${order[field]}`);
       }
     });
   }
 }
+
+
+

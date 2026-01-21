@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { usePromotions, useCreatePromotion, useUpdatePromotion, useDeletePromotion, useTogglePromotionStatus } from "@/hooks/use-promotions";
 import { useSupabaseCategories, useSupabaseBranches } from "@/hooks/use-supabase-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -494,3 +494,6 @@ export function PromotionsManagementModal({ isOpen, onClose }: PromotionsManagem
     </Dialog>
   );
 }
+
+
+

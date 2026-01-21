@@ -1,8 +1,8 @@
-// Restaurant location in Pasintie 2, 45410 Utti
+﻿// Restaurant location in Rauhankatu 19 c, 15110
 export const RESTAURANT_LOCATION = {
-  lat: 60.8912,  // Utti coordinates
-  lng: 26.9567,
-  address: "Pasintie 2, 45410 Utti"
+  lat: 60.905728, // Exact restaurant coordinates
+  lng: 27.012103,
+  address: "Rauhankatu 19 c, 15110 Rauhankatu 19 c, 15110"
 };
 
 // Calculate distance between two coordinates using Haversine formula
@@ -79,3 +79,5 @@ export async function reverseGeocode(lat: number, lng: number): Promise<string |
 export function isWithinFinland(lat: number, lng: number): boolean {
   return lat >= 59.5 && lat <= 70.1 && lng >= 19.5 && lng <= 31.6;
 }
+
+

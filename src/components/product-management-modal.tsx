@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+Ôªøimport { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCategories } from "@/hooks/use-menu";
 import { useSupabaseBranches } from "@/hooks/use-supabase-menu";
@@ -113,7 +113,7 @@ export function ProductManagementModal({
     if (!formData.name || !formData.nameEn || !formData.price || !formData.categoryId) {
       toast({
         title: t("Virhe", "Error"),
-        description: t("T‰yt‰ kaikki pakolliset kent‰t", "Please fill all required fields"),
+        description: t("T√§yt√§ kaikki pakolliset kent√§t", "Please fill all required fields"),
         variant: "destructive",
       });
       return;
@@ -132,9 +132,9 @@ export function ProductManagementModal({
             offerEndDate: null,
           };
       
-      console.log("?? MODAL: Saving product data:", dataToSave);
-      console.log("?? MODAL: hasConditionalPricing:", dataToSave.hasConditionalPricing);
-      console.log("?? MODAL: includedToppingsCount:", dataToSave.includedToppingsCount);
+      console.log("üîç MODAL: Saving product data:", dataToSave);
+      console.log("üîç MODAL: hasConditionalPricing:", dataToSave.hasConditionalPricing);
+      console.log("üîç MODAL: includedToppingsCount:", dataToSave.includedToppingsCount);
       
       await onSave(dataToSave as MenuItem);
       toast({
@@ -145,7 +145,7 @@ export function ProductManagementModal({
     } catch (error) {
       toast({
         title: t("Virhe", "Error"),
-        description: t("Tuotteen tallentaminen ep‰onnistui", "Failed to save product"),
+        description: t("Tuotteen tallentaminen ep√§onnistui", "Failed to save product"),
         variant: "destructive",
       });
     } finally {
@@ -156,7 +156,7 @@ export function ProductManagementModal({
   const handleDelete = async () => {
     if (!product?.id || !onDelete) return;
     
-    if (!confirm(t("Haluatko varmasti poistaa t‰m‰n tuotteen?", "Are you sure you want to delete this product?"))) {
+    if (!confirm(t("Haluatko varmasti poistaa t√§m√§n tuotteen?", "Are you sure you want to delete this product?"))) {
       return;
     }
 
@@ -171,7 +171,7 @@ export function ProductManagementModal({
     } catch (error) {
       toast({
         title: t("Virhe", "Error"),
-        description: t("Tuotteen poistaminen ep‰onnistui", "Failed to delete product"),
+        description: t("Tuotteen poistaminen ep√§onnistui", "Failed to delete product"),
         variant: "destructive",
       });
     } finally {
@@ -202,7 +202,7 @@ export function ProductManagementModal({
   const handleImageUpload = async (file: File) => {
     setIsUploading(true);
     try {
-      console.log('?? Uploading image via server to Hostinger FTP...');
+      console.log('üì∏ Uploading image via server to Hostinger FTP...');
       
       // Get Supabase session for authentication
       const { data: { session } } = await supabase.auth.getSession();
@@ -229,7 +229,7 @@ export function ProductManagementModal({
       }
 
       const { imageUrl } = await response.json();
-      console.log('? Image uploaded successfully:', imageUrl);
+      console.log('‚úÖ Image uploaded successfully:', imageUrl);
       
       // Update form data with new image URL
       setFormData(prev => ({ 
@@ -245,7 +245,7 @@ export function ProductManagementModal({
       console.error('Error uploading image:', error);
       toast({
         title: t("Virhe", "Error"),
-        description: t("Kuvan lataaminen ep‰onnistui", "Image upload failed"),
+        description: t("Kuvan lataaminen ep√§onnistui", "Image upload failed"),
         variant: "destructive",
       });
     } finally {
@@ -262,7 +262,7 @@ export function ProductManagementModal({
             <span>
               {product ? 
                 t("Muokkaa tuotetta", "Edit Product") : 
-                t("Lis‰‰ uusi tuote", "Add New Product")
+                t("Lis√§√§ uusi tuote", "Add New Product")
               }
             </span>
           </DialogTitle>
@@ -303,7 +303,7 @@ export function ProductManagementModal({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="price">
-                  {t("Hinta (Ä)", "Price (Ä)")} *
+                  {t("Hinta (‚Ç¨)", "Price (‚Ç¨)")} *
                 </Label>
                 <Input
                   id="price"
@@ -365,7 +365,7 @@ export function ProductManagementModal({
               </Select>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 {t(
-                  "Jos 'Kaikki toimipisteet' valitaan, tuote n‰kyy kaikissa toimipisteiss‰. Muuten tuote n‰kyy vain valitussa toimipisteess‰.",
+                  "Jos 'Kaikki toimipisteet' valitaan, tuote n√§kyy kaikissa toimipisteiss√§. Muuten tuote n√§kyy vain valitussa toimipisteess√§.",
                   "If 'All branches' is selected, the product will be available at all branches. Otherwise, it will only be available at the selected branch."
                 )}
               </p>
@@ -427,7 +427,7 @@ export function ProductManagementModal({
                     disabled={isUploading}
                   >
                     {isUploading ? (
-                      <span className="w-4 h-4 animate-spin">?</span>
+                      <span className="w-4 h-4 animate-spin">‚ü≥</span>
                     ) : (
                       <Upload className="w-4 h-4" />
                     )}
@@ -504,7 +504,7 @@ export function ProductManagementModal({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="offerPrice">
-                      {t("Tarjoushinta (Ä)", "Offer Price (Ä)")}
+                      {t("Tarjoushinta (‚Ç¨)", "Offer Price (‚Ç¨)")}
                     </Label>
                     <Input
                       id="offerPrice"
@@ -563,7 +563,7 @@ export function ProductManagementModal({
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="offerEndDate">
-                      {t("Tarjous p‰‰ttyy", "Offer End Date")}
+                      {t("Tarjous p√§√§ttyy", "Offer End Date")}
                     </Label>
                     <Input
                       id="offerEndDate"
@@ -577,10 +577,10 @@ export function ProductManagementModal({
                 {formData.offerPrice && formData.price && (
                   <div className="flex items-center space-x-2 text-sm">
                     <span className="text-gray-600 dark:text-gray-300">
-                      {t("S‰‰stˆ:", "Savings:")}
+                      {t("S√§√§st√∂:", "Savings:")}
                     </span>
                     <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
-                      Ä{(parseFloat(formData.price) - parseFloat(formData.offerPrice)).toFixed(2)}
+                      ‚Ç¨{(parseFloat(formData.price) - parseFloat(formData.offerPrice)).toFixed(2)}
                       {formData.offerPercentage && ` (${formData.offerPercentage}%)`}
                     </Badge>
                   </div>
@@ -605,7 +605,7 @@ export function ProductManagementModal({
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {t(
-                    "Asiakkaat voivat valita tietyn m‰‰r‰n lis‰t‰ytteit‰ ilmaiseksi",
+                    "Asiakkaat voivat valita tietyn m√§√§r√§n lis√§t√§ytteit√§ ilmaiseksi",
                     "Customers can choose a certain number of toppings for free"
                   )}
                 </p>
@@ -624,7 +624,7 @@ export function ProductManagementModal({
               <div className="space-y-4 p-4 border rounded-lg bg-green-50 dark:bg-green-900/20">
                 <div className="space-y-2">
                   <Label htmlFor="includedToppingsCount">
-                    {t("Ilmaisten lis‰t‰ytteiden m‰‰r‰", "Number of Free Toppings")}
+                    {t("Ilmaisten lis√§t√§ytteiden m√§√§r√§", "Number of Free Toppings")}
                   </Label>
                   <Input
                     id="includedToppingsCount"
@@ -639,7 +639,7 @@ export function ProductManagementModal({
                   />
                   <p className="text-xs text-gray-600 dark:text-gray-400">
                     {t(
-                      "Esim. Jos m‰‰rit‰t 3, ensimm‰iset 3 lis‰t‰ytett‰ ovat ilmaisia. Loput maksavat normaalihintaan.",
+                      "Esim. Jos m√§√§rit√§t 3, ensimm√§iset 3 lis√§t√§ytett√§ ovat ilmaisia. Loput maksavat normaalihintaan.",
                       "E.g. If you set 3, the first 3 toppings are free. Additional toppings are charged at regular price."
                     )}
                   </p>
@@ -648,12 +648,12 @@ export function ProductManagementModal({
                 {(formData.includedToppingsCount || 0) > 0 && (
                   <div className="flex items-center space-x-2 text-sm p-3 bg-green-100 dark:bg-green-900/30 rounded">
                     <span className="font-semibold text-green-800 dark:text-green-300">
-                      ?? {t("Esimerkki:", "Example:")}
+                      üí° {t("Esimerkki:", "Example:")}
                     </span>
                     <span className="text-green-700 dark:text-green-400">
                       {t(
-                        `Asiakas valitsee ${(formData.includedToppingsCount || 0) + 1} lis‰t‰ytett‰ ? ${formData.includedToppingsCount || 0} ilmaista + 1 maksullinen`,
-                        `Customer selects ${(formData.includedToppingsCount || 0) + 1} toppings ? ${formData.includedToppingsCount || 0} free + 1 paid`
+                        `Asiakas valitsee ${(formData.includedToppingsCount || 0) + 1} lis√§t√§ytett√§ ‚Üí ${formData.includedToppingsCount || 0} ilmaista + 1 maksullinen`,
+                        `Customer selects ${(formData.includedToppingsCount || 0) + 1} toppings ‚Üí ${formData.includedToppingsCount || 0} free + 1 paid`
                       )}
                     </span>
                   </div>
@@ -661,7 +661,7 @@ export function ProductManagementModal({
 
                 <div className="text-sm text-green-700 dark:text-green-300 p-3 bg-green-100 dark:bg-green-900/30 rounded">
                   <strong>{t("Huom:", "Note:")}</strong> {t(
-                    "T‰m‰ toimii automaattisesti nettisivustolla, mobiilisovelluksessa ja kuitilla.",
+                    "T√§m√§ toimii automaattisesti nettisivustolla, mobiilisovelluksessa ja kuitilla.",
                     "This works automatically on the website, mobile app, and receipts."
                   )}
                 </div>
@@ -688,7 +688,7 @@ export function ProductManagementModal({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="displayOrder">
-                  {t("N‰yttˆj‰rjestys", "Display Order")}
+                  {t("N√§ytt√∂j√§rjestys", "Display Order")}
                 </Label>
                 <Input
                   id="displayOrder"
@@ -753,3 +753,5 @@ export function ProductManagementModal({
     </Dialog>
   );
 }
+
+

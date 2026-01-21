@@ -493,3 +493,5 @@ export function RestaurantSettingsModal({ isOpen, onClose }: RestaurantSettingsM
     </Dialog>
   );
 }
+
+

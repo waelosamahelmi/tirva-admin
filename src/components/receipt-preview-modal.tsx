@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -192,7 +192,7 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
       // Toppings/additions with size-adjusted pricing and conditional pricing logic
       if (item.toppings && item.toppings.length > 0) {
         lines.push('');
-        lines.push(makeBold('  Lis�t�ytteet:'));
+        lines.push(makeBold('  Lisätäytteet:'));
         
         // Check for conditional pricing or legacy "Your Choice Pizza" (product ID 93)
         const originalItems = originalOrder ? (originalOrder.orderItems || originalOrder.order_items || originalOrder.items || []) : [];
@@ -320,7 +320,7 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
 
     // Show subtotal if it's different from total (i.e., there are additional fees)
     if (subtotal && (deliveryFee || discount)) {
-      lines.push(alignText(makeBold('V�lisumma:'), makeBold(`${subtotal.toFixed(2)}`)));
+      lines.push(alignText(makeBold('Välisumma:'), makeBold(`${subtotal.toFixed(2)}`)));
     }
 
     // Show delivery fee
@@ -335,7 +335,7 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
 
     lines.push('');
     lines.push('='.repeat(lineWidth));
-    lines.push(alignText(makeBold('YHTEENS�:'), makeBold(`${receiptData.total.toFixed(2)}`)));
+    lines.push(alignText(makeBold('YHTEENSÄ:'), makeBold(`${receiptData.total.toFixed(2)}`)));
     lines.push('='.repeat(lineWidth));
 
     // Footer with enhanced thank you message
@@ -356,7 +356,7 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <FileText className="w-5 h-5" />
-            <span>{adminT("Kuitin esikatselu", "Receipt Preview", "?????? ???????")}</span>
+            <span>{adminT("Kuitin esikatselu", "Receipt Preview", "معاينة الإيصال")}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -365,7 +365,7 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
           <Card>
             <CardHeader>
               <CardTitle className="text-sm">
-                {adminT("Tulostusn�kym�", "Print Preview", "?????? ???????")}
+                {adminT("Tulostusnäkymä", "Print Preview", "معاينة الطباعة")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -386,26 +386,26 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
             <CardHeader>
               <CardTitle className="text-sm flex items-center space-x-2">
                 <Hash className="w-4 h-4" />
-                <span>{adminT("Tilauksen yhteenveto", "Order Summary", "???? ?????")}</span>
+                <span>{adminT("Tilauksen yhteenveto", "Order Summary", "ملخص الطلب")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>{adminT("Tilausnumero", "Order Number", "??? ?????")}:</span>
+                <span>{adminT("Tilausnumero", "Order Number", "رقم الطلب")}:</span>
                 <span className="font-mono">#{receiptData.orderNumber}</span>
               </div>
               {receiptData.customerName && (
                 <div className="flex justify-between">
-                  <span>{adminT("Asiakas", "Customer", "??????")}:</span>
+                  <span>{adminT("Asiakas", "Customer", "العميل")}:</span>
                   <span>{receiptData.customerName}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span>{adminT("Tuotteiden m��r�", "Items Count", "??? ????????")}:</span>
+                <span>{adminT("Tuotteiden määrä", "Items Count", "عدد المنتجات")}:</span>
                 <span>{receiptData.items.length}</span>
               </div>
               <div className="flex justify-between font-bold">
-                <span>{adminT("Kokonaissumma", "Total Amount", "?????? ????????")}:</span>
+                <span>{adminT("Kokonaissumma", "Total Amount", "المبلغ الإجمالي")}:</span>
                 <span>{receiptData.total.toFixed(2)}</span>
               </div>
             </CardContent>
@@ -415,3 +415,6 @@ export function ReceiptPreviewModal({ receiptData, originalOrder, isOpen, onClos
     </Dialog>
   );
 }
+
+
+

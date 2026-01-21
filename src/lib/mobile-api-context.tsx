@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+﻿import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { MobileApiClient } from "./mobile-api-client";
 import { OfflineOrderManager } from "./offline-order-manager";
 import { useAndroid } from "./android-context";
@@ -475,3 +475,6 @@ export function useMobileApi() {
   }
   return context;
 }
+
+
+

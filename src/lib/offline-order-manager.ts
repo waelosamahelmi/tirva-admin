@@ -1,4 +1,4 @@
-import { mobileApi } from './mobile-api-client';
+﻿import { mobileApi } from './mobile-api-client';
 
 export interface OfflineOrder {
   id: string;
@@ -380,3 +380,6 @@ export class OfflineOrderManager {
 
 // Create singleton instance
 export const offlineOrderManager = OfflineOrderManager.getInstance();
+
+
+

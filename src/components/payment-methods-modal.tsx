@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useRestaurantSettings, useUpdateRestaurantSettings } from "@/hooks/use-restaurant-settings";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -396,3 +396,6 @@ export function PaymentMethodsModal({ isOpen, onClose, onOpenStripeSettings }: P
     </Dialog>
   );
 }
+
+
+

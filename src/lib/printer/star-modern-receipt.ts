@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Modern Star Receipt Formatter
  * Based on Star Line Mode commands - VERIFIED WORKING
  * Optimized for mC-Print3 printer at 192.168.1.106:9100
@@ -19,11 +19,11 @@ function translatePaymentMethod(method: string): string {
     'card': 'Kortti',
     'credit card': 'Kortti',
     'debit card': 'Kortti',
-    'cash': 'K�teinen',
+    'cash': 'Käteinen',
     'stripe': 'Kortti',
     'online': 'Verkkomaksu',
-    'cash_or_card': 'K�teinen tai kortti',
-    'cash or card': 'K�teinen tai kortti'
+    'cash_or_card': 'Käteinen tai kortti',
+    'cash or card': 'Käteinen tai kortti'
   };
   
   return translations[method.toLowerCase()] || method;
@@ -44,13 +44,13 @@ export class StarModernReceipt {
     
     for (const char of text) {
       switch (char) {
-        case '�': bytes.push(0xA0); break;
-        case '�': bytes.push(0xA1); break;
-        case '�': bytes.push(0xA2); break;
-        case '�': bytes.push(0xA3); break;
-        case '�': bytes.push(0xA4); break;
-        case '�': bytes.push(0xA5); break;
-        case '�': bytes.push(0x80); break;
+        case 'ä': bytes.push(0xA0); break;
+        case 'ö': bytes.push(0xA1); break;
+        case 'å': bytes.push(0xA2); break;
+        case 'Ä': bytes.push(0xA3); break;
+        case 'Ö': bytes.push(0xA4); break;
+        case 'Å': bytes.push(0xA5); break;
+        case '€': bytes.push(0x80); break;
         default:
           bytes.push(char.charCodeAt(0));
       }
@@ -121,19 +121,19 @@ export class StarModernReceipt {
     const r = new StarModernReceipt();
     r.init();
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // HEADER - Restaurant Name & Info (VERY SMALL)
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     r.align(1); // Center
     r.nl();
     
     // Restaurant name - 1x1 (small, no bold)
     r.setSize(1, 1);
-    r.text('antonio pizzeria');
+    r.text('Tirvan Kahvila');
     r.nl();
     
     // Contact info - 1x1 (small)
-    r.text(data.restaurantAddress || 'Pasintie 2, 45410 Utti');
+    r.text(data.restaurantAddress || 'Rauhankatu 19 c, 15110 Lahti');
     r.nl();
     r.text(data.restaurantPhone || 'Puh: +358-3-589-9089');
     r.nl();
@@ -141,9 +141,9 @@ export class StarModernReceipt {
     r.text('====================');
     r.nl();
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // ORDER NUMBER & INFO (SMALL)
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // Order number - 1x1 (small)
     r.setSize(1, 1);
     r.text(`#${data.orderNumber}`);
@@ -173,9 +173,9 @@ export class StarModernReceipt {
     r.text('====================');
     r.nl();
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // CUSTOMER INFO (if available)
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     if (data.customerName || data.customerPhone || data.deliveryAddress) {
       r.align(0); // Left
       
@@ -212,9 +212,9 @@ export class StarModernReceipt {
       r.nl();
     }
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // ITEMS
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     r.align(0); // Left
     r.nl();
     
@@ -228,7 +228,7 @@ export class StarModernReceipt {
       
       // Price - 1x1 NORMAL (right aligned)
       r.align(2);
-      r.text(`${item.totalPrice.toFixed(2)}�`);
+      r.text(`${item.totalPrice.toFixed(2)}€`);
       r.nl();
       r.align(0);
       
@@ -241,7 +241,7 @@ export class StarModernReceipt {
           r.text(`    + ${topping.name}`);
           if (topping.price > 0) {
             r.align(2);
-            r.text(`+${topping.price.toFixed(2)}�`);
+            r.text(`+${topping.price.toFixed(2)}€`);
             r.align(0);
           }
           r.nl();
@@ -267,9 +267,9 @@ export class StarModernReceipt {
       r.nl();
     }
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // SPECIAL INSTRUCTIONS
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     if (originalOrder?.specialInstructions || originalOrder?.special_instructions) {
       const instructions = originalOrder.specialInstructions || originalOrder.special_instructions;
       
@@ -303,9 +303,9 @@ export class StarModernReceipt {
       r.align(1);
     }
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // TOTALS
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     r.nl();
     r.align(1);
     r.text('====================');
@@ -320,7 +320,7 @@ export class StarModernReceipt {
       r.text('Valisumma:');
       r.bold(false);
       r.align(2);
-      r.text(`${parseFloat(originalOrder.subtotal).toFixed(2)}�`);
+      r.text(`${parseFloat(originalOrder.subtotal).toFixed(2)}€`);
       r.nl();
       r.align(0);
     }
@@ -330,7 +330,7 @@ export class StarModernReceipt {
       r.text('Toimitus:');
       r.bold(false);
       r.align(2);
-      r.text(`${parseFloat(originalOrder.deliveryFee).toFixed(2)}�`);
+      r.text(`${parseFloat(originalOrder.deliveryFee).toFixed(2)}€`);
       r.nl();
       r.align(0);
     }
@@ -340,7 +340,7 @@ export class StarModernReceipt {
       r.text('Pientilaus:');
       r.bold(false);
       r.align(2);
-      r.text(`${parseFloat(originalOrder.smallOrderFee).toFixed(2)}�`);
+      r.text(`${parseFloat(originalOrder.smallOrderFee).toFixed(2)}€`);
       r.nl();
       r.align(0);
     }
@@ -350,7 +350,7 @@ export class StarModernReceipt {
       r.text('Alennus:');
       r.bold(false);
       r.align(2);
-      r.text(`-${parseFloat(originalOrder.discount).toFixed(2)}�`);
+      r.text(`-${parseFloat(originalOrder.discount).toFixed(2)}€`);
       r.nl();
       r.align(0);
     }
@@ -363,14 +363,14 @@ export class StarModernReceipt {
     r.text('YHTEENSA:');
     r.nl();
     r.align(2);
-    r.text(`${data.total.toFixed(2)}�`);
+    r.text(`${data.total.toFixed(2)}€`);
     r.nl();
     r.bold(false);
     r.setSize(1, 1);
     
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     // FOOTER - QR Code & Thank You
-    // ---------------------------------------
+    // ═══════════════════════════════════════
     r.nl();
     r.align(1);
     r.text('====================');
@@ -395,3 +395,6 @@ export class StarModernReceipt {
     return new Uint8Array(r.cmd);
   }
 }
+
+
+

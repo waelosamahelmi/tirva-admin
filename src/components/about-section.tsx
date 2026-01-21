@@ -1,4 +1,4 @@
-import { useLanguage } from "@/lib/language-context";
+Ôªøimport { useLanguage } from "@/lib/language-context";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -22,13 +22,13 @@ export function AboutSection() {
         {/* Main About Content */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t("Meist‰ Tirvan Kahvila Lahti", "About Tirvan Kahvila Lahti")}
+            {t("Meist√§ Tirvan Kahvila Lahti", "About Tirvan Kahvila Lahti")}
           </h2>
           <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-700 dark:text-gray-300">
             <p>
               {t(
-                "Tervetuloa antonio pizzeriaan, jossa valmistamme annoksemme aina tuoreista ja laadukkaista raaka-aineista. Olemme ylpeit‰ perinteisist‰ valmistusmenetelmist‰mme, jotka takaavat aidon makuel‰myksen jokaisella kerralla.",
-                "Welcome to antonio restaurant, where we prepare our dishes always from fresh and quality ingredients. We are proud of our traditional preparation methods, which guarantee an authentic taste experience every time."
+                "Tervetuloa Tirvan Kahvilaan, jossa valmistamme annoksemme aina tuoreista ja laadukkaista raaka-aineista. Olemme ylpeit√§ perinteisist√§ valmistusmenetelmist√§mme, jotka takaavat aidon makuel√§myksen jokaisella kerralla.",
+                "Welcome to Tirvan Kahvila, where we prepare our dishes always from fresh and quality ingredients. We are proud of our traditional preparation methods, which guarantee an authentic taste experience every time."
               )}
             </p>
             <p className="text-xl font-semibold text-red-600">
@@ -55,7 +55,7 @@ export function AboutSection() {
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {t(
-                  "K‰yt‰mme perinteist‰ klassista taikinaa, joka on t‰ydellisen rapea ja maukas",
+                  "K√§yt√§mme perinteist√§ klassista taikinaa, joka on t√§ydellisen rapea ja maukas",
                   "We use traditional classic dough that is perfectly crispy and tasty"
                 )}
               </p>
@@ -72,7 +72,7 @@ export function AboutSection() {
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {t(
-                  "Pizzamme t‰ytet‰‰n aina tuoreilla ja huolella valituilla raaka-aineilla",
+                  "Pizzamme t√§ytet√§√§n aina tuoreilla ja huolella valituilla raaka-aineilla",
                   "Our pizzas are always filled with fresh and carefully selected ingredients"
                 )}
               </p>
@@ -85,11 +85,11 @@ export function AboutSection() {
                 <Star className="w-8 h-8 text-red-600" />
               </div>
               <h3 className="font-semibold mb-2">
-                {t("Mehev‰t kebabit", "Juicy Kebabs")}
+                {t("Mehev√§t kebabit", "Juicy Kebabs")}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {t(
-                  "Kebabimme ovat mehevi‰ ja t‰ynn‰ makua, tarjoten sinulle todellisen makunautinnon",
+                  "Kebabimme ovat mehevi√§ ja t√§ynn√§ makua, tarjoten sinulle todellisen makunautinnon",
                   "Our kebabs are juicy and full of flavor, offering you a real taste experience"
                 )}
               </p>
@@ -106,7 +106,7 @@ export function AboutSection() {
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {t(
-                  "Raikkaat ja monipuoliset salaatit, jotka valmistetaan p‰ivitt‰in tuoreista aineksista",
+                  "Raikkaat ja monipuoliset salaatit, jotka valmistetaan p√§ivitt√§in tuoreista aineksista",
                   "Fresh and versatile salads prepared daily from fresh ingredients"
                 )}
               </p>
@@ -146,13 +146,13 @@ export function AboutSection() {
               </div>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {t(
-                  "Etsitkˆ ruokatoimitusta l‰histˆlt‰si? Kaikilla ei ole taitoa tai aikaa valmistaa maukasta ruokaa.",
+                  "Etsitk√∂ ruokatoimitusta l√§hist√∂lt√§si? Kaikilla ei ole taitoa tai aikaa valmistaa maukasta ruokaa.",
                   "Looking for food delivery nearby? Not everyone has the skill or time to prepare delicious food."
                 )}
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {t(
-                  "Kun haluat kuninkaallista kohtelua, on Tirvan Kahvila t‰ydellinen vaihtoehto.",
+                  "Kun haluat kuninkaallista kohtelua, on Tirvan Kahvila t√§ydellinen vaihtoehto.",
                   "When you want royal treatment, Tirvan Kahvila is the perfect choice."
                 )}
               </p>
@@ -170,11 +170,11 @@ export function AboutSection() {
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <span>{t("Kuljetusalue 0 - 10km", "Delivery area 0 - 10km")}</span>
-                    <span className="font-medium">3,00 Ä</span>
+                    <span className="font-medium">3,00 ‚Ç¨</span>
                   </div>
                   <div className="flex justify-between">
                     <span>{t("Kuljetusalue yli 10km", "Delivery area over 10km")}</span>
-                    <span className="font-medium">8,00 Ä ({t("Min. 20,00 Ä", "Min. Ä20.00")})</span>
+                    <span className="font-medium">8,00 ‚Ç¨ ({t("Min. 20,00 ‚Ç¨", "Min. ‚Ç¨20.00")})</span>
                   </div>
                 </div>
               </div>
@@ -194,15 +194,15 @@ export function AboutSection() {
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-5 h-5 text-gray-500 mt-1" />
                   <div>
-                    <p className="font-medium">Pasintie 2</p>
-                    <p className="text-gray-600 dark:text-gray-400">45410 Pasintie 2, 45410 Utti</p>
+                    <p className="font-medium">Rauhankatu 19 c</p>
+                    <p className="text-gray-600 dark:text-gray-400">15110 Rauhankatu 19 c, 15110</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-gray-500" />
                   <a href="tel:+35835899089" className="font-medium text-blue-600 hover:underline">
-                    +358 41 3152619
+                    +358-3589-9089
                   </a>
                 </div>
                 
@@ -241,3 +241,5 @@ export function AboutSection() {
     </section>
   );
 }
+
+

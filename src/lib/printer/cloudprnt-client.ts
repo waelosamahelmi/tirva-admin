@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CloudPRNT Client API
  * Submits print jobs to the CloudPRNT server
  */
@@ -123,3 +123,6 @@ export function createCloudPRNTClient(serverUrl?: string): CloudPRNTClient {
   const url = serverUrl || window.location.origin || 'http://localhost:5000';
   return new CloudPRNTClient({ serverUrl: url });
 }
+
+
+

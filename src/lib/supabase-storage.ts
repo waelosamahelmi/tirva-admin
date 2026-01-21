@@ -1,4 +1,4 @@
-import { supabase } from './supabase-client';
+﻿import { supabase } from './supabase-client';
 
 // Test storage connection
 export async function testStorageConnection(): Promise<boolean> {
@@ -127,3 +127,6 @@ export async function updateMenuItemImage(oldImageUrl: string | null, newFile: F
     throw error;
   }
 }
+
+
+

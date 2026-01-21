@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAndroid } from '../lib/android-context';
 import { ThermalPrinter } from '../lib/capacitor-thermal-printer';
 import { Capacitor } from '@capacitor/core';
@@ -154,3 +154,5 @@ export const BluetoothDiagnostics: React.FC = () => {
     </div>
   );
 };
+
+

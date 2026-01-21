@@ -1,4 +1,4 @@
-import { useLanguage } from "@/lib/language-context";
+Ôªøimport { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { UtensilsCrossed, Play, Phone } from "lucide-react";
 import { Link } from "wouter";
@@ -36,12 +36,12 @@ export function HeroVideo() {
         </h1>
         
         <p className="text-xl md:text-2xl lg:text-3xl mb-4 opacity-90 font-light">
-          {t("Aitoja makuja Suomen syd‰mest‰", "Authentic flavors from the heart of Finland")}
+          {t("Aitoja makuja Suomen syd√§mest√§", "Authentic flavors from the heart of Finland")}
         </p>
         
         <p className="text-lg md:text-xl mb-8 opacity-80 max-w-2xl mx-auto">
           {t(
-            "Nautiskele perinteisist‰ suomalaisista mauista ja tuoreista raaka-aineista valmistetusta ruoasta",
+            "Nautiskele perinteisist√§ suomalaisista mauista ja tuoreista raaka-aineista valmistetusta ruoasta",
             "Enjoy traditional Finnish flavors and food made from fresh ingredients"
           )}
         </p>
@@ -98,3 +98,5 @@ export function HeroVideo() {
     </section>
   );
 }
+
+

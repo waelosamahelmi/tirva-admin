@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -211,3 +211,5 @@ export function OrderNotification({ order, isOpen, onAccept, onDecline, onClose 
     </Dialog>
   );
 }
+
+

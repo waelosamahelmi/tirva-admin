@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCart } from "@/lib/cart-context";
 import { useCategories, useMenuItems } from "@/hooks/use-menu";
@@ -328,3 +328,6 @@ export function MenuSection() {
     </section>
   );
 }
+
+
+

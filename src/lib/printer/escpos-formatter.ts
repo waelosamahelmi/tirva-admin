@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * ESC/POS Thermal Printer Command Formatter
  * Modern design with logo, QR code, and visual enhancements
  */
@@ -23,7 +23,7 @@ function translatePaymentMethod(method: string): string {
     'credit card': 'Kortti',
     'debit card': 'Kortti',
     'cash': 'Kateinen',
-    'käteinen': 'Käteinen',
+    'kÃ¤teinen': 'KÃ¤teinen',
     'kortti': 'Kortti',
     'stripe': 'Kortti',
     'online': 'Verkkomaksu',
@@ -176,30 +176,30 @@ export class ESCPOSFormatter {
       // Handle special characters for thermal printers
       switch (char) {
         // Euro symbol - remove completely to avoid display issues
-        case '€':
+        case 'â‚¬':
           // Skip Euro symbol entirely - don't add any bytes
           break;
         // Finnish characters
-        case 'ä':
-          bytes.push(0x84); // CP850 encoding for ä
+        case 'Ã¤':
+          bytes.push(0x84); // CP850 encoding for Ã¤
           break;
-        case 'Ä':
-          bytes.push(0x8E); // CP850 encoding for Ä
+        case 'Ã„':
+          bytes.push(0x8E); // CP850 encoding for Ã„
           break;
-        case 'ö':
-          bytes.push(0x94); // CP850 encoding for ö
+        case 'Ã¶':
+          bytes.push(0x94); // CP850 encoding for Ã¶
           break;
-        case 'Ö':
-          bytes.push(0x99); // CP850 encoding for Ö
+        case 'Ã–':
+          bytes.push(0x99); // CP850 encoding for Ã–
           break;
-        case 'å':
-          bytes.push(0x86); // CP850 encoding for å
+        case 'Ã¥':
+          bytes.push(0x86); // CP850 encoding for Ã¥
           break;
-        case 'Å':
-          bytes.push(0x8F); // CP850 encoding for Å
+        case 'Ã…':
+          bytes.push(0x8F); // CP850 encoding for Ã…
           break;
         // Bullet point for toppings
-        case '•':
+        case 'â€¢':
           bytes.push(0x07); // Use bullet character
           break;
         // Standard ASCII characters (0-127)
@@ -295,9 +295,9 @@ export class ESCPOSFormatter {
         .text('Tirvan Kahvila')
         .newLine()
         .customSize(formatter.fontSettings.header.width, formatter.fontSettings.header.height)
-        .text('Pasintie 2, 45410 Utti')
+        .text('Rauhankatu 19 c, 15110 Lahti')
         .newLine()
-        .text('+358 41 3152619')
+        .text('+358-3589-9089')
         .newLine()
         .bold(false)
         .lines(1);
@@ -481,10 +481,10 @@ export class ESCPOSFormatter {
 
       formatter.align('left');
 
-      console.log(`??? [ESC/POS] Formatting ${receiptData.items.length} items`);
+      console.log(`ðŸ–¨ï¸ [ESC/POS] Formatting ${receiptData.items.length} items`);
       
       for (const item of receiptData.items) {
-        console.log(`??? [ESC/POS] Processing item: "${item.name}"`);
+        console.log(`ðŸ–¨ï¸ [ESC/POS] Processing item: "${item.name}"`);
         
         // Extract size information for better display
         let displayName = item.name;
@@ -564,7 +564,7 @@ export class ESCPOSFormatter {
           
           formatter
             .customSize(formatter.fontSettings.toppings.width, formatter.fontSettings.toppings.height)
-            .text('  Lisatäytteet:')
+            .text('  LisatÃ¤ytteet:')
             .newLine()
             .customSize(1, 1)
             .lines(1);
@@ -695,7 +695,7 @@ export class ESCPOSFormatter {
         if (originalOrder.subtotal) {
           formatter
             .customSize(formatter.fontSettings.totals.width, formatter.fontSettings.totals.height)
-            .columns('Välisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`)
+            .columns('VÃ¤lisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`)
             .customSize(1, 1);
         }
 
@@ -709,7 +709,7 @@ export class ESCPOSFormatter {
         if (originalOrder.smallOrderFee && parseFloat(originalOrder.smallOrderFee) > 0) {
           formatter
             .customSize(formatter.fontSettings.totals.width, formatter.fontSettings.totals.height)
-            .columns('Pientilauslisä:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`)
+            .columns('PientilauslisÃ¤:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`)
             .customSize(1, 1);
         }
 
@@ -881,7 +881,7 @@ export class ESCPOSFormatter {
     }
 
     if (receiptData.tableNumber) {
-      formatter.bold(true).line(`Pöytä: ${receiptData.tableNumber}`).bold(false);
+      formatter.bold(true).line(`PÃ¶ytÃ¤: ${receiptData.tableNumber}`).bold(false);
     }
 
     formatter.lines(2);
@@ -901,10 +901,10 @@ export class ESCPOSFormatter {
       .align('left')
       .lines(1);
 
-    console.log(`??? [ESC/POS] Formatting ${receiptData.items.length} items`);
+    console.log(`ðŸ–¨ï¸ [ESC/POS] Formatting ${receiptData.items.length} items`);
     
     for (const item of receiptData.items) {
-      console.log(`??? [ESC/POS] Processing item: "${item.name}"`);
+      console.log(`ðŸ–¨ï¸ [ESC/POS] Processing item: "${item.name}"`);
       
       // Extract size information for better display
       let displayName = item.name;
@@ -964,7 +964,7 @@ export class ESCPOSFormatter {
           .lines(1)
           .bold(true)
           .size('large')
-          .line('  Lisätäytteet:')
+          .line('  LisÃ¤tÃ¤ytteet:')
           .bold(false)
           .size('normal');
         
@@ -1109,7 +1109,7 @@ export class ESCPOSFormatter {
         .lines(1);
 
       if (originalOrder.subtotal) {
-        formatter.bold(true).customSize(formatter.fontSettings.totals.width, formatter.fontSettings.totals.height).columns('Välisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}`).bold(false).customSize(1, 1);
+        formatter.bold(true).customSize(formatter.fontSettings.totals.width, formatter.fontSettings.totals.height).columns('VÃ¤lisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}`).bold(false).customSize(1, 1);
       }
 
       if (originalOrder.deliveryFee && parseFloat(originalOrder.deliveryFee) > 0) {
@@ -1129,7 +1129,7 @@ export class ESCPOSFormatter {
       formatter
         .bold(true)
         .customSize(formatter.fontSettings.finalTotal.width, formatter.fontSettings.finalTotal.height)
-        .columns('YHTEENSÄ:', `${receiptData.total.toFixed(2)}`)
+        .columns('YHTEENSÃ„:', `${receiptData.total.toFixed(2)}`)
         .bold(false)
         .customSize(1, 1);
       formatter.separator('=', 48);
@@ -1138,7 +1138,7 @@ export class ESCPOSFormatter {
       formatter
         .bold(true)
         .customSize(formatter.fontSettings.finalTotal.width, formatter.fontSettings.finalTotal.height)
-        .columns('YHTEENSÄ:', `${receiptData.total.toFixed(2)}`)
+        .columns('YHTEENSÃ„:', `${receiptData.total.toFixed(2)}`)
         .bold(false)
         .customSize(1, 1);
       formatter.separator('=', 48);
@@ -1290,3 +1290,6 @@ export class ESCPOSFormatter {
     return this.commands.length;
   }
 }
+
+
+

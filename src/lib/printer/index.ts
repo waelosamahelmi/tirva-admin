@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Production-Ready Android Printer Service
  * Complete export of all printer utilities and components
  */
@@ -99,3 +99,6 @@ export const logBridgeStatus = (): void => {
     console.log('💡 Install the Android app for full network printing capabilities');
   }
 };
+
+
+

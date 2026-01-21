@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+﻿import { createContext, useContext, useState, useEffect } from "react";
 import type { MenuItem, Topping } from "@shared/schema";
 
 export interface CartItem {
@@ -122,3 +122,6 @@ export function useCart() {
   }
   return context;
 }
+
+
+

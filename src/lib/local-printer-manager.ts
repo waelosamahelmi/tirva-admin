@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Local Storage Printer Manager
  * Primary storage system for printer configurations using browser localStorage
  * Provides reliable, offline-first printer management
@@ -420,3 +420,6 @@ export class LocalPrinterManager {
     };
   }
 }
+
+
+

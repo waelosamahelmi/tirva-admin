@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useRestaurantSettings, useUpdateRestaurantSettings } from "@/hooks/use-restaurant-settings";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -810,3 +810,6 @@ export function StripeSettingsModal({ isOpen, onClose }: StripeSettingsModalProp
     </Dialog>
   );
 }
+
+
+

@@ -1,4 +1,4 @@
-// Cloudinary configuration and upload utilities
+﻿// Cloudinary configuration and upload utilities
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY;
 const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_SERVER_URL;
@@ -135,3 +135,5 @@ export async function updateImageInCloudinary(
     throw error;
   }
 }
+
+

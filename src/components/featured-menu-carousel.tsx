@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCart } from "@/lib/cart-context";
 import { useMenuItems } from "@/hooks/use-menu";
@@ -168,3 +168,5 @@ export function FeaturedMenuCarousel() {
     </section>
   );
 }
+
+

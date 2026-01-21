@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Alternative Bluetooth Printer Service using @capacitor-community/bluetooth-le
  * This serves as a fallback when capacitor-thermal-printer is not available
  */
@@ -402,3 +402,5 @@ export class AlternativeBluetoothPrinterService {
     }
   }
 }
+
+

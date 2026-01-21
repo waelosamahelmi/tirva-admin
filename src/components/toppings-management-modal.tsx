@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useToast } from "@/hooks/use-toast";
 import { useSupabaseToppings, useSupabaseCreateTopping, useSupabaseUpdateTopping, useSupabaseDeleteTopping } from "@/hooks/use-supabase-menu";
@@ -178,3 +178,5 @@ export function ToppingsManagementModal({ isOpen, onClose }: ToppingsManagementM
     </Dialog>
   );
 }
+
+

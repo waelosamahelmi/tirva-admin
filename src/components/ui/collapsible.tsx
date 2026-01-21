@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 
@@ -9,3 +9,6 @@ const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger
 const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }
+
+
+

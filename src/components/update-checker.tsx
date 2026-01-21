@@ -1,4 +1,4 @@
-import { useAppUpdater } from '@/hooks/use-app-updater';
+﻿import { useAppUpdater } from '@/hooks/use-app-updater';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Download, Loader2, RefreshCw } from 'lucide-react';
@@ -89,3 +89,6 @@ export function ManualUpdateButton() {
     </Button>
   );
 }
+
+
+

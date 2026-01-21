@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -450,3 +450,5 @@ export function OrderDetailModal({ order, isOpen, onClose, onStatusUpdate }: Ord
     </Dialog>
   );
 }
+
+

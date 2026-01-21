@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCart } from "@/lib/cart-context";
 import { useCreateOrder } from "@/hooks/use-orders";
@@ -517,3 +517,6 @@ export function CheckoutModal({ isOpen, onClose, onBack }: CheckoutModalProps) {
   </>
   );
 }
+
+
+

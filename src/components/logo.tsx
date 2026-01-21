@@ -1,4 +1,4 @@
-import { useLanguage } from "@/lib/language-context";
+﻿import { useLanguage } from "@/lib/language-context";
 
 export function Logo({ className = "h-8" }: { className?: string }) {
   return (
@@ -31,3 +31,5 @@ export function Logo({ className = "h-8" }: { className?: string }) {
     </div>
   );
 }
+
+

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 
 interface UseWebSocketOptions {
   onMessage?: (data: any) => void;
@@ -150,3 +150,5 @@ export function useWebSocket(url: string, options: UseWebSocketOptions = {}) {
     disconnect
   };
 }
+
+

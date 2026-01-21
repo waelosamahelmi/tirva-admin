@@ -1,4 +1,4 @@
-import { useLanguage } from "@/lib/language-context";
+﻿import { useLanguage } from "@/lib/language-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -137,3 +137,6 @@ export function PaymentMethodsAnalytics({ orders }: PaymentMethodsAnalyticsProps
     </Card>
   );
 }
+
+
+

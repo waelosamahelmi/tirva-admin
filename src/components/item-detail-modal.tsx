@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useQuery } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -667,3 +667,5 @@ export function ItemDetailModal({ item, isOpen, onClose, onAddToCart }: ItemDeta
     </Dialog>
   );
 }
+
+

@@ -1,4 +1,4 @@
-package com.restaurant.ordermaster;
+package fi.tirvankahvila.admin;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -737,3 +737,4 @@ public class PrinterBridge {
         Log.d(TAG, "✅ PrinterBridge cleanup completed");
     }
 }
+

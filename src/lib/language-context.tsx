@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+﻿import { createContext, useContext, useState, useEffect } from "react";
 
 type Language = "fi" | "en" | "ar" | "ru" | "sv";
 
@@ -63,3 +63,6 @@ export function useLanguage() {
   }
   return context;
 }
+
+
+

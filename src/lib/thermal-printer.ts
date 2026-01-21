@@ -1,4 +1,4 @@
-// Thermal printer integration for local network and Bluetooth connectivity
+﻿// Thermal printer integration for local network and Bluetooth connectivity
 
 // Extend Navigator interface for Bluetooth support
 declare global {
@@ -430,8 +430,8 @@ class ThermalPrinterService {
 ==============================
         Tirvan Kahvila
 ==============================
-      Pasintie 2, 45410 Utti
-        +358 41 3152619
+      Rauhankatu 19 c, 15110 Lahti
+        +358-3589-9089
 
 ------------------------------
            TEST PRINT
@@ -466,8 +466,8 @@ printer connectivity.
     receipt += 'Tirvan Kahvila' + lineFeed;
     receipt += escNormal + escBoldOff;
     receipt += '==============================' + lineFeed;
-    receipt += 'Pasintie 2, 45410 Utti' + lineFeed;
-    receipt += '+358 41 3152619' + lineFeed;
+    receipt += 'Rauhankatu 19 c, 15110 Lahti' + lineFeed;
+    receipt += '+358-3589-9089' + lineFeed;
     receipt += 'www.tirvankahvila.fi' + lineFeed;
     receipt += lineFeed;
     
@@ -494,7 +494,7 @@ printer connectivity.
     }
     
     if (order.customerEmail) {
-      receipt += `S�hk�posti: ${order.customerEmail}` + lineFeed;
+      receipt += `Sähköposti: ${order.customerEmail}` + lineFeed;
     }
     
     // Order type (mandatory display)
@@ -509,7 +509,7 @@ printer connectivity.
       receipt += `${order.deliveryAddress}` + lineFeed;
       receipt += escBoldOff;
       if (order.deliveryDistance) {
-        receipt += `Et�isyys: ${order.deliveryDistance} km` + lineFeed;
+        receipt += `Etäisyys: ${order.deliveryDistance} km` + lineFeed;
       }
     }
     
@@ -530,7 +530,7 @@ printer connectivity.
     let subtotal = 0;
     if (order.items && order.items.length > 0) {
       order.items.forEach((item: any, index: number) => {
-        console.log(`?? THERMAL PRINTER DEBUG - Processing item ${index + 1}:`, JSON.stringify(item, null, 2));
+        console.log(`🔍 THERMAL PRINTER DEBUG - Processing item ${index + 1}:`, JSON.stringify(item, null, 2));
         
         const itemPrice = parseFloat(item.unitPrice || item.menuItem?.price || '0');
         const quantity = item.quantity || 1;
@@ -547,21 +547,21 @@ printer connectivity.
         
         // Toppings - display each on separate lines with bold text and correct pricing
         const itemToppings = this.extractToppingsWithPricing(item);
-        console.log(`?? THERMAL PRINTER DEBUG - Extracted toppings for ${item.menuItem?.name || item.name}:`, itemToppings);
+        console.log(`🔍 THERMAL PRINTER DEBUG - Extracted toppings for ${item.menuItem?.name || item.name}:`, itemToppings);
         if (itemToppings.length > 0) {
           receipt += escBold;
-          receipt += `   Lis�kkeet:` + lineFeed;
+          receipt += `   Lisäkkeet:` + lineFeed;
           receipt += escBoldOff;
           itemToppings.forEach((topping: string) => {
             receipt += escBold;
-            receipt += `     � ${topping}` + lineFeed;
+            receipt += `     • ${topping}` + lineFeed;
             receipt += escBoldOff;
           });
         }
         
         // Clean special instructions - make bold
         const cleanInstructions = this.extractCleanInstructionsFromItem(item);
-        console.log(`?? THERMAL PRINTER DEBUG - Extracted instructions for ${item.menuItem?.name || item.name}: "${cleanInstructions}"`);
+        console.log(`🔍 THERMAL PRINTER DEBUG - Extracted instructions for ${item.menuItem?.name || item.name}: "${cleanInstructions}"`);
         if (cleanInstructions) {
           receipt += escBold;
           receipt += `   Ohje: ${cleanInstructions}` + lineFeed;
@@ -570,7 +570,7 @@ printer connectivity.
         
         // Price aligned to right - make larger
         receipt += escBold + escLarge;
-        const priceStr = `�${itemTotal.toFixed(2)}`;
+        const priceStr = `€${itemTotal.toFixed(2)}`;
         const spaces = Math.max(0, 25 - priceStr.length);
         receipt += ' '.repeat(spaces) + priceStr + lineFeed;
         receipt += escNormal + escBoldOff;
@@ -582,9 +582,9 @@ printer connectivity.
     receipt += '------------------------------' + lineFeed;
     receipt += escBold + escLarge;
     
-    const subtotalStr = `�${subtotal.toFixed(2)}`;
+    const subtotalStr = `€${subtotal.toFixed(2)}`;
     const subtotalSpaces = Math.max(0, 17 - subtotalStr.length);
-    receipt += `V�lisumma:` + ' '.repeat(subtotalSpaces) + subtotalStr + lineFeed;
+    receipt += `Välisumma:` + ' '.repeat(subtotalSpaces) + subtotalStr + lineFeed;
     
 
     // Robust delivery fee detection: check multiple possible fields
@@ -597,28 +597,28 @@ printer connectivity.
       deliveryFee = parseFloat(order.receiptData.deliveryFee);
     }
     if (deliveryFee !== null && deliveryFee > 0) {
-      const deliveryStr = `�${deliveryFee.toFixed(2)}`;
+      const deliveryStr = `€${deliveryFee.toFixed(2)}`;
       const deliverySpaces = Math.max(0, 19 - deliveryStr.length);
       receipt += `Toimitus:` + ' '.repeat(deliverySpaces) + deliveryStr + lineFeed;
     }
     
     if (order.discount && parseFloat(order.discount) > 0) {
-      const discountStr = `-�${parseFloat(order.discount).toFixed(2)}`;
+      const discountStr = `-€${parseFloat(order.discount).toFixed(2)}`;
       const discountSpaces = Math.max(0, 20 - discountStr.length);
       receipt += `Alennus:` + ' '.repeat(discountSpaces) + discountStr + lineFeed;
     }
     
     const totalAmount = parseFloat(order.totalAmount || (subtotal + parseFloat(order.deliveryFee || '0') - parseFloat(order.discount || '0')).toFixed(2));
-    const totalStr = `�${totalAmount.toFixed(2)}`;
+    const totalStr = `€${totalAmount.toFixed(2)}`;
     const totalSpaces = Math.max(0, 18 - totalStr.length);
-    receipt += `YHTEENS�:` + ' '.repeat(totalSpaces) + totalStr + lineFeed;
+    receipt += `YHTEENSÄ:` + ' '.repeat(totalSpaces) + totalStr + lineFeed;
     receipt += escNormal + escBoldOff;
     receipt += '==============================' + lineFeed;
     receipt += lineFeed;
     
     // Payment info - Make larger and always display payment method
     receipt += escBold + escLarge;
-    receipt += `Maksutapa: ${order.paymentMethod || 'Ei m��ritelty'}` + lineFeed;
+    receipt += `Maksutapa: ${order.paymentMethod || 'Ei määritelty'}` + lineFeed;
     if (order.paymentStatus) {
       receipt += `Maksun tila: ${order.paymentStatus}` + lineFeed;
     }
@@ -643,7 +643,7 @@ printer connectivity.
     receipt += 'Avoinna: Ma-Su 10:00-20:00' + lineFeed;
     receipt += 'Kotiinkuljetus: Ma-To,Pe-Su 10:00-19:30' + lineFeed;
     receipt += lineFeed;
-    receipt += 'Seuraa meit� sosiaalisessa mediassa!' + lineFeed;
+    receipt += 'Seuraa meitä sosiaalisessa mediassa!' + lineFeed;
     receipt += '@pizzeriaU triva' + lineFeed;
     receipt += lineFeed;
     receipt += '==============================' + lineFeed;
@@ -672,7 +672,7 @@ printer connectivity.
     
     // Header
     receipt += escCenter + escBold + escLarge;
-    receipt += 'KEITTI� / KITCHEN' + lineFeed;
+    receipt += 'KEITTIÖ / KITCHEN' + lineFeed;
     receipt += escNormal + escBoldOff;
     receipt += '==============================' + lineFeed;
     receipt += lineFeed;
@@ -682,7 +682,7 @@ printer connectivity.
     receipt += `TILAUS: ${order.orderNumber}` + lineFeed;
     receipt += escNormal + escBoldOff;
     receipt += `AIKA: ${date.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })}` + lineFeed;
-    receipt += `P�IV�: ${date.toLocaleDateString('fi-FI')}` + lineFeed;
+    receipt += `PÄIVÄ: ${date.toLocaleDateString('fi-FI')}` + lineFeed;
     receipt += `TYYPPI: ${order.orderType === 'delivery' ? 'TOIMITUS' : 'NOUTO'}` + lineFeed;
     
     if (order.orderType === 'delivery' && order.deliveryAddress) {
@@ -723,7 +723,7 @@ printer connectivity.
         // Toppings with emphasis and correct pricing (parsed from special instructions or direct field)
         const itemToppings = this.extractToppingsWithPricing(item);
         if (itemToppings.length > 0) {
-          receipt += escBold + '   LIS�KKEET:' + escBoldOff + lineFeed;
+          receipt += escBold + '   LISÄKKEET:' + escBoldOff + lineFeed;
           itemToppings.forEach((topping: string) => {
             receipt += escBold + `   * ${topping}` + escBoldOff + lineFeed;
           });
@@ -803,8 +803,8 @@ printer connectivity.
       if (itemName.includes('muna') || itemName.includes('egg')) {
         allergens.add('Muna/Egg');
       }
-      if (itemName.includes('p�hkin�') || itemName.includes('nut')) {
-        allergens.add('P�hkin�t/Nuts');
+      if (itemName.includes('pähkinä') || itemName.includes('nut')) {
+        allergens.add('Pähkinät/Nuts');
       }
       
       // Check toppings for allergens
@@ -817,8 +817,8 @@ printer connectivity.
           if (toppingLower.includes('kala') || toppingLower.includes('fish')) {
             allergens.add('Kala/Fish');
           }
-          if (toppingLower.includes('p�hkin�') || toppingLower.includes('nut')) {
-            allergens.add('P�hkin�t/Nuts');
+          if (toppingLower.includes('pähkinä') || toppingLower.includes('nut')) {
+            allergens.add('Pähkinät/Nuts');
           }
         });
       }
@@ -831,13 +831,13 @@ printer connectivity.
    * Extract size information from item data
    */
   private extractSizeFromItem(item: any): string | null {
-    console.log(`?? EXTRACT SIZE DEBUG - Input item:`, JSON.stringify(item, null, 2));
+    console.log(`🔍 EXTRACT SIZE DEBUG - Input item:`, JSON.stringify(item, null, 2));
     
     // Check direct size field (try multiple possible field names)
     const possibleSizeFields = ['size', 'Size', 'pizza_size', 'pizzaSize', 'item_size', 'itemSize'];
     for (const field of possibleSizeFields) {
       if (item[field] && item[field] !== 'regular') {
-        console.log(`? Found size in field '${field}': "${item[field]}"`);
+        console.log(`✅ Found size in field '${field}': "${item[field]}"`);
         return item[field];
       }
     }
@@ -852,17 +852,17 @@ printer connectivity.
     for (const field of possibleInstructionFields) {
       const specialInstructions = item[field];
       if (specialInstructions && typeof specialInstructions === 'string') {
-        console.log(`?? Checking ${field} for size: "${specialInstructions}"`);
+        console.log(`🔍 Checking ${field} for size: "${specialInstructions}"`);
         const sizeMatch = specialInstructions.match(/Size:\s*([^;,]+)/i);
         if (sizeMatch) {
           const size = sizeMatch[1].trim();
-          console.log(`? Found size in ${field}: "${size}"`);
+          console.log(`✅ Found size in ${field}: "${size}"`);
           return size !== 'regular' ? size : null;
         }
       }
     }
     
-    console.log(`? No size found for item`);
+    console.log(`❌ No size found for item`);
     return null;
   }
 
@@ -870,7 +870,7 @@ printer connectivity.
    * Extract toppings from item data
    */
   private extractToppingsFromItem(item: any): string[] {
-    console.log(`?? EXTRACT TOPPINGS DEBUG - Input item:`, JSON.stringify(item, null, 2));
+    console.log(`🔍 EXTRACT TOPPINGS DEBUG - Input item:`, JSON.stringify(item, null, 2));
     
     const toppings: string[] = [];
     
@@ -882,7 +882,7 @@ printer connectivity.
     
     for (const field of possibleToppingsFields) {
       if (item[field]) {
-        console.log(`?? Found ${field} field:`, item[field]);
+        console.log(`🔍 Found ${field} field:`, item[field]);
         
         if (Array.isArray(item[field])) {
           item[field].forEach((topping: any) => {
@@ -893,7 +893,7 @@ printer connectivity.
             }
           });
           if (toppings.length > 0) {
-            console.log(`? Extracted ${toppings.length} toppings from ${field}:`, toppings);
+            console.log(`✅ Extracted ${toppings.length} toppings from ${field}:`, toppings);
             return toppings;
           }
         } else if (typeof item[field] === 'string') {
@@ -909,7 +909,7 @@ printer connectivity.
                 }
               });
               if (toppings.length > 0) {
-                console.log(`? Extracted ${toppings.length} toppings from parsed ${field}:`, toppings);
+                console.log(`✅ Extracted ${toppings.length} toppings from parsed ${field}:`, toppings);
                 return toppings;
               }
             }
@@ -918,7 +918,7 @@ printer connectivity.
             const splitToppings = item[field].split(',').map((t: string) => t.trim()).filter((t: string) => t.length > 0);
             if (splitToppings.length > 0) {
               toppings.push(...splitToppings);
-              console.log(`? Extracted ${toppings.length} toppings from comma-separated ${field}:`, toppings);
+              console.log(`✅ Extracted ${toppings.length} toppings from comma-separated ${field}:`, toppings);
               return toppings;
             }
           }
@@ -936,31 +936,31 @@ printer connectivity.
     for (const field of possibleInstructionFields) {
       const specialInstructions = item[field];
       if (specialInstructions && typeof specialInstructions === 'string') {
-        console.log(`?? Checking ${field} for toppings: "${specialInstructions}"`);
+        console.log(`🔍 Checking ${field} for toppings: "${specialInstructions}"`);
         const toppingsMatch = specialInstructions.match(/Toppings:\s*([^;]+)/i);
         if (toppingsMatch) {
           const toppingsText = toppingsMatch[1];
-          console.log(`? Found toppings text in ${field}: "${toppingsText}"`);
+          console.log(`✅ Found toppings text in ${field}: "${toppingsText}"`);
           
           const toppingItems = toppingsText.split(',').map((t: string) => t.trim());
           
           toppingItems.forEach((topping: string) => {
-            // Remove price info like (+�1.50) if present
-            const cleanTopping = topping.replace(/\s*\(\+�[0-9.]+\)$/, '').trim();
+            // Remove price info like (+€1.50) if present
+            const cleanTopping = topping.replace(/\s*\(\+€[0-9.]+\)$/, '').trim();
             if (cleanTopping) {
               toppings.push(cleanTopping);
             }
           });
           
           if (toppings.length > 0) {
-            console.log(`? Extracted ${toppings.length} toppings from ${field}:`, toppings);
+            console.log(`✅ Extracted ${toppings.length} toppings from ${field}:`, toppings);
             return toppings;
           }
         }
       }
     }
     
-    console.log(`? No toppings found for item`);
+    console.log(`❌ No toppings found for item`);
     return toppings;
   }
 
@@ -968,7 +968,7 @@ printer connectivity.
    * Extract toppings with correct pricing based on pizza size
    */
   private extractToppingsWithPricing(item: any): string[] {
-    console.log(`?? EXTRACT TOPPINGS WITH PRICING - Input item:`, JSON.stringify(item, null, 2));
+    console.log(`🔍 EXTRACT TOPPINGS WITH PRICING - Input item:`, JSON.stringify(item, null, 2));
     
     const toppings: string[] = [];
     
@@ -976,20 +976,20 @@ printer connectivity.
     const specialInstructions = item.specialInstructions || item.special_instructions || '';
     const sizeMatch = specialInstructions.match(/Size:\s*([^;]+)/i);
     const size = sizeMatch ? sizeMatch[1].trim() : 'normal';
-    console.log(`?? Extracted size for pricing: "${size}"`);
+    console.log(`🔍 Extracted size for pricing: "${size}"`);
     
     // Check for toppings in special instructions
     if (specialInstructions) {
       const toppingsMatch = specialInstructions.match(/Toppings:\s*([^;]+)/i);
       if (toppingsMatch) {
         const toppingsText = toppingsMatch[1];
-        console.log(`? Found toppings text: "${toppingsText}"`);
+        console.log(`✅ Found toppings text: "${toppingsText}"`);
         
         const toppingItems = toppingsText.split(',').map((t: string) => t.trim());
         
         toppingItems.forEach((topping: string) => {
           // Extract topping name and original price
-          const priceMatch = topping.match(/(.+?)\s*\(\+�([\d.]+)\)/);
+          const priceMatch = topping.match(/(.+?)\s*\(\+€([\d.]+)\)/);
           if (priceMatch) {
             const toppingName = priceMatch[1].trim();
             const originalPrice = parseFloat(priceMatch[2]);
@@ -999,11 +999,11 @@ printer connectivity.
             if (size === "perhe") {
               adjustedPrice = originalPrice * 2; // Double price for family size
             } else if (size === "large" && Math.abs(originalPrice - 1.00) < 0.01) {
-              adjustedPrice = 2.00; // �1.00 toppings become �2.00 for large
+              adjustedPrice = 2.00; // €1.00 toppings become €2.00 for large
             }
             
-            const displayText = `${toppingName} (+�${adjustedPrice.toFixed(2)})`;
-            console.log(`? Adjusted topping price: "${toppingName}" ${originalPrice} ? ${adjustedPrice} (size: ${size})`);
+            const displayText = `${toppingName} (+€${adjustedPrice.toFixed(2)})`;
+            console.log(`✅ Adjusted topping price: "${toppingName}" ${originalPrice} → ${adjustedPrice} (size: ${size})`);
             toppings.push(displayText);
           } else {
             // No price information, keep as-is
@@ -1011,13 +1011,13 @@ printer connectivity.
           }
         });
         
-        console.log(`? Final toppings with pricing:`, toppings);
+        console.log(`✅ Final toppings with pricing:`, toppings);
         return toppings;
       }
     }
     
     // Fallback to old method if no toppings in special instructions
-    console.log(`? No toppings found in special instructions, falling back to old method`);
+    console.log(`❌ No toppings found in special instructions, falling back to old method`);
     return this.extractToppingsFromItem(item);
   }
 
@@ -1025,7 +1025,7 @@ printer connectivity.
    * Extract clean special instructions (excluding toppings and size info)
    */
   private extractCleanInstructionsFromItem(item: any): string | null {
-    console.log(`?? EXTRACT INSTRUCTIONS DEBUG - Input item:`, JSON.stringify(item, null, 2));
+    console.log(`🔍 EXTRACT INSTRUCTIONS DEBUG - Input item:`, JSON.stringify(item, null, 2));
     
     // Try multiple possible instruction fields
     const possibleInstructionFields = [
@@ -1037,16 +1037,16 @@ printer connectivity.
     for (const field of possibleInstructionFields) {
       const specialInstructions = item[field];
       if (specialInstructions && typeof specialInstructions === 'string') {
-        console.log(`?? Processing ${field}: "${specialInstructions}"`);
+        console.log(`🔍 Processing ${field}: "${specialInstructions}"`);
         
         if (!specialInstructions.trim()) {
-          console.log(`?? Empty ${field}, skipping`);
+          console.log(`⏭️ Empty ${field}, skipping`);
           continue;
         }
         
         // If it doesn't contain structured data (no colons), return as-is
         if (!specialInstructions.includes(':') && !specialInstructions.includes(';')) {
-          console.log(`? Found simple instructions in ${field}: "${specialInstructions}"`);
+          console.log(`✅ Found simple instructions in ${field}: "${specialInstructions}"`);
           return specialInstructions.trim();
         }
         
@@ -1055,7 +1055,7 @@ printer connectivity.
         const cleanSections: string[] = [];
         
         sections.forEach((section: string) => {
-          console.log(`?? Processing section: "${section}"`);
+          console.log(`🔍 Processing section: "${section}"`);
           
           // Skip sections that start with "Toppings:", "Size:", or are just repetitions
           if (!section.match(/^(Toppings|Size):/i) && section.length > 0) {
@@ -1063,34 +1063,36 @@ printer connectivity.
             const specialMatch = section.match(/^Special:\s*(.+)$/i);
             if (specialMatch) {
               const content = specialMatch[1].trim();
-              console.log(`? Found special section content: "${content}"`);
+              console.log(`✅ Found special section content: "${content}"`);
               // Only add if it's not a repetition of toppings/size info
               if (!content.match(/^(Toppings|Size):/i) && !cleanSections.includes(content)) {
                 cleanSections.push(content);
               }
             } else if (!section.match(/^(Toppings|Size):/i)) {
-              console.log(`? Found general section: "${section}"`);
+              console.log(`✅ Found general section: "${section}"`);
               // Add non-special sections that aren't toppings/size
               if (!cleanSections.includes(section)) {
                 cleanSections.push(section);
               }
             }
           } else {
-            console.log(`?? Skipping section (Toppings/Size): "${section}"`);
+            console.log(`⏭️ Skipping section (Toppings/Size): "${section}"`);
           }
         });
         
         if (cleanSections.length > 0) {
           const result = cleanSections.join(', ');
-          console.log(`? Extracted clean instructions from ${field}: "${result}"`);
+          console.log(`✅ Extracted clean instructions from ${field}: "${result}"`);
           return result;
         }
       }
     }
     
-    console.log(`? No clean instructions found`);
+    console.log(`❌ No clean instructions found`);
     return null;
   }
 }
 
 export const thermalPrinterService = new ThermalPrinterService();
+
+

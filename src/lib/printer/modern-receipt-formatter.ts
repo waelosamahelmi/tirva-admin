@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Modern ESC/POS Receipt Formatter with Graphics
  * Includes logo, QR code, proper Finnish encoding (CP850)
  * Optimized for Star mC-Print3 and ESC/POS printers
@@ -30,13 +30,13 @@ function translatePaymentMethod(method: string): string {
     'card': 'Kortti',
     'credit card': 'Kortti',
     'debit card': 'Kortti',
-    'cash': 'K�teinen',
-    'k�teinen': 'K�teinen',
+    'cash': 'Käteinen',
+    'käteinen': 'Käteinen',
     'kortti': 'Kortti',
     'stripe': 'Kortti',
     'online': 'Verkkomaksu',
-    'cash_or_card': 'K�teinen tai kortti',
-    'cash or card': 'K�teinen tai kortti'
+    'cash_or_card': 'Käteinen tai kortti',
+    'cash or card': 'Käteinen tai kortti'
   };
   
   return translations[methodLower] || method;
@@ -70,15 +70,15 @@ export class ModernReceiptFormatter {
       const char = text.charAt(i);
       
       switch (char) {
-        case '�': bytes.push(0x84); break;
-        case '�': bytes.push(0x8E); break;
-        case '�': bytes.push(0x94); break;
-        case '�': bytes.push(0x99); break;
-        case '�': bytes.push(0x86); break;
-        case '�': bytes.push(0x8F); break;
-        case '�': bytes.push(0x82); break;
-        case '�': bytes.push(0x90); break;
-        case '�': bytes.push(0x65); bytes.push(0x75); bytes.push(0x72); break; // "eur" instead of �
+        case 'ä': bytes.push(0x84); break;
+        case 'Ä': bytes.push(0x8E); break;
+        case 'ö': bytes.push(0x94); break;
+        case 'Ö': bytes.push(0x99); break;
+        case 'å': bytes.push(0x86); break;
+        case 'Å': bytes.push(0x8F); break;
+        case 'é': bytes.push(0x82); break;
+        case 'È': bytes.push(0x90); break;
+        case '€': bytes.push(0x65); bytes.push(0x75); bytes.push(0x72); break; // "eur" instead of €
         default:
           const code = text.charCodeAt(i);
           bytes.push(code < 128 ? code : 0x3F); // ASCII or ?
@@ -162,40 +162,40 @@ export class ModernReceiptFormatter {
     formatter.init();
     
     try {
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // LOGO SECTION (Text-based)
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.align(1); // Center
       formatter.newLine(2);
       formatter.size(3, 3);
       formatter.bold(true);
-      formatter.text('tirva');
+      formatter.text('Tirvan Kahvila');
       formatter.newLine();
       formatter.bold(false);
       formatter.size(1, 1);
       formatter.newLine();
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // RESTAURANT INFO
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.size(2, 2);
       formatter.text('pizzeria');
       formatter.newLine();
       formatter.size(1, 1);
       formatter.newLine();
-      formatter.text('Pasintie 2');
+      formatter.text('Rauhankatu 19 c');
       formatter.newLine();
-      formatter.text('45410 Utti');
+      formatter.text('15110 Lahti');
       formatter.newLine();
-      formatter.text('+358 41 3152619');
+      formatter.text('+358-3589-9089');
       formatter.newLine(2);
       
       formatter.text(getDecorativeBorder(48));
       formatter.newLine(2);
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // ORDER NUMBER (Large and prominent)
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.bold(true);
       formatter.size(3, 3);
       formatter.text(`#${receiptData.orderNumber}`);
@@ -218,9 +218,9 @@ export class ModernReceiptFormatter {
       formatter.text(getFancySeparator(48));
       formatter.newLine(2);
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // ORDER TYPE & PAYMENT
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       const orderTypeText = receiptData.orderType === 'delivery' 
         ? 'KOTIINKULJETUS' 
         : 'NOUTO';
@@ -242,9 +242,9 @@ export class ModernReceiptFormatter {
       formatter.text(getDecorativeBorder(48));
       formatter.newLine(2);
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // CUSTOMER INFORMATION
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       if (receiptData.customerName || receiptData.customerPhone || 
           receiptData.customerEmail || receiptData.deliveryAddress) {
         
@@ -300,9 +300,9 @@ export class ModernReceiptFormatter {
         formatter.newLine(2);
       }
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // ITEMS SECTION
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.bold(true);
       formatter.underline(true);
       formatter.text('TUOTTEET');
@@ -338,7 +338,7 @@ export class ModernReceiptFormatter {
         
         // Toppings
         if (item.toppings && item.toppings.length > 0) {
-          formatter.text('  Lis�t�ytteet:');
+          formatter.text('  Lisätäytteet:');
           formatter.newLine();
           
           // Check for conditional pricing
@@ -424,9 +424,9 @@ export class ModernReceiptFormatter {
         formatter.newLine();
       }
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // ORDER-LEVEL SPECIAL INSTRUCTIONS
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       if (originalOrder?.specialInstructions || originalOrder?.special_instructions) {
         const instructions = originalOrder.specialInstructions || 
                             originalOrder.special_instructions;
@@ -464,9 +464,9 @@ export class ModernReceiptFormatter {
         formatter.newLine();
       }
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // TOTALS SECTION
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.newLine();
       formatter.align(1);
       formatter.text(getDecorativeBorder(48));
@@ -485,7 +485,7 @@ export class ModernReceiptFormatter {
       if (originalOrder) {
         if (originalOrder.subtotal) {
           formatter.size(2, 2);
-          formatter.columns('V�lisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`, 32);
+          formatter.columns('Välisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`, 32);
           formatter.size(1, 1);
         }
         
@@ -497,7 +497,7 @@ export class ModernReceiptFormatter {
         
         if (originalOrder.smallOrderFee && parseFloat(originalOrder.smallOrderFee) > 0) {
           formatter.size(2, 2);
-          formatter.columns('Pientilauslis�:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`, 32);
+          formatter.columns('Pientilauslisä:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`, 32);
           formatter.size(1, 1);
         }
         
@@ -521,9 +521,9 @@ export class ModernReceiptFormatter {
       formatter.text(getDecorativeBorder(48));
       formatter.newLine(2);
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // QR CODE (Link to website)
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.align(1);
       formatter.text('Skannaa QR-koodi:');
       formatter.newLine(2);
@@ -536,9 +536,9 @@ export class ModernReceiptFormatter {
       formatter.text('tirvankahvila.fi');
       formatter.newLine(3);
       
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       // FOOTER
-      // ---------------------------------------
+      // ═══════════════════════════════════════
       formatter.text(getDecorativeBorder(48));
       formatter.newLine();
       formatter.bold(true);
@@ -563,3 +563,6 @@ export class ModernReceiptFormatter {
     }
   }
 }
+
+
+

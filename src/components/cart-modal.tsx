@@ -1,4 +1,4 @@
-import { useLanguage } from "@/lib/language-context";
+﻿import { useLanguage } from "@/lib/language-context";
 import { useCart } from "@/lib/cart-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -148,3 +148,6 @@ export function CartModal({ isOpen, onClose, onCheckout }: CartModalProps) {
     </Dialog>
   );
 }
+
+
+

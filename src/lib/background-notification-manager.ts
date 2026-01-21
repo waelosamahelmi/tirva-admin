@@ -1,4 +1,4 @@
-import { NotificationSoundManager } from './notification-sound-manager-enhanced';
+﻿import { NotificationSoundManager } from './notification-sound-manager-enhanced';
 
 export interface BackgroundNotificationData {
   orderId: string;
@@ -299,3 +299,6 @@ export class BackgroundNotificationManager {
 
 // Global instance
 export const backgroundNotificationManager = BackgroundNotificationManager.getInstance();
+
+
+
