@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Production-Ready Android Printer Service
  * Optimized for real network printing with comprehensive error handling
  */
@@ -41,7 +41,7 @@ export class PrinterService {
   public onPrintProgress: (job: PrintJob) => void = () => {};
 
   constructor() {
-    console.log('🖨️ PrinterService initialized for Android network printing');
+    console.log('??? PrinterService initialized for Android network printing');
     this.startQueueProcessor();
   }
 
@@ -76,19 +76,19 @@ export class PrinterService {
 
     try {
       const base64Data = this.arrayToBase64(data);
-      console.log(`📱 Sending ${data.length} bytes to ${device.address}:${device.port} via Android bridge`);
+      console.log(`?? Sending ${data.length} bytes to ${device.address}:${device.port} via Android bridge`);
       
       const result = await bridge.sendRawDataToPrinter(device.address, device.port!, base64Data);
       
       if (result) {
-        console.log(`✅ Android bridge print successful to ${device.address}:${device.port}`);
+        console.log(`? Android bridge print successful to ${device.address}:${device.port}`);
         return true;
       } else {
-        console.log(`❌ Android bridge print failed to ${device.address}:${device.port}`);
+        console.log(`? Android bridge print failed to ${device.address}:${device.port}`);
         return false;
       }
     } catch (error) {
-      console.error(`❌ Android bridge error:`, error);
+      console.error(`? Android bridge error:`, error);
       throw new PrinterError(`Android bridge failed: ${error}`, ERROR_CODES.PRINT_FAILED);
     }
   }
@@ -104,10 +104,10 @@ export class PrinterService {
 
     try {
       const result = await bridge.testPrinterConnection(address, port);
-      console.log(`🔍 Android bridge connection test ${address}:${port} -> ${result ? 'SUCCESS' : 'FAILED'}`);
+      console.log(`?? Android bridge connection test ${address}:${port} -> ${result ? 'SUCCESS' : 'FAILED'}`);
       return result;
     } catch (error) {
-      console.log(`❌ Android bridge connection test error: ${error}`);
+      console.log(`? Android bridge connection test error: ${error}`);
       return false;
     }
   }
@@ -125,7 +125,7 @@ export class PrinterService {
     this.isScanning = true;
     this.scanController = new AbortController();
     
-    console.log('🌐 ===== STARTING PRODUCTION NETWORK PRINTER SCAN =====');
+    console.log('?? ===== STARTING PRODUCTION NETWORK PRINTER SCAN =====');
 
     try {
       const devices: PrinterDevice[] = [];
@@ -135,9 +135,9 @@ export class PrinterService {
       const targetIPs = options.targetIPs || this.generateTargetIPs(networkBase);
       const portsToTest = options.ports || PRINTER_PORTS.map(p => p.port);
       
-      console.log(`🎯 Scanning ${targetIPs.length} IPs across ${portsToTest.length} ports`);
-      console.log(`📍 Network base: ${networkBase}`);
-      console.log(`🚀 Using Android bridge: ${this.isAndroidBridgeAvailable()}`);
+      console.log(`?? Scanning ${targetIPs.length} IPs across ${portsToTest.length} ports`);
+      console.log(`?? Network base: ${networkBase}`);
+      console.log(`?? Using Android bridge: ${this.isAndroidBridgeAvailable()}`);
 
       let discovered = 0;
       let errors = 0;
@@ -158,23 +158,23 @@ export class PrinterService {
         try {
           const device = await this.testIPForPrinter(ip, portsToTest);
           if (device) {
-            console.log(`✅ PRINTER DISCOVERED: ${device.name} at ${ip}:${device.port}`);
+            console.log(`? PRINTER DISCOVERED: ${device.name} at ${ip}:${device.port}`);
             devices.push(device);
             this.devices.set(device.id, device);
             this.onDeviceFound(device);
             discovered++;
           }
         } catch (error) {
-          console.log(`❌ Error testing ${ip}: ${error}`);
+          console.log(`? Error testing ${ip}: ${error}`);
           errors++;
         }
       }
 
-      console.log(`✅ Network scan completed: Found ${devices.length} printers (${errors} errors)`);
+      console.log(`? Network scan completed: Found ${devices.length} printers (${errors} errors)`);
       return devices;
 
     } catch (error) {
-      console.error('❌ Network scan failed:', error);
+      console.error('? Network scan failed:', error);
       throw new PrinterError(`Network scan failed: ${error}`, ERROR_CODES.NETWORK_ERROR);
     } finally {
       this.isScanning = false;
@@ -191,14 +191,14 @@ export class PrinterService {
         const portInfo = PRINTER_PORTS.find(p => p.port === port);
         if (!portInfo) continue;
 
-        console.log(`🔍 Testing ${ip}:${port} (${portInfo.protocol})`);
+        console.log(`?? Testing ${ip}:${port} (${portInfo.protocol})`);
         
         const startTime = Date.now();
         const isReachable = await this.testConnection(ip, port, portInfo.timeout);
         const responseTime = Date.now() - startTime;
         
         if (isReachable) {
-          console.log(`✅ ${ip}:${port} responded in ${responseTime}ms`);
+          console.log(`? ${ip}:${port} responded in ${responseTime}ms`);
           
           // Get additional printer info
           const info = await this.getPrinterInfo(ip, port);
@@ -241,7 +241,7 @@ export class PrinterService {
           return device;
         }
       } catch (error) {
-        console.log(`❌ Port ${port} test failed for ${ip}: ${error}`);
+        console.log(`? Port ${port} test failed for ${ip}: ${error}`);
         continue;
       }
     }
@@ -389,7 +389,7 @@ export class PrinterService {
       return true;
     }
 
-    console.log(`🔌 Connecting to ${device.name} (${device.address}:${device.port})`);
+    console.log(`?? Connecting to ${device.name} (${device.address}:${device.port})`);
     
     try {
       device.status = 'connecting';
@@ -407,7 +407,7 @@ export class PrinterService {
         this.connectedDevices.set(deviceId, device);
         this.onDeviceConnected(device);
         
-        console.log(`✅ Connected to ${device.name}`);
+        console.log(`? Connected to ${device.name}`);
         return true;
       } else {
         device.status = 'error';
@@ -417,7 +417,7 @@ export class PrinterService {
     } catch (error) {
       device.status = 'error';
       device.lastError = error instanceof Error ? error.message : String(error);
-      console.error(`❌ Connection failed to ${device.name}:`, error);
+      console.error(`? Connection failed to ${device.name}:`, error);
       throw error;
     }
   }
@@ -436,7 +436,7 @@ export class PrinterService {
     this.connectedDevices.delete(deviceId);
     this.onDeviceDisconnected(device);
     
-    console.log(`🔌 Disconnected from ${device.name}`);
+    console.log(`?? Disconnected from ${device.name}`);
   }
 
   // ===== PRINTING OPERATIONS =====
@@ -462,7 +462,7 @@ export class PrinterService {
     };
 
     this.printQueue.push(job);
-    console.log(`📄 Print job queued: ${job.id} for ${device.name}`);
+    console.log(`?? Print job queued: ${job.id} for ${device.name}`);
     
     return new Promise((resolve, reject) => {
       const checkJob = () => {
@@ -501,7 +501,7 @@ export class PrinterService {
 
     // Detect if this is a Star printer
     const isStarPrinter = this.isStarPrinter(device);
-    console.log(`🖨️ Printer type detected: ${isStarPrinter ? 'Star mC-Print (Modern)' : 'ESC/POS'}`);
+    console.log(`??? Printer type detected: ${isStarPrinter ? 'Star mC-Print (Modern)' : 'ESC/POS'}`);
     
     let testData: Uint8Array;
     if (isStarPrinter) {
@@ -550,20 +550,20 @@ export class PrinterService {
       throw new PrinterError('Device not connected', ERROR_CODES.DEVICE_NOT_FOUND);
     }
 
-    console.log('🖨️ PRINT ORDER DEBUG - Full order object received:');
+    console.log('??? PRINT ORDER DEBUG - Full order object received:');
     console.log(JSON.stringify(order, null, 2));
     
-    console.log(`🧾 Printing order ${order.orderNumber || order.order_number || order.id} for ${order.customerName || order.customer_name || 'Customer'}`);
+    console.log(`?? Printing order ${order.orderNumber || order.order_number || order.id} for ${order.customerName || order.customer_name || 'Customer'}`);
 
     try {
       // Convert order to receipt data format
       const receiptData = this.convertOrderToReceipt(order);
       
-      console.log('🖨️ PRINT ORDER DEBUG - Receipt data created:');
+      console.log('??? PRINT ORDER DEBUG - Receipt data created:');
       console.log(JSON.stringify(receiptData, null, 2));
       
       if (!receiptData.items || receiptData.items.length === 0) {
-        console.error('❌ No items found in receipt data');
+        console.error('? No items found in receipt data');
         throw new PrinterError('No items found in receipt data', ERROR_CODES.PRINT_FAILED);
       }
       
@@ -571,7 +571,7 @@ export class PrinterService {
       const orderNumber = order.orderNumber || order.order_number || order.id;
       if (this.activePrintJobs.has(orderNumber)) {
         const existingJobId = this.activePrintJobs.get(orderNumber);
-        console.log(`⚠️ Print job already in progress for order ${orderNumber} (Job ID: ${existingJobId}). Preventing duplicate.`);
+        console.log(`?? Print job already in progress for order ${orderNumber} (Job ID: ${existingJobId}). Preventing duplicate.`);
         
         // Check if the existing job is still active
         const existingJob = this.printQueue.find(j => j.id === existingJobId);
@@ -589,7 +589,7 @@ export class PrinterService {
         data: receiptData
       }, orderNumber);
     } catch (error) {
-      console.error(`❌ Failed to print order: ${error}`);
+      console.error(`? Failed to print order: ${error}`);
       
       // Clean up tracking on error
       const orderNumber = order.orderNumber || order.order_number || order.id;
@@ -608,7 +608,7 @@ export class PrinterService {
       throw new PrinterError('Device not connected', ERROR_CODES.DEVICE_NOT_FOUND);
     }
 
-    console.log(`🍳 Printing kitchen order ${order.orderNumber || order.id}`);
+    console.log(`?? Printing kitchen order ${order.orderNumber || order.id}`);
 
     try {
       // Convert order to kitchen receipt text
@@ -620,7 +620,7 @@ export class PrinterService {
         data: kitchenReceipt
       });
     } catch (error) {
-      console.error(`❌ Failed to print kitchen order: ${error}`);
+      console.error(`? Failed to print kitchen order: ${error}`);
       throw new PrinterError(`Failed to print kitchen order: ${error}`, ERROR_CODES.PRINT_FAILED);
     }
   }
@@ -644,7 +644,7 @@ export class PrinterService {
     this.activePrintJobs.set(orderNumber, job.id);
     this.printQueue.push(job);
     
-    console.log(`📄 Print job queued: ${job.id} for order ${orderNumber}`);
+    console.log(`?? Print job queued: ${job.id} for order ${orderNumber}`);
     
     return new Promise((resolve, reject) => {
       const checkJob = () => {
@@ -682,13 +682,13 @@ export class PrinterService {
    * Convert order object to receipt data format
    */
   private convertOrderToReceipt(order: any): ReceiptData {
-    console.log(`🧾 Converting order to receipt format:`, JSON.stringify(order, null, 2));
+    console.log(`?? Converting order to receipt format:`, JSON.stringify(order, null, 2));
     
     // Handle multiple possible item array names
     const orderItems = order.orderItems || order.order_items || order.items || [];
     
-    console.log(`📦 Found ${orderItems.length} items in order`);
-    console.log(`🔍 TOPPINGS DEBUG - Raw order items:`, JSON.stringify(orderItems, null, 2));
+    console.log(`?? Found ${orderItems.length} items in order`);
+    console.log(`?? TOPPINGS DEBUG - Raw order items:`, JSON.stringify(orderItems, null, 2));
     
     const items = orderItems.map((item: any) => {
       // Handle Supabase format where menu item info is nested
@@ -713,7 +713,7 @@ export class PrinterService {
         (quantity * unitPrice).toString()
       );
       
-      console.log(`📋 Processing item:`, {
+      console.log(`?? Processing item:`, {
         name: itemName,
         unitPrice,
         quantity,
@@ -724,14 +724,14 @@ export class PrinterService {
       // Extract toppings and size using helper methods
       const itemSize = this.extractSizeFromItem(item);
       const cleanInstructions = this.extractCleanInstructionsFromItem(item);
-      console.log(`🔍 EXTRACTION RESULTS for "${itemName}":`)
+      console.log(`?? EXTRACTION RESULTS for "${itemName}":`)
       console.log(`  - Size: "${itemSize}"`);
       console.log(`  - Instructions: "${cleanInstructions}"`);
       
       // Build toppings for the receipt format with correct pricing
       const receiptToppings = this.extractToppingsWithPricing(item, itemSize);
       
-      console.log(`🍕 Receipt toppings array:`, JSON.stringify(receiptToppings, null, 2));
+      console.log(`?? Receipt toppings array:`, JSON.stringify(receiptToppings, null, 2));
       
       // Build item name with size if present
       let itemDisplayName = itemName;
@@ -756,13 +756,13 @@ export class PrinterService {
     
     const receiptData = {
       header: {
-        text: 'pizzeria antonio\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
+        text: 'Tirvan Kahvila\n================\nPasintie 2, 45410 Utti\n+358 41 3152619',
         alignment: 'center' as const,
         bold: true
       },
       items: items,
       footer: {
-        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\npizzeria antonio\nAvoinna: Ma-Su 10:00-20:00',
+        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\nTirvan Kahvila\nAvoinna: Ma-Su 10:00-20:00',
         alignment: 'center' as const
       },
       total: total,
@@ -779,12 +779,12 @@ export class PrinterService {
       orderSpecialInstructions: orderSpecialInstructions // Add order-level special instructions
     };
 
-    console.log(`📄 Final receipt data:`, {
+    console.log(`?? Final receipt data:`, {
       orderNumber: receiptData.orderNumber,
       itemCount: receiptData.items.length,
       total: receiptData.total,
       customer: receiptData.customerName,
-      items: receiptData.items.map((i: any) => `${i.name} x${i.quantity} = €${i.totalPrice.toFixed(2)}`)
+      items: receiptData.items.map((i: any) => `${i.name} x${i.quantity} = �${i.totalPrice.toFixed(2)}`)
     });
 
     return receiptData;
@@ -798,14 +798,14 @@ export class PrinterService {
     
     let receipt = '';
     receipt += '================================\n';
-    receipt += '          KEITTIÖ / KITCHEN      \n';
+    receipt += '          KEITTI� / KITCHEN      \n';
     receipt += '================================\n';
     receipt += '\n';
     
     // Order info
     receipt += `TILAUS: ${order.order_number || order.orderNumber || order.id}\n`;
     receipt += `AIKA: ${date.toLocaleTimeString('fi-FI')}\n`;
-    receipt += `PÄIVÄ: ${date.toLocaleDateString('fi-FI')}\n`;
+    receipt += `P�IV�: ${date.toLocaleDateString('fi-FI')}\n`;
     receipt += `TYYPPI: ${order.order_type === 'delivery' ? 'TOIMITUS' : 'NOUTO'}\n`;
     
     if (order.customer_name || order.customerName) {
@@ -850,7 +850,7 @@ export class PrinterService {
         // Toppings (parsed using helper method)
         const itemToppings = this.extractToppingsFromItem(item);
         if (itemToppings.length > 0) {
-          receipt += '   LISÄKKEET:\n';
+          receipt += '   LIS�KKEET:\n';
           itemToppings.forEach((topping: string) => {
             receipt += `   * ${topping}\n`;
           });
@@ -915,7 +915,7 @@ export class PrinterService {
         await this.processJob(job);
         
       } catch (error) {
-        console.error('❌ Queue processor error:', error);
+        console.error('? Queue processor error:', error);
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
@@ -941,12 +941,12 @@ export class PrinterService {
       
       // Detect if this is a Star printer
       const isStarPrinter = this.isStarPrinter(device);
-      console.log(`🖨️ Formatting for printer type: ${isStarPrinter ? 'Star mC-Print' : 'ESC/POS'}`);
+      console.log(`??? Formatting for printer type: ${isStarPrinter ? 'Star mC-Print' : 'ESC/POS'}`);
       
       if (job.content.type === 'receipt' && typeof job.content.data === 'object') {
         if (isStarPrinter) {
           // Use modern Star receipt formatter (optimized for mC-Print3)
-          console.log('🖨️ Using StarModernReceipt formatter');
+          console.log('??? Using StarModernReceipt formatter');
           printData = StarModernReceipt.generate(job.content.data as any, job.content.originalOrder);
         } else {
           // Get font settings from device metadata or use defaults
@@ -961,7 +961,7 @@ export class PrinterService {
         throw new Error('Invalid content data type');
       }
 
-      console.log(`🖨️ Processing print job ${job.id} - ${printData.length} bytes`);
+      console.log(`??? Processing print job ${job.id} - ${printData.length} bytes`);
       
       // Send to printer
       const success = await this.sendToPrinter(device, printData);
@@ -970,7 +970,7 @@ export class PrinterService {
         job.status = 'completed';
         job.completedAt = new Date();
         device.status = 'idle';
-        console.log(`✅ Print job ${job.id} completed successfully`);
+        console.log(`? Print job ${job.id} completed successfully`);
       } else {
         throw new Error('Print failed');
       }
@@ -981,7 +981,7 @@ export class PrinterService {
       
       if (job.retryCount >= job.maxRetries) {
         job.status = 'failed';
-        console.error(`❌ Print job ${job.id} failed after ${job.retryCount} attempts: ${job.error}`);
+        console.error(`? Print job ${job.id} failed after ${job.retryCount} attempts: ${job.error}`);
         
         const device = this.connectedDevices.get(job.printerId);
         if (device) {
@@ -990,7 +990,7 @@ export class PrinterService {
         }
       } else {
         job.status = 'pending';
-        console.log(`⚠️ Print job ${job.id} retry ${job.retryCount}/${job.maxRetries}: ${job.error}`);
+        console.log(`?? Print job ${job.id} retry ${job.retryCount}/${job.maxRetries}: ${job.error}`);
         
         // Wait before retry
         await new Promise(resolve => setTimeout(resolve, 1000 * job.retryCount));
@@ -1012,43 +1012,43 @@ export class PrinterService {
    * Send data to printer using best available method
    */
   private async sendToPrinter(device: PrinterDevice, data: Uint8Array): Promise<boolean> {
-    console.log(`📡 Sending ${data.length} bytes to ${device.address}:${device.port}`);
+    console.log(`?? Sending ${data.length} bytes to ${device.address}:${device.port}`);
     
     // Primary method: Android native bridge
     if (this.isAndroidBridgeAvailable()) {
       try {
-        console.log(`📱 Using Android native bridge for printing`);
+        console.log(`?? Using Android native bridge for printing`);
         const result = await this.sendViaAndroidBridge(device, data);
         if (result) {
-          console.log(`✅ Android bridge print successful`);
+          console.log(`? Android bridge print successful`);
           return true;
         }
-        console.log(`❌ Android bridge print failed`);
+        console.log(`? Android bridge print failed`);
       } catch (error) {
-        console.error(`❌ Android bridge error: ${error}`);
+        console.error(`? Android bridge error: ${error}`);
       }
     }
 
     // Fallback methods for web environment
-    console.log(`🌐 Falling back to web-based printing methods`);
+    console.log(`?? Falling back to web-based printing methods`);
 
     // Try HTTP printing for compatible ports
     if (device.port === 80 || device.port === 631 || device.port === 8080) {
       try {
         const success = await this.sendViaHTTP(device, data);
         if (success) {
-          console.log(`✅ HTTP print successful`);
+          console.log(`? HTTP print successful`);
           return true;
         }
       } catch (error) {
-        console.log(`❌ HTTP print failed: ${error}`);
+        console.log(`? HTTP print failed: ${error}`);
       }
     }
 
     // Development fallback
-    console.log(`⚠️ No working print method found`);
-    console.log(`📱 In production Android app, this would use native TCP printing`);
-    console.log(`🔧 Ensure Android bridge is properly implemented for real printing`);
+    console.log(`?? No working print method found`);
+    console.log(`?? In production Android app, this would use native TCP printing`);
+    console.log(`?? Ensure Android bridge is properly implemented for real printing`);
     
     // Simulate success for development/testing
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -1067,7 +1067,7 @@ export class PrinterService {
     for (const endpoint of endpoints) {
       try {
         const url = `http://${device.address}:${device.port}${endpoint}`;
-        console.log(`🌐 Trying HTTP POST to ${url}`);
+        console.log(`?? Trying HTTP POST to ${url}`);
         
         const response = await fetch(url, {
           method: 'POST',
@@ -1080,11 +1080,11 @@ export class PrinterService {
           signal: AbortSignal.timeout(5000)
         });
         
-        console.log(`✅ HTTP request to ${endpoint} completed`);
+        console.log(`? HTTP request to ${endpoint} completed`);
         return true;
         
       } catch (error) {
-        console.log(`❌ HTTP endpoint ${endpoint} failed: ${error}`);
+        console.log(`? HTTP endpoint ${endpoint} failed: ${error}`);
       }
     }
     
@@ -1209,7 +1209,7 @@ export class PrinterService {
    * Add printer manually with connection testing
    */
   async addPrinter(address: string, port: number, name?: string): Promise<PrinterDevice> {
-    console.log(`🔧 Adding printer manually: ${address}:${port}`);
+    console.log(`?? Adding printer manually: ${address}:${port}`);
     
     try {
       // First try to test the connection
@@ -1217,18 +1217,18 @@ export class PrinterService {
       if (device) {
         this.devices.set(device.id, device);
         this.onDeviceFound(device);
-        console.log(`✅ Manually added printer with connection test: ${device.name}`);
+        console.log(`? Manually added printer with connection test: ${device.name}`);
         return device;
       }
       
       // If connection test fails, offer to add anyway
-      console.log(`⚠️ Connection test failed for ${address}:${port}, but adding printer anyway`);
+      console.log(`?? Connection test failed for ${address}:${port}, but adding printer anyway`);
       return await this.forceAddPrinter(address, port, name);
       
     } catch (error) {
-      console.error(`❌ Failed to add printer: ${error}`);
+      console.error(`? Failed to add printer: ${error}`);
       // Try force add as fallback
-      console.log(`🔄 Attempting to force add printer without connection test`);
+      console.log(`?? Attempting to force add printer without connection test`);
       return await this.forceAddPrinter(address, port, name);
     }
   }
@@ -1237,7 +1237,7 @@ export class PrinterService {
    * Force add printer without connection testing
    */
   async forceAddPrinter(address: string, port: number, name?: string): Promise<PrinterDevice> {
-    console.log(`🔧 Force adding printer: ${address}:${port}`);
+    console.log(`?? Force adding printer: ${address}:${port}`);
     
     const portInfo = PRINTER_PORTS.find(p => p.port === port) || {
       port,
@@ -1285,7 +1285,7 @@ export class PrinterService {
     this.devices.set(device.id, device);
     this.onDeviceFound(device);
     
-    console.log(`✅ Force added printer: ${device.name}`);
+    console.log(`? Force added printer: ${device.name}`);
     return device;
   }
 
@@ -1295,35 +1295,35 @@ export class PrinterService {
   async removePrinter(deviceId: string): Promise<void> {
     await this.disconnectFromPrinter(deviceId);
     this.devices.delete(deviceId);
-    console.log(`🗑️ Removed printer: ${deviceId}`);
+    console.log(`??? Removed printer: ${deviceId}`);
   }
 
   /**
    * Calculate topping price based on pizza size
    * - "perhe" (family) size: double the base price
-   * - "large" size: €1.00 toppings become €2.00
+   * - "large" size: �1.00 toppings become �2.00
    * - regular size: original price
    */
   private calculateToppingPrice(basePrice: number, size: string | null): number {
-    console.log(`🔍 [TOPPING PRICE] Calculating for size: "${size}", base price: €${basePrice}`);
+    console.log(`?? [TOPPING PRICE] Calculating for size: "${size}", base price: �${basePrice}`);
     
     if (!size || size === 'regular') {
-      console.log(`✅ [TOPPING PRICE] Regular size, returning base price: €${basePrice}`);
+      console.log(`? [TOPPING PRICE] Regular size, returning base price: �${basePrice}`);
       return basePrice;
     }
     
     if (size === 'perhe') {
       const doublePrice = basePrice * 2;
-      console.log(`✅ [TOPPING PRICE] Family size, doubling price: €${basePrice} → €${doublePrice}`);
+      console.log(`? [TOPPING PRICE] Family size, doubling price: �${basePrice} ? �${doublePrice}`);
       return doublePrice;
     }
     
     if (size === 'large' && basePrice === 1.00) {
-      console.log(`✅ [TOPPING PRICE] Large size, €1.00 topping becomes €2.00`);
+      console.log(`? [TOPPING PRICE] Large size, �1.00 topping becomes �2.00`);
       return 2.00;
     }
     
-    console.log(`✅ [TOPPING PRICE] Other size/price, returning base price: €${basePrice}`);
+    console.log(`? [TOPPING PRICE] Other size/price, returning base price: �${basePrice}`);
     return basePrice;
   }
 
@@ -1331,14 +1331,14 @@ export class PrinterService {
    * Extract toppings from item data with correct pricing
    */
   private extractToppingsWithPricing(item: any, size: string | null): { name: string; price: number }[] {
-    console.log(`🔍 [EXTRACT TOPPINGS WITH PRICING] Input item:`, JSON.stringify(item, null, 2));
-    console.log(`🔍 [EXTRACT TOPPINGS WITH PRICING] Size: "${size}"`);
+    console.log(`?? [EXTRACT TOPPINGS WITH PRICING] Input item:`, JSON.stringify(item, null, 2));
+    console.log(`?? [EXTRACT TOPPINGS WITH PRICING] Size: "${size}"`);
     
     const toppings: { name: string; price: number }[] = [];
     
     // First check if we have direct toppings array
     if (item.toppings && Array.isArray(item.toppings)) {
-      console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Found direct toppings array:`, item.toppings);
+      console.log(`? [EXTRACT TOPPINGS WITH PRICING] Found direct toppings array:`, item.toppings);
       item.toppings.forEach((topping: any) => {
         let toppingName = '';
         let basePrice = 0;
@@ -1354,7 +1354,7 @@ export class PrinterService {
         if (toppingName) {
           const adjustedPrice = this.calculateToppingPrice(basePrice, size);
           toppings.push({ name: toppingName, price: adjustedPrice });
-          console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Added topping: "${toppingName}" @ €${adjustedPrice}`);
+          console.log(`? [EXTRACT TOPPINGS WITH PRICING] Added topping: "${toppingName}" @ �${adjustedPrice}`);
         }
       });
     }
@@ -1362,36 +1362,36 @@ export class PrinterService {
     // If no direct toppings, extract from special instructions
     if (toppings.length === 0) {
       const specialInstructions = item.specialInstructions || item.special_instructions || '';
-      console.log(`🔍 [EXTRACT TOPPINGS WITH PRICING] Checking special instructions: "${specialInstructions}"`);
+      console.log(`?? [EXTRACT TOPPINGS WITH PRICING] Checking special instructions: "${specialInstructions}"`);
       
       if (specialInstructions) {
         const toppingsMatch = specialInstructions.match(/Toppings:\s*([^;]+)/i);
         if (toppingsMatch) {
           const toppingsText = toppingsMatch[1];
-          console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Found toppings text: "${toppingsText}"`);
+          console.log(`? [EXTRACT TOPPINGS WITH PRICING] Found toppings text: "${toppingsText}"`);
           
           const toppingItems = toppingsText.split(',').map((t: string) => t.trim());
-          console.log(`🔍 [EXTRACT TOPPINGS WITH PRICING] Split toppings:`, toppingItems);
+          console.log(`?? [EXTRACT TOPPINGS WITH PRICING] Split toppings:`, toppingItems);
           
           toppingItems.forEach((topping: string) => {
-            // Extract price from topping text like "Pepperoni (+€1.50)"
-            const priceMatch = topping.match(/\(\+€([0-9.]+)\)$/);
+            // Extract price from topping text like "Pepperoni (+�1.50)"
+            const priceMatch = topping.match(/\(\+�([0-9.]+)\)$/);
             const basePrice = priceMatch ? parseFloat(priceMatch[1]) : 1.50;
             
             // Remove price info to get clean topping name
-            const cleanTopping = topping.replace(/\s*\(\+€[0-9.]+\)$/, '').trim();
+            const cleanTopping = topping.replace(/\s*\(\+�[0-9.]+\)$/, '').trim();
             
             if (cleanTopping) {
               const adjustedPrice = this.calculateToppingPrice(basePrice, size);
               toppings.push({ name: cleanTopping, price: adjustedPrice });
-              console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Added topping: "${cleanTopping}" @ €${adjustedPrice} (base: €${basePrice})`);
+              console.log(`? [EXTRACT TOPPINGS WITH PRICING] Added topping: "${cleanTopping}" @ �${adjustedPrice} (base: �${basePrice})`);
             }
           });
         }
       }
     }
     
-    console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Returning ${toppings.length} toppings:`, toppings);
+    console.log(`? [EXTRACT TOPPINGS WITH PRICING] Returning ${toppings.length} toppings:`, toppings);
     return toppings;
   }
 
@@ -1399,28 +1399,28 @@ export class PrinterService {
    * Extract size from item data
    */
   private extractSizeFromItem(item: any): string | null {
-    console.log(`🔍 [EXTRACT SIZE] Input item:`, JSON.stringify(item, null, 2));
+    console.log(`?? [EXTRACT SIZE] Input item:`, JSON.stringify(item, null, 2));
     
     // Check direct size field
     if (item.size && item.size !== 'regular') {
-      console.log(`✅ [EXTRACT SIZE] Found direct size: "${item.size}"`);
+      console.log(`? [EXTRACT SIZE] Found direct size: "${item.size}"`);
       return item.size;
     }
     
     // Extract from special instructions
     const specialInstructions = item.specialInstructions || item.special_instructions || '';
-    console.log(`🔍 [EXTRACT SIZE] Checking special instructions: "${specialInstructions}"`);
+    console.log(`?? [EXTRACT SIZE] Checking special instructions: "${specialInstructions}"`);
     
     if (specialInstructions) {
       const sizeMatch = specialInstructions.match(/Size:\s*([^;]+)/i);
       if (sizeMatch) {
         const size = sizeMatch[1].trim();
-        console.log(`✅ [EXTRACT SIZE] Found size in instructions: "${size}"`);
+        console.log(`? [EXTRACT SIZE] Found size in instructions: "${size}"`);
         return size !== 'regular' ? size : null;
       }
     }
     
-    console.log(`❌ [EXTRACT SIZE] No size found`);
+    console.log(`? [EXTRACT SIZE] No size found`);
     return null;
   }
 
@@ -1428,13 +1428,13 @@ export class PrinterService {
    * Extract toppings from item data
    */
   private extractToppingsFromItem(item: any): string[] {
-    console.log(`🔍 [EXTRACT TOPPINGS] Input item:`, JSON.stringify(item, null, 2));
+    console.log(`?? [EXTRACT TOPPINGS] Input item:`, JSON.stringify(item, null, 2));
     
     const toppings: string[] = [];
     
     // First check if we have direct toppings array
     if (item.toppings && Array.isArray(item.toppings)) {
-      console.log(`✅ [EXTRACT TOPPINGS] Found direct toppings array:`, item.toppings);
+      console.log(`? [EXTRACT TOPPINGS] Found direct toppings array:`, item.toppings);
       item.toppings.forEach((topping: any) => {
         if (typeof topping === 'string') {
           toppings.push(topping);
@@ -1442,44 +1442,44 @@ export class PrinterService {
           toppings.push(topping.name);
         }
       });
-      console.log(`✅ [EXTRACT TOPPINGS] Processed direct toppings:`, toppings);
+      console.log(`? [EXTRACT TOPPINGS] Processed direct toppings:`, toppings);
     }
     
     // If no direct toppings, extract from special instructions
     if (toppings.length === 0) {
       const specialInstructions = item.specialInstructions || item.special_instructions || '';
-      console.log(`🔍 [EXTRACT TOPPINGS] Checking special instructions: "${specialInstructions}"`);
+      console.log(`?? [EXTRACT TOPPINGS] Checking special instructions: "${specialInstructions}"`);
       
       if (specialInstructions) {
         const toppingsMatch = specialInstructions.match(/Toppings:\s*([^;]+)/i);
         if (toppingsMatch) {
           const toppingsText = toppingsMatch[1];
-          console.log(`✅ [EXTRACT TOPPINGS] Found toppings text: "${toppingsText}"`);
+          console.log(`? [EXTRACT TOPPINGS] Found toppings text: "${toppingsText}"`);
           
           const toppingItems = toppingsText.split(',').map((t: string) => t.trim());
-          console.log(`🔍 [EXTRACT TOPPINGS] Split toppings:`, toppingItems);
+          console.log(`?? [EXTRACT TOPPINGS] Split toppings:`, toppingItems);
           
           toppingItems.forEach((topping: string) => {
-            // Remove price info like (+€1.50) if present
-            const cleanTopping = topping.replace(/\s*\(\+€[0-9.]+\)$/, '').trim();
+            // Remove price info like (+�1.50) if present
+            const cleanTopping = topping.replace(/\s*\(\+�[0-9.]+\)$/, '').trim();
             if (cleanTopping) {
               toppings.push(cleanTopping);
             }
           });
           
-          console.log(`✅ [EXTRACT TOPPINGS] Final extracted toppings:`, toppings);
+          console.log(`? [EXTRACT TOPPINGS] Final extracted toppings:`, toppings);
         } else {
-          console.log(`❌ [EXTRACT TOPPINGS] No toppings pattern found in instructions`);
+          console.log(`? [EXTRACT TOPPINGS] No toppings pattern found in instructions`);
         }
       } else {
-        console.log(`❌ [EXTRACT TOPPINGS] No special instructions found`);
+        console.log(`? [EXTRACT TOPPINGS] No special instructions found`);
       }
     }
     
     if (toppings.length === 0) {
-      console.log(`❌ [EXTRACT TOPPINGS] No toppings found for item`);
+      console.log(`? [EXTRACT TOPPINGS] No toppings found for item`);
     } else {
-      console.log(`✅ [EXTRACT TOPPINGS] Returning ${toppings.length} toppings:`, toppings);
+      console.log(`? [EXTRACT TOPPINGS] Returning ${toppings.length} toppings:`, toppings);
     }
     
     return toppings;
@@ -1525,17 +1525,17 @@ export class PrinterService {
   private isStarPrinter(device: PrinterDevice): boolean {
     // First check if printer type is explicitly set
     if (device.printerType === 'star') {
-      console.log(`🌟 Star printer detected: explicit printerType='star'`);
+      console.log(`?? Star printer detected: explicit printerType='star'`);
       return true;
     }
     if (device.printerType === 'escpos') {
-      console.log(`📄 ESC/POS printer detected: explicit printerType='escpos'`);
+      console.log(`?? ESC/POS printer detected: explicit printerType='escpos'`);
       return false;
     }
     
     // Default to Star for port 9100 (standard JetDirect/Star port)
     if (device.port === 9100) {
-      console.log(`🌟 Star printer detected: port 9100 (JetDirect/Star standard)`);
+      console.log(`?? Star printer detected: port 9100 (JetDirect/Star standard)`);
       return true;
     }
     
@@ -1555,9 +1555,9 @@ export class PrinterService {
            address.includes('star');
            
     if (isStar) {
-      console.log(`🌟 Star printer detected: keyword match in name/model/address`);
+      console.log(`?? Star printer detected: keyword match in name/model/address`);
     } else {
-      console.log(`📄 Non-Star printer: defaulting to ESC/POS`);
+      console.log(`?? Non-Star printer: defaulting to ESC/POS`);
     }
     
     return isStar;
@@ -1579,6 +1579,6 @@ export class PrinterService {
     this.devices.clear();
     this.printQueue.length = 0;
     
-    console.log('🧹 PrinterService cleanup completed');
+    console.log('?? PrinterService cleanup completed');
   }
 }

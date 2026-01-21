@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer Complete Receipt - Production Ready
  * Using verified Star Line Mode commands
  * 
@@ -20,12 +20,12 @@ const LF = 0x0A;
 function encodeMethod1(text) {
   // Method 1: Code Page 437 (original IBM PC)
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0x84;
-    if (c === 'ö') return 0x94;
-    if (c === 'å') return 0x86;
-    if (c === 'Ä') return 0x8E;
-    if (c === 'Ö') return 0x99;
-    if (c === 'Å') return 0x8F;
+    if (c === '�') return 0x84;
+    if (c === '�') return 0x94;
+    if (c === '�') return 0x86;
+    if (c === '�') return 0x8E;
+    if (c === '�') return 0x99;
+    if (c === '�') return 0x8F;
     return c.charCodeAt(0);
   });
 }
@@ -33,12 +33,12 @@ function encodeMethod1(text) {
 function encodeMethod2(text) {
   // Method 2: Code Page 850 (Multilingual Latin 1)
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0x83;
-    if (c === 'ö') return 0x94;
-    if (c === 'å') return 0x86;
-    if (c === 'Ä') return 0x8E;
-    if (c === 'Ö') return 0x99;
-    if (c === 'Å') return 0x8F;
+    if (c === '�') return 0x83;
+    if (c === '�') return 0x94;
+    if (c === '�') return 0x86;
+    if (c === '�') return 0x8E;
+    if (c === '�') return 0x99;
+    if (c === '�') return 0x8F;
     return c.charCodeAt(0);
   });
 }
@@ -46,12 +46,12 @@ function encodeMethod2(text) {
 function encodeMethod3(text) {
   // Method 3: Code Page 865 (Nordic)
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0x84;
-    if (c === 'ö') return 0x94;
-    if (c === 'å') return 0x86;
-    if (c === 'Ä') return 0x8E;
-    if (c === 'Ö') return 0x99;
-    if (c === 'Å') return 0x8F;
+    if (c === '�') return 0x84;
+    if (c === '�') return 0x94;
+    if (c === '�') return 0x86;
+    if (c === '�') return 0x8E;
+    if (c === '�') return 0x99;
+    if (c === '�') return 0x8F;
     return c.charCodeAt(0);
   });
 }
@@ -59,12 +59,12 @@ function encodeMethod3(text) {
 function encodeMethod4(text) {
   // Method 4: ISO 8859-1 (Latin-1)
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0xE4;
-    if (c === 'ö') return 0xF6;
-    if (c === 'å') return 0xE5;
-    if (c === 'Ä') return 0xC4;
-    if (c === 'Ö') return 0xD6;
-    if (c === 'Å') return 0xC5;
+    if (c === '�') return 0xE4;
+    if (c === '�') return 0xF6;
+    if (c === '�') return 0xE5;
+    if (c === '�') return 0xC4;
+    if (c === '�') return 0xD6;
+    if (c === '�') return 0xC5;
     return c.charCodeAt(0);
   });
 }
@@ -72,12 +72,12 @@ function encodeMethod4(text) {
 function encodeMethod5(text) {
   // Method 5: ASCII substitution
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0x7B; // {
-    if (c === 'ö') return 0x7C; // |
-    if (c === 'å') return 0x7D; // }
-    if (c === 'Ä') return 0x5B; // [
-    if (c === 'Ö') return 0x5C; // \
-    if (c === 'Å') return 0x5D; // ]
+    if (c === '�') return 0x7B; // {
+    if (c === '�') return 0x7C; // |
+    if (c === '�') return 0x7D; // }
+    if (c === '�') return 0x5B; // [
+    if (c === '�') return 0x5C; // \
+    if (c === '�') return 0x5D; // ]
     return c.charCodeAt(0);
   });
 }
@@ -85,12 +85,12 @@ function encodeMethod5(text) {
 function encodeMethod6(text) {
   // Method 6: Windows-1252 (Western European)
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0xE4;
-    if (c === 'ö') return 0xF6;
-    if (c === 'å') return 0xE5;
-    if (c === 'Ä') return 0xC4;
-    if (c === 'Ö') return 0xD6;
-    if (c === 'Å') return 0xC5;
+    if (c === '�') return 0xE4;
+    if (c === '�') return 0xF6;
+    if (c === '�') return 0xE5;
+    if (c === '�') return 0xC4;
+    if (c === '�') return 0xD6;
+    if (c === '�') return 0xC5;
     return c.charCodeAt(0);
   });
 }
@@ -98,12 +98,12 @@ function encodeMethod6(text) {
 function encodeMethod7(text) {
   // Method 7: Star Printer Nordic character set
   return Array.from(text).map(c => {
-    if (c === 'ä') return 0x91;
-    if (c === 'ö') return 0x92;
-    if (c === 'å') return 0x93;
-    if (c === 'Ä') return 0x8E;
-    if (c === 'Ö') return 0x99;
-    if (c === 'Å') return 0x8F;
+    if (c === '�') return 0x91;
+    if (c === '�') return 0x92;
+    if (c === '�') return 0x93;
+    if (c === '�') return 0x8E;
+    if (c === '�') return 0x99;
+    if (c === '�') return 0x8F;
     return c.charCodeAt(0);
   });
 }
@@ -183,16 +183,16 @@ function generateCompleteReceipt() {
   
   init(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // HEADER - Restaurant Logo & Info
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 1); // Center
   newline(cmd, 2);
   
   // Restaurant name - LARGE (2x2)
   emphasisOn(cmd);
   setSize(cmd, 2, 2);
-  text(cmd, 'antonio');
+  text(cmd, 'tirva');
   newline(cmd);
   emphasisOff(cmd);
   
@@ -207,7 +207,7 @@ function generateCompleteReceipt() {
   // Note: Can't go smaller than 1x1, so using normal size
   setSize(cmd, 1, 1);
   newline(cmd);
-  text(cmd, 'Rauhankatu 19 c, 15110 Lahti');
+  text(cmd, 'Pasintie 2, 45410 Utti');
   newline(cmd);
   text(cmd, 'Puh: +358-3-589-9089');
   newline(cmd);
@@ -215,9 +215,9 @@ function generateCompleteReceipt() {
   text(cmd, '===================='); // 8 less = signs (was 28, now 20)
   newline(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // ORDER INFO
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   
   // Order number - 1x1 BOLD
   emphasisOn(cmd);
@@ -248,9 +248,9 @@ function generateCompleteReceipt() {
   text(cmd, '===================='); // 8 less
   newline(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // CUSTOMER INFO
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 0); // Left align
   
   // Titles normal, info bold
@@ -272,7 +272,7 @@ function generateCompleteReceipt() {
   emphasisOn(cmd);
   text(cmd, '  Esimerkkikatu 123');
   newline(cmd);
-  text(cmd, '  15110 Lahti');
+  text(cmd, '  45410 Utti');
   newline(cmd);
   emphasisOff(cmd);
   
@@ -280,9 +280,9 @@ function generateCompleteReceipt() {
   text(cmd, '===================='); // 8 less
   newline(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // ITEMS
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 0); // Left align
   
   // Item 1: Pizza with toppings
@@ -361,9 +361,9 @@ function generateCompleteReceipt() {
   text(cmd, '- - - - - - - - -');
   newline(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // SPECIAL INSTRUCTIONS
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 1); // Center
   text(cmd, '====================');
   newline(cmd);
@@ -374,9 +374,9 @@ function generateCompleteReceipt() {
   text(cmd, 'Jata tilaus rappukaytan eteen.');
   newline(cmd);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // TOTALS
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 1); // Center
   text(cmd, '====================');
   newline(cmd);
@@ -424,9 +424,9 @@ function generateCompleteReceipt() {
   emphasisOff(cmd);
   setSize(cmd, 1, 1);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // FOOTER & QR CODE
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   newline(cmd);
   setAlign(cmd, 1); // Center
   text(cmd, '====================');
@@ -438,15 +438,15 @@ function generateCompleteReceipt() {
   newline(cmd);
   
   // QR Code - BIG
-  qrCodeBig(cmd, 'https://pizzeriaantonio.fi');
+  qrCodeBig(cmd, 'https://tirvankahvila.fi');
   newline(cmd, 2);
   
-  text(cmd, 'pizzeriaantonio.fi');
+  text(cmd, 'tirvankahvila.fi');
   newline(cmd, 2);
   
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   // CHARACTER ENCODING TESTS
-  // ═══════════════════════════════════════════════════════
+  // -------------------------------------------------------
   setAlign(cmd, 0); // Left
   text(cmd, '====================');
   newline(cmd);
@@ -454,47 +454,47 @@ function generateCompleteReceipt() {
   text(cmd, 'ENCODING TESTS:');
   newline(cmd);
   emphasisOff(cmd);
-  text(cmd, 'Expected: ä ö å Ä Ö Å');
+  text(cmd, 'Expected: � � � � � �');
   newline(cmd, 2);
   
   // Test Method 1
   text(cmd, 'M1-CP437: ');
-  cmd.push(...encodeMethod1('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod1('� � � � � �'));
   newline(cmd);
   
   // Test Method 2
   text(cmd, 'M2-CP850: ');
-  cmd.push(...encodeMethod2('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod2('� � � � � �'));
   newline(cmd);
   
   // Test Method 3
   text(cmd, 'M3-CP865: ');
-  cmd.push(...encodeMethod3('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod3('� � � � � �'));
   newline(cmd);
   
   // Test Method 4
   text(cmd, 'M4-ISO88: ');
-  cmd.push(...encodeMethod4('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod4('� � � � � �'));
   newline(cmd);
   
   // Test Method 5
   text(cmd, 'M5-ASCII: ');
-  cmd.push(...encodeMethod5('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod5('� � � � � �'));
   newline(cmd);
   
   // Test Method 6
   text(cmd, 'M6-Win12: ');
-  cmd.push(...encodeMethod6('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod6('� � � � � �'));
   newline(cmd);
   
   // Test Method 7
   text(cmd, 'M7-NORD: ');
-  cmd.push(...encodeMethod7('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod7('� � � � � �'));
   newline(cmd);
   
   // Test Method 8
   text(cmd, 'M8-UTF8: ');
-  cmd.push(...encodeMethod8('ä ö å Ä Ö Å'));
+  cmd.push(...encodeMethod8('� � � � � �'));
   newline(cmd);
   
   newline(cmd, 2);
@@ -508,48 +508,48 @@ function generateCompleteReceipt() {
 }
 
 function sendToPrinter(host, port) {
-  console.log(`\n🖨️  ===== PRODUCTION RECEIPT TEST =====`);
-  console.log(`📍 Target: ${host}:${port}`);
-  console.log(`🌟 Star Line Mode with verified commands\n`);
+  console.log(`\n???  ===== PRODUCTION RECEIPT TEST =====`);
+  console.log(`?? Target: ${host}:${port}`);
+  console.log(`?? Star Line Mode with verified commands\n`);
   
   const receipt = generateCompleteReceipt();
-  console.log(`📦 Generated ${receipt.length} bytes\n`);
+  console.log(`?? Generated ${receipt.length} bytes\n`);
   
   const client = new net.Socket();
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Timeout');
+    console.error('? Timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected!`);
-    console.log(`📤 Sending complete receipt...\n`);
+    console.log(`? Connected!`);
+    console.log(`?? Sending complete receipt...\n`);
     
     client.write(receipt, () => {
-      console.log(`✅ Receipt sent!\n`);
+      console.log(`? Receipt sent!\n`);
       console.log(`Expected output:`);
-      console.log(`  ✓ antonio logo (2x2 size)`);
-      console.log(`  ✓ Address/phone (1x1, cannot go smaller)`);
-      console.log(`  ✓ Order #1234 (1x1 bold)`);
-      console.log(`  ✓ Delivery/Payment (1x1, payment BOLD)`);
-      console.log(`  ✓ Customer titles normal, info BOLD`);
-      console.log(`  ✓ Products (1x1 bold) + prices (1x1 normal)`);
-      console.log(`  ✓ Lisätteet (1x1)`);
-      console.log(`  ✓ Shorter dashes and equals`);
-      console.log(`  ✓ Subtotals (1x1 bold labels)`);
-      console.log(`  ✓ Final total (2x2 bold)`);
-      console.log(`  ✓ BIG QR code → pizzeriaantonio.fi`);
-      console.log(`  ✓ Finnish character tests (8 methods)`);
+      console.log(`  ? tirva logo (2x2 size)`);
+      console.log(`  ? Address/phone (1x1, cannot go smaller)`);
+      console.log(`  ? Order #1234 (1x1 bold)`);
+      console.log(`  ? Delivery/Payment (1x1, payment BOLD)`);
+      console.log(`  ? Customer titles normal, info BOLD`);
+      console.log(`  ? Products (1x1 bold) + prices (1x1 normal)`);
+      console.log(`  ? Lis�tteet (1x1)`);
+      console.log(`  ? Shorter dashes and equals`);
+      console.log(`  ? Subtotals (1x1 bold labels)`);
+      console.log(`  ? Final total (2x2 bold)`);
+      console.log(`  ? BIG QR code ? tirvankahvila.fi`);
+      console.log(`  ? Finnish character tests (8 methods)`);
       console.log(``);
-      console.log(`📝 CHECK WHICH ENCODING METHOD WORKS:`);
+      console.log(`?? CHECK WHICH ENCODING METHOD WORKS:`);
       console.log(`   M1-CP437: Code Page 437 (IBM PC)`);
       console.log(`   M2-CP850: Code Page 850 (Multilingual)`);
       console.log(`   M3-CP865: Code Page 865 (Nordic)`);
@@ -562,13 +562,13 @@ function sendToPrinter(host, port) {
       
       setTimeout(() => {
         client.end();
-        console.log(`✅ ===== COMPLETE =====\n`);
+        console.log(`? ===== COMPLETE =====\n`);
         process.exit(0);
       }, 1000);
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

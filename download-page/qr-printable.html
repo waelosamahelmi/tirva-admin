@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzeria Antonio - Download QR Code</title>
+    <title>Tirvan Kahvila - Download QR Code</title>
     <style>
         @media print {
             .no-print { display: none; }
@@ -126,7 +126,7 @@
 </head>
 <body>
     <div class="card">
-        <h1>🍕 Pizzeria Antonio Admin</h1>
+        <h1>?? Tirvan Kahvila Admin</h1>
         <p class="subtitle">Scan to Download Kitchen App</p>
 
         <div id="qrcode"></div>
@@ -136,7 +136,7 @@
         </div>
 
         <div class="instructions">
-            <h3>📱 How to Install:</h3>
+            <h3>?? How to Install:</h3>
             <ol>
                 <li>Scan this QR code with your Android phone</li>
                 <li>The APK will download automatically</li>
@@ -147,19 +147,19 @@
         </div>
 
         <div class="button-group no-print">
-            <button onclick="window.print()">🖨️ Print QR Code</button>
-            <button onclick="downloadQR()">💾 Download Image</button>
+            <button onclick="window.print()">??? Print QR Code</button>
+            <button onclick="downloadQR()">?? Download Image</button>
         </div>
 
         <div class="footer">
-            Always points to the latest version • Auto-updated
+            Always points to the latest version � Auto-updated
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        const DOWNLOAD_PAGE_URL = 'https://waelosamahelmi.github.io/antonio-admin/';
+        const DOWNLOAD_PAGE_URL = 'https://waelosamahelmi.github.io/tirva-admin/';
 
         function createQRCode(url) {
             const qrcodeContainer = document.getElementById('qrcode');
@@ -185,7 +185,7 @@
             });
             
             const link = document.createElement('a');
-            link.download = 'antonio-admin-qr.png';
+            link.download = 'tirva-admin-qr.png';
             link.href = canvas.toDataURL();
             link.click();
         }

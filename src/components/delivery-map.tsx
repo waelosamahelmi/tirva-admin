@@ -1,4 +1,4 @@
-Ôªøimport { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,12 +69,12 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
       
       // Add OpenStreetMap tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '¬© OpenStreetMap contributors'
+        attribution: '© OpenStreetMap contributors'
       }).addTo(map);
       
       // Add restaurant marker
       const restaurantIcon = L.divIcon({
-        html: `<div style="background: #ef4444; color: white; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap;">üçï ${t("pizzeria antonio", "pizzeria antonio")}</div>`,
+        html: `<div style="background: #ef4444; color: white; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap;">?? ${t("Tirvan Kahvila", "Tirvan Kahvila")}</div>`,
         className: 'custom-marker',
         iconSize: [120, 30],
         iconAnchor: [60, 30]
@@ -84,9 +84,9 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
         .addTo(map)
         .bindPopup(`
           <div style="text-align: center;">
-            <strong>${t("pizzeria antonio", "pizzeria antonio")}</strong><br>
-            <small>Rauhankatu 19 c, 15110 Lahti</small><br>
-            <small>+358-3589-9089</small>
+            <strong>${t("Tirvan Kahvila", "Tirvan Kahvila")}</strong><br>
+            <small>Pasintie 2, 45410 Utti</small><br>
+            <small>+358 41 3152619</small>
           </div>
         `);
       
@@ -183,7 +183,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
 
   const handleCalculateDelivery = async () => {
     if (!address.trim()) {
-      setError(t("Sy√∂t√§ toimitusosoite", "Enter delivery address"));
+      setError(t("Syˆt‰ toimitusosoite", "Enter delivery address"));
       return;
     }
 
@@ -193,7 +193,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
     try {
       const coordinates = await geocodeAddress(address);
       if (!coordinates) {
-        setError(t("Osoitetta ei l√∂ytynyt. Kokeile tarkentaa osoitetta.", "Address not found. Try to be more specific."));
+        setError(t("Osoitetta ei lˆytynyt. Kokeile tarkentaa osoitetta.", "Address not found. Try to be more specific."));
         setIsLoading(false);
         return;
       }
@@ -223,7 +223,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
 
     // Add customer marker
     const customerIcon = L.divIcon({
-      html: `<div style="background: #10b981; color: white; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap;">üè† ${t("Sinun osoite", "Your address")}</div>`,
+      html: `<div style="background: #10b981; color: white; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap;">?? ${t("Sinun osoite", "Your address")}</div>`,
       className: 'custom-marker',
       iconSize: [120, 30],
       iconAnchor: [60, 30]
@@ -238,7 +238,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
       <div style="text-align: center;">
         <strong>${t("Toimitusosoite", "Delivery Address")}</strong><br>
         <small>${customerAddress}</small><br>
-        <small>${t("Et√§isyys", "Distance")}: ${distance} km</small>
+        <small>${t("Et‰isyys", "Distance")}: ${distance} km</small>
       </div>
     `);
 
@@ -342,7 +342,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
                     setError("");
                   }}
                   onFocus={() => setShowSuggestions(true)}
-                  placeholder={t("Sy√∂t√§ toimitusosoite Suomessa...", "Enter delivery address in Finland...")}
+                  placeholder={t("Syˆt‰ toimitusosoite Suomessa...", "Enter delivery address in Finland...")}
                   className="w-full"
                 />
                 
@@ -385,7 +385,7 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
                 variant="outline"
                 size="sm"
                 disabled={isLoading}
-                title={t("K√§yt√§ nykyist√§ sijaintia", "Use current location")}
+                title={t("K‰yt‰ nykyist‰ sijaintia", "Use current location")}
               >
                 <Navigation className="w-4 h-4" />
               </Button>
@@ -414,10 +414,10 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">{deliveryInfo.distance} km</div>
-                <div className="text-sm text-gray-600">{t("Et√§isyys", "Distance")}</div>
+                <div className="text-sm text-gray-600">{t("Et‰isyys", "Distance")}</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{deliveryInfo.fee.toFixed(2)}‚Ç¨</div>
+                <div className="text-2xl font-bold text-green-600">{deliveryInfo.fee.toFixed(2)}Ä</div>
                 <div className="text-sm text-gray-600">{t("Toimitusmaksu", "Delivery Fee")}</div>
               </div>
               <div className="text-center">
@@ -435,15 +435,15 @@ export function DeliveryMap({ onDeliveryCalculated, initialAddress = "" }: Deliv
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>{t("Kuljetusalue 0 - 10km", "Delivery zone 0 - 10km")}</span>
-                <span className="font-medium">{t("3,00 ‚Ç¨", "3.00 ‚Ç¨")}</span>
+                <span className="font-medium">{t("3,00 Ä", "3.00 Ä")}</span>
               </div>
               <div className="flex justify-between">
                 <span>{t("Kuljetusalue yli 10km", "Delivery zone over 10km")}</span>
-                <span className="font-medium">{t("8,00 ‚Ç¨", "8.00 ‚Ç¨")}</span>
+                <span className="font-medium">{t("8,00 Ä", "8.00 Ä")}</span>
               </div>
             </div>
             <div className="text-xs text-gray-600 mt-2">
-              {t("* Yli 10km toimituksissa minimitilaus 20,00 ‚Ç¨", "* For deliveries over 10km, minimum order ‚Ç¨20.00")}
+              {t("* Yli 10km toimituksissa minimitilaus 20,00 Ä", "* For deliveries over 10km, minimum order Ä20.00")}
             </div>
           </div>
         </CardContent>

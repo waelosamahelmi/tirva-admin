@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Graphics generation for thermal receipts
  * Generates QR codes and handles logo for thermal printers
  */
@@ -83,7 +83,7 @@ export function generateTextLogo(): number[] {
   commands.push(ESC, 0x45, 0x01); // Bold on
   
   // Restaurant name
-  const logoText = 'antonio';
+  const logoText = 'tirva';
   const logoBytes = Array.from(new TextEncoder().encode(logoText));
   commands.push(...logoBytes, 0x0A); // Add newline
   
@@ -99,9 +99,9 @@ export function generateTextLogo(): number[] {
  */
 export function getantonioASCIILogo(): string {
   return `
-  ╔════════════════════════════════╗
-  ║      pizzeria antonio         ║
-  ╚════════════════════════════════╝
+  +--------------------------------+
+  �      Tirvan Kahvila         �
+  +--------------------------------+
 `;
 }
 
@@ -109,14 +109,14 @@ export function getantonioASCIILogo(): string {
  * Get decorative border/separator
  */
 export function getDecorativeBorder(width: number = 32): string {
-  return '═'.repeat(width);
+  return '-'.repeat(width);
 }
 
 /**
  * Get fancy separator with style
  */
 export function getFancySeparator(width: number = 32): string {
-  return '─'.repeat(width);
+  return '-'.repeat(width);
 }
 
 /**

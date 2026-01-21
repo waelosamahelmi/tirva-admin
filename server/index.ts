@@ -1,4 +1,4 @@
-﻿import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
@@ -30,10 +30,10 @@ const corsOptions = {
       'http://localhost',
       'https://localhost',
       // Add production domains if needed
-      'https://antonio-admin.fly.dev',
+      'https://tirva-admin.fly.dev',
       'https://helmies-food-web.fly.io',
-      'https://pizzeriaantonio.fi',
-      'http://pizzeriaantonio.fi',
+      'https://tirvankahvila.fi',
+      'http://tirvankahvila.fi',
       // Add any other production frontend domains
     ];
     
@@ -79,7 +79,7 @@ app.use(session({
     tableName: 'session',
     createTableIfMissing: true,
   }),
-  secret: process.env.SESSION_SECRET || 'pizzeria-antonio-secret-key-2025',
+  secret: process.env.SESSION_SECRET || 'tirvan-kahvila-secret-key-2025',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -112,7 +112,7 @@ app.use((req, res, next) => {
       }
 
       if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+        logLine = logLine.slice(0, 79) + "�";
       }
 
       log(logLine);

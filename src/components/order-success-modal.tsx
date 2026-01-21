@@ -1,4 +1,4 @@
-Ôªøimport { useLanguage } from "@/lib/language-context";
+import { useLanguage } from "@/lib/language-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,7 +20,7 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
         time: "1 tunti",
         timeEn: "1 hour",
         icon: <Truck className="w-8 h-8 text-green-600" />,
-        message: "Tilauksesi toimitetaan tunnin sis√§ll√§!",
+        message: "Tilauksesi toimitetaan tunnin sis‰ll‰!",
         messageEn: "Your order will be delivered within 1 hour!"
       };
     } else {
@@ -28,7 +28,7 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
         time: "15 minuLahtia",
         timeEn: "15 minutes", 
         icon: <ShoppingBag className="w-8 h-8 text-blue-600" />,
-        message: "Tilauksesi on valmis noudettavaksi 15 minuutin sis√§ll√§!",
+        message: "Tilauksesi on valmis noudettavaksi 15 minuutin sis‰ll‰!",
         messageEn: "Your order will be ready for pickup within 15 minutes!"
       };
     }
@@ -43,7 +43,7 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
           <DialogTitle className="flex flex-col items-center space-y-4">
             <CheckCircle className="w-16 h-16 text-green-600 animate-pulse" />
             <span className="text-2xl font-bold text-green-700">
-              {t("Tilaus l√§hetetty!", "Order Placed!")}
+              {t("Tilaus l‰hetetty!", "Order Placed!")}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -76,13 +76,13 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
                   <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                     {t(
-                      "Tilauksesi on vastaanotettu! Odota, kunnes joku hyv√§ksyy tilauksesi saadaksesi tiet√§√§, kuinka kauan se kest√§√§.",
+                      "Tilauksesi on vastaanotettu! Odota, kunnes joku hyv‰ksyy tilauksesi saadaksesi tiet‰‰, kuinka kauan se kest‰‰.",
                       "Your order has been placed successfully! Please wait until someone accepts your order to know how long it will take."
                     )}
                   </p>
                   <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
                     {t(
-                      "Saat my√∂s s√§hk√∂postin lis√§tiedoilla.",
+                      "Saat myˆs s‰hkˆpostin lis‰tiedoilla.",
                       "You will also receive an email with more information."
                     )}
                   </p>
@@ -119,7 +119,7 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
           {/* Additional Info */}
           <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
             <p>
-              {t("Saat vahvistuksen s√§hk√∂postiin pian.", "You will receive an email confirmation shortly.")}
+              {t("Saat vahvistuksen s‰hkˆpostiin pian.", "You will receive an email confirmation shortly.")}
             </p>
             {orderType === "delivery" && (
               <p>
@@ -138,13 +138,13 @@ export function OrderSuccessModal({ isOpen, onClose, orderType, orderNumber }: O
             <CardContent className="p-4">
               <div className="text-center space-y-1">
                 <p className="font-semibold text-red-800 dark:text-red-200">
-                  pizzeria antonio
+                  Tirvan Kahvila
                 </p>
                 <p className="text-sm text-red-700 dark:text-red-300">
-                  Rauhankatu 19 c, 15110 Lahti
+                  Pasintie 2, 45410 Utti
                 </p>
                 <p className="text-sm text-red-700 dark:text-red-300">
-                  +358-3589-9089
+                  +358 41 3152619
                 </p>
               </div>
             </CardContent>

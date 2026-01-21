@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { PrinterService } from './printer/printer-service';
 import { PrinterDevice, PrintJob, ReceiptData } from "./printer/types";
 import { useAndroid } from "./android-context";
@@ -82,11 +82,11 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
   const [printerService] = useState(() => {
     const service = new PrinterService();
     
-    console.log('🔄 PrinterService created for Android network printing');
+    console.log('?? PrinterService created for Android network printing');
     
     // Set up event handlers
     service.onDeviceFound = (device: PrinterDevice) => {
-      console.log(`📱 Device found: ${device.name}`);
+      console.log(`?? Device found: ${device.name}`);
       setPrinters(current => {
         const existing = current.find(p => p.id === device.id);
         if (existing) {
@@ -100,7 +100,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     };
     
     service.onDeviceConnected = (device: PrinterDevice) => {
-      console.log(`✅ Device connected: ${device.name}`);
+      console.log(`? Device connected: ${device.name}`);
       setActivePrinter(device);
       setConnectionStatus('Connected');
       setPrinters(current => current.map(p => p.id === device.id ? device : p));
@@ -111,7 +111,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     };
     
     service.onDeviceDisconnected = (device: PrinterDevice) => {
-      console.log(`🔌 Device disconnected: ${device.name}`);
+      console.log(`?? Device disconnected: ${device.name}`);
       if (activePrinter?.id === device.id) {
         setActivePrinter(null);
         setConnectionStatus('Disconnected');
@@ -124,7 +124,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     };
     
     service.onError = (error: any) => {
-      console.error(`❌ Printer service error: ${error}`);
+      console.error(`? Printer service error: ${error}`);
       toast({
         title: "Printer Error",
         description: error.message || String(error),
@@ -145,13 +145,13 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       if (!isAndroid) return;
       
       try {
-        console.log('🖨️ Checking for Direct Printer (LocalPrintService)...');
+        console.log('??? Checking for Direct Printer (LocalPrintService)...');
         const { directPrint } = await import('./direct-print');
         
         const isAvailable = await directPrint.isAvailable();
         
         if (isAvailable) {
-          console.log('✅ Direct Printer available! Adding to printers list...');
+          console.log('? Direct Printer available! Adding to printers list...');
           
           const directPrinterDevice: PrinterDevice = {
             id: 'direct-print-system',
@@ -174,19 +174,19 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           // Only set as active if no other printer is active
           setActivePrinter(prev => {
             if (prev) {
-              console.log('⚠️ Active printer already exists, not overriding with Direct Printer');
+              console.log('?? Active printer already exists, not overriding with Direct Printer');
               return prev;
             }
-            console.log('✅ No active printer, setting Direct Printer as active');
+            console.log('? No active printer, setting Direct Printer as active');
             return directPrinterDevice;
           });
           
-          console.log('✅ Direct Printer added to available printers!');
+          console.log('? Direct Printer added to available printers!');
         } else {
-          console.log('⚠️ Direct Printer not available on this device');
+          console.log('?? Direct Printer not available on this device');
         }
       } catch (error) {
-        console.error('❌ Failed to add Direct Printer:', error);
+        console.error('? Failed to add Direct Printer:', error);
       }
     };
     
@@ -196,7 +196,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   // Auto re-discover and reconnect to saved printers on startup
   useEffect(() => {
-    console.log('📄 Auto-discovering saved printers on startup...');
+    console.log('?? Auto-discovering saved printers on startup...');
     
     // Clean up stale connections first
     LocalPrinterManager.clearFailedConnections();
@@ -204,13 +204,13 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     const savedPrinters = LocalPrinterManager.getPrinters();
     
     if (savedPrinters.length > 0) {
-      console.log(`📄 Found ${savedPrinters.length} saved printers, auto-adding them...`);
+      console.log(`?? Found ${savedPrinters.length} saved printers, auto-adding them...`);
       
       // Auto-rediscover saved printers using proper discovery logic
       const autoRediscoverSavedPrinters = async () => {
         for (const savedPrinter of savedPrinters) {
           try {
-            console.log(`🔍 Auto-rediscovering saved printer: ${savedPrinter.name} (${savedPrinter.address}:${savedPrinter.port})`);
+            console.log(`?? Auto-rediscovering saved printer: ${savedPrinter.name} (${savedPrinter.address}:${savedPrinter.port})`);
             
             // Use the same logic as manual printer addition to properly re-add the printer
             const ip = savedPrinter.address;
@@ -223,7 +223,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
               savedPrinter.name
             );
             
-            console.log(`✅ Successfully re-added saved printer: ${rediscoveredPrinter.name}`);
+            console.log(`? Successfully re-added saved printer: ${rediscoveredPrinter.name}`);
             
             // Update the printers list with the newly rediscovered printer
             setPrinters(prev => {
@@ -235,16 +235,16 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
             if (LocalPrinterManager.isAutoReconnectEnabled()) {
               const lastConnected = LocalPrinterManager.getLastConnectedPrinter();
               if (lastConnected && lastConnected.id === savedPrinter.id) {
-                console.log(`🔄 Auto-connecting to last used printer: ${rediscoveredPrinter.name}`);
+                console.log(`?? Auto-connecting to last used printer: ${rediscoveredPrinter.name}`);
                 // Don't await to avoid blocking other rediscoveries
                 connectToPrinter(rediscoveredPrinter).catch(error => {
-                  console.log(`⚠️ Auto-connect failed for ${rediscoveredPrinter.name}: ${error}`);
+                  console.log(`?? Auto-connect failed for ${rediscoveredPrinter.name}: ${error}`);
                 });
               }
             }
             
           } catch (error) {
-            console.log(`⚠️ Failed to rediscover saved printer ${savedPrinter.name}: ${error}`);
+            console.log(`?? Failed to rediscover saved printer ${savedPrinter.name}: ${error}`);
             // Keep the old printer entry in case user wants to manually reconnect
             setPrinters(prev => {
               const exists = prev.find(p => p.id === savedPrinter.id);
@@ -260,7 +260,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       // Start auto-rediscovery in background
       autoRediscoverSavedPrinters();
     } else {
-      console.log('📄 No saved printers found');
+      console.log('?? No saved printers found');
     }
   }, []);
 
@@ -270,7 +270,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       if (!isAndroid) return;
       
       try {
-        console.log('🔵 Checking for previously connected Bluetooth printers...');
+        console.log('?? Checking for previously connected Bluetooth printers...');
         const savedPrinters = LocalPrinterManager.getPrinters();
         const bluetoothPrinters = savedPrinters.filter(p => p.type === 'bluetooth');
         
@@ -284,7 +284,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
             // Find the last connected Bluetooth printer
             const lastConnected = LocalPrinterManager.getLastConnectedPrinter();
             if (lastConnected && lastConnected.type === 'bluetooth') {
-              console.log(`✅ Bluetooth printer ${lastConnected.name} is still connected`);
+              console.log(`? Bluetooth printer ${lastConnected.name} is still connected`);
               
               // Update the printer state and set as active
               setPrinters(prev => prev.map(p => 
@@ -303,7 +303,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           }
         }
       } catch (error) {
-        console.log('❌ Failed to check paired Bluetooth devices:', error);
+        console.log('? Failed to check paired Bluetooth devices:', error);
       }
     };
     
@@ -319,16 +319,16 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       const customEvent = event as CustomEvent;
       const printer = customEvent.detail as PrinterDevice;
       
-      console.log('📱 Received bluetooth-printer-added event:', printer);
+      console.log('?? Received bluetooth-printer-added event:', printer);
       
       // Add to printers list if not already present
       setPrinters(prev => {
         const exists = prev.find(p => p.id === printer.id);
         if (exists) {
-          console.log('⚠️ Printer already exists, skipping');
+          console.log('?? Printer already exists, skipping');
           return prev;
         }
-        console.log('✅ Adding new Bluetooth printer to list');
+        console.log('? Adding new Bluetooth printer to list');
         return [...prev, printer];
       });
     };
@@ -348,7 +348,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     setScanProgress(0);
     
     try {
-      console.log('📱 Starting simple Bluetooth discovery...');
+      console.log('?? Starting simple Bluetooth discovery...');
       
       // Check if Android
       if (!isAndroid) {
@@ -359,10 +359,10 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       const { SimpleBluetoothPrinter } = await import('./simple-bluetooth-printer');
       const btPrinter = new SimpleBluetoothPrinter();
       
-      console.log('� Initializing Bluetooth...');
+      console.log('? Initializing Bluetooth...');
       await btPrinter.initialize();
       
-      console.log('🔍 Scanning for Bluetooth devices...');
+      console.log('?? Scanning for Bluetooth devices...');
       const foundDevices: any[] = [];
       
       await btPrinter.scanForPrinters((printer) => {
@@ -384,7 +384,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         setPrinters(prev => {
           const exists = prev.find(p => p.id === printerDevice.id);
           if (!exists) {
-            console.log(`📱 Added device: ${printerDevice.name}`);
+            console.log(`?? Added device: ${printerDevice.name}`);
             return [...prev, printerDevice];
           }
           return prev;
@@ -394,7 +394,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       });
       
       setScanProgress(100);
-      console.log(`✅ Bluetooth scan complete - found ${foundDevices.length} devices`);
+      console.log(`? Bluetooth scan complete - found ${foundDevices.length} devices`);
       
       if (foundDevices.length === 0) {
         toast({
@@ -408,7 +408,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         });
       }
     } catch (error) {
-      console.error('❌ Bluetooth discovery failed:', error);
+      console.error('? Bluetooth discovery failed:', error);
       toast({
         title: "Bluetooth Scan Failed",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -427,9 +427,9 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     setScanProgress(0);
     
     try {
-      console.log('🌐 Starting network discovery...');
+      console.log('?? Starting network discovery...');
       const devices = await printerService.scanNetworkPrinters();
-      console.log(`🌐 Network scan found ${devices.length} devices`);
+      console.log(`?? Network scan found ${devices.length} devices`);
       
       if (devices.length === 0) {
         toast({
@@ -443,7 +443,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         });
       }
     } catch (error) {
-      console.error('❌ Network discovery failed:', error);
+      console.error('? Network discovery failed:', error);
       toast({
         title: "Network Scan Failed",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -456,7 +456,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
   }, [isDiscovering, printerService, toast]);
 
   const stopDiscovery = useCallback(() => {
-    console.log('⏹️ Stopping printer discovery...');
+    console.log('?? Stopping printer discovery...');
     printerService.cancelScan();
     setIsDiscovering(false);
     setScanProgress(0);
@@ -470,11 +470,11 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     setConnectionStatus('Connecting...');
     
     try {
-      console.log(`🔗 Connecting to printer: ${printer.name} (${printer.type})`);
+      console.log(`?? Connecting to printer: ${printer.name} (${printer.type})`);
       
       // CloudPRNT printers don't need connection - they poll the server
       if (printer.type === 'cloudprnt') {
-        console.log(`☁️ CloudPRNT printer registered: ${printer.macAddress}`);
+        console.log(`?? CloudPRNT printer registered: ${printer.macAddress}`);
         
         // Mark as connected immediately since CloudPRNT is polling-based
         setPrinters(prev => prev.map(p => 
@@ -494,22 +494,22 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           description: `${printer.name} will poll the server for print jobs.`,
         });
         
-        console.log('✅ CloudPRNT printer activated!');
+        console.log('? CloudPRNT printer activated!');
         return;
       }
       
       if (printer.type === 'bluetooth') {
         // For Bluetooth printers, use simple bluetooth printer service
-        console.log(`🔵 Connecting to Bluetooth printer: ${printer.address}`);
+        console.log(`?? Connecting to Bluetooth printer: ${printer.address}`);
         
         try {
           const { SimpleBluetoothPrinter } = await import('./simple-bluetooth-printer');
           const btPrinter = new SimpleBluetoothPrinter();
           
-          console.log('🔵 Initializing Bluetooth...');
+          console.log('?? Initializing Bluetooth...');
           await btPrinter.initialize();
           
-          console.log('🔵 Connecting to device...');
+          console.log('?? Connecting to device...');
           const connected = await btPrinter.connect(printer.address);
           
           if (connected) {
@@ -531,25 +531,25 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
               description: `Successfully connected to ${printer.name}. Ready to print!`,
             });
             
-            console.log('✅ Bluetooth printer connected successfully!');
+            console.log('? Bluetooth printer connected successfully!');
             return;
           } else {
             throw new Error('Failed to connect to Bluetooth printer');
           }
         } catch (btError: any) {
-          console.error('❌ Bluetooth printer error:', btError);
+          console.error('? Bluetooth printer error:', btError);
           throw new Error(`Bluetooth connection failed: ${btError.message || btError}`);
         }
       } else {
         // For network printers, use the original logic
-        console.log(`🌐 Connecting to network printer: ${printer.address}:${printer.port}`);
+        console.log(`?? Connecting to network printer: ${printer.address}:${printer.port}`);
         
         // First ensure the printer is properly added to the service
         const allDevices = printerService.getAllDevices();
         const deviceInService = allDevices.find(d => d.id === printer.id);
         
         if (!deviceInService) {
-          console.log(`🔄 Printer not in service, re-adding: ${printer.name}`);
+          console.log(`?? Printer not in service, re-adding: ${printer.name}`);
           const readdedPrinter = await printerService.forceAddPrinter(
             printer.address, 
             printer.port || 9100, 
@@ -581,7 +581,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       }
       
     } catch (error) {
-      console.error(`❌ Connection failed: ${error}`);
+      console.error(`? Connection failed: ${error}`);
       setConnectionStatus('Connection Failed');
       toast({
         title: "Connection Failed",
@@ -595,10 +595,10 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   const disconnectFromPrinter = useCallback(async (printerId: string) => {
     try {
-      console.log(`🔌 Disconnecting printer: ${printerId}`);
+      console.log(`?? Disconnecting printer: ${printerId}`);
       await printerService.disconnectFromPrinter(printerId);
     } catch (error) {
-      console.error(`❌ Disconnect failed: ${error}`);
+      console.error(`? Disconnect failed: ${error}`);
       toast({
         title: "Disconnect Failed",
         description: "Failed to disconnect from printer",
@@ -609,13 +609,13 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   const addManualPrinter = useCallback(async (ip: string, port: number, name?: string, printerType?: 'star' | 'escpos') => {
     try {
-      console.log(`➕ Adding manual printer: ${ip}:${port} (Type: ${printerType || 'auto'})`);
+      console.log(`? Adding manual printer: ${ip}:${port} (Type: ${printerType || 'auto'})`);
       const device = await printerService.addPrinter(ip, port);
       if (device) {
         // Set printer type if specified
         if (printerType) {
           device.printerType = printerType;
-          console.log(`✅ Printer type set to: ${printerType}`);
+          console.log(`? Printer type set to: ${printerType}`);
         }
         
         // Save to localStorage
@@ -637,7 +637,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         });
       }
     } catch (error) {
-      console.error(`❌ Failed to add manual printer: ${error}`);
+      console.error(`? Failed to add manual printer: ${error}`);
       toast({
         title: "Failed to Add Printer",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -648,7 +648,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   const addCloudPRNTPrinter = useCallback(async (macAddress: string, name?: string, printerType?: 'star' | 'escpos') => {
     try {
-      console.log(`☁️ Adding CloudPRNT printer: ${macAddress} (Type: ${printerType || 'star'})`);
+      console.log(`?? Adding CloudPRNT printer: ${macAddress} (Type: ${printerType || 'star'})`);
       
       const device: PrinterDevice = {
         id: `cloudprnt-${macAddress}`,
@@ -679,7 +679,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         description: `Successfully added ${device.name}`,
       });
     } catch (error) {
-      console.error(`❌ Failed to add CloudPRNT printer: ${error}`);
+      console.error(`? Failed to add CloudPRNT printer: ${error}`);
       toast({
         title: "Failed to Add CloudPRNT Printer",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -690,7 +690,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   const removePrinter = useCallback(async (printerId: string) => {
     try {
-      console.log(`🗑️ Removing printer: ${printerId}`);
+      console.log(`??? Removing printer: ${printerId}`);
       
       // Remove from localStorage
       LocalPrinterManager.removePrinter(printerId);
@@ -708,7 +708,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         description: "Printer has been removed from the list",
       });
     } catch (error) {
-      console.error(`❌ Failed to remove printer: ${error}`);
+      console.error(`? Failed to remove printer: ${error}`);
       toast({
         title: "Failed to Remove Printer",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -721,10 +721,10 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     // PRIORITY 1: Try CloudPRNT if CloudPRNT printer is active
     if (activePrinter?.type === 'cloudprnt') {
       try {
-        console.log('☁️ CloudPRNT printer is active, submitting job to server...');
+        console.log('?? CloudPRNT printer is active, submitting job to server...');
         const { createCloudPRNTClient } = await import('./printer/cloudprnt-client');
         
-        const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_SERVER_URL || 'https://antonio-admin.fly.dev';
+        const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_SERVER_URL || 'https://tirva-admin.fly.dev';
         const client = createCloudPRNTClient(apiUrl);
         
         // Parse order using universal parser
@@ -752,7 +752,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           return false;
         }
       } catch (error) {
-        console.error('❌ CloudPRNT submission failed:', error);
+        console.error('? CloudPRNT submission failed:', error);
         toast({
           title: "CloudPRNT Error",
           description: error instanceof Error ? error.message : "Unknown error",
@@ -765,12 +765,12 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     // PRIORITY 2: Try DirectPrint on Android ONLY if Direct Printer is the active printer
     if (isAndroid && activePrinter?.id === 'direct-print-system') {
       try {
-        console.log('🖨️ [Android] Direct Printer is active, using DirectPrint...');
+        console.log('??? [Android] Direct Printer is active, using DirectPrint...');
         const { directPrint } = await import('./direct-print');
         
         const isAvailable = await directPrint.isAvailable();
         if (isAvailable) {
-          console.log('✅ DirectPrint available, printing order silently...');
+          console.log('? DirectPrint available, printing order silently...');
           const success = await directPrint.printOrder(order, true); // silentPrint=true
           
           if (success) {
@@ -781,7 +781,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
             return true;
           }
         } else {
-          console.log('⚠️ DirectPrint not available');
+          console.log('?? DirectPrint not available');
           toast({
             title: "Direct Printer Not Available",
             description: "Please select a different printer",
@@ -790,7 +790,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           return false;
         }
       } catch (error) {
-        console.error('❌ DirectPrint failed:', error);
+        console.error('? DirectPrint failed:', error);
         toast({
           title: "Direct Print Failed",
           description: error instanceof Error ? error.message : "Unknown error",
@@ -811,7 +811,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     }
 
     try {
-      console.log('🖨️ Printing order using universal parser...');
+      console.log('??? Printing order using universal parser...');
       
       // Parse order using universal parser
       const receiptData = UniversalOrderParser.parseOrder(order);
@@ -819,14 +819,14 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       // Validate the parsed data
       const validation = UniversalOrderParser.validateReceiptData(receiptData);
       if (validation.warnings.length > 0) {
-        console.warn('⚠️ Order parsing warnings:', validation.warnings);
+        console.warn('?? Order parsing warnings:', validation.warnings);
       }
       if (!validation.isValid) {
-        console.error('❌ Order parsing errors:', validation.errors);
+        console.error('? Order parsing errors:', validation.errors);
         throw new Error(`Order parsing failed: ${validation.errors.join(', ')}`);
       }
       
-      console.log('✅ Order parsed successfully:', {
+      console.log('? Order parsed successfully:', {
         orderNumber: receiptData.orderNumber,
         itemCount: receiptData.items.length,
         total: receiptData.total
@@ -846,7 +846,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       }
       return success;
     } catch (error) {
-      console.error(`❌ Print order failed: ${error}`);
+      console.error(`? Print order failed: ${error}`);
       
       // Debug the order structure on error
       UniversalOrderParser.debugOrder(order);
@@ -871,7 +871,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     }
 
     try {
-      console.log('🖨️ Printing receipt...');
+      console.log('??? Printing receipt...');
       // Convert receipt data to ESC/POS commands
       const escposData = convertReceiptToESCPOS(data);
       await printerService.print(activePrinter.id, {
@@ -885,7 +885,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       });
       return true;
     } catch (error) {
-      console.error(`❌ Print failed: ${error}`);
+      console.error(`? Print failed: ${error}`);
       toast({
         title: "Print Failed",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -897,7 +897,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   const testPrint = useCallback(async (printerId: string) => {
     try {
-      console.log(`🧪 Running test print for: ${printerId}`);
+      console.log(`?? Running test print for: ${printerId}`);
       
       // Find the printer
       const printer = printers.find(p => p.id === printerId);
@@ -905,16 +905,16 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       // PRIORITY 1: On Android, try Direct Print ONLY if this is the Direct Printer
       if (isAndroid && printerId === 'direct-print-system') {
         try {
-          console.log('🖨️ [Android Device] Testing Direct Printer using system print service...');
+          console.log('??? [Android Device] Testing Direct Printer using system print service...');
           const { directPrint } = await import('./direct-print');
           
-          console.log('📋 Checking print service availability...');
+          console.log('?? Checking print service availability...');
           const isAvailable = await directPrint.isAvailable();
-          console.log(`📋 Print service available: ${isAvailable}`);
+          console.log(`?? Print service available: ${isAvailable}`);
           
           if (isAvailable) {
-            console.log('✅ System print service detected! Sending test print...');
-            console.log('📄 This will use LocalPrintService if available on Z92');
+            console.log('? System print service detected! Sending test print...');
+            console.log('?? This will use LocalPrintService if available on Z92');
             
             await directPrint.testPrint();
             
@@ -924,7 +924,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
             });
             return;
           } else {
-            console.log('⚠️ No system print service found');
+            console.log('?? No system print service found');
             toast({
               title: "Direct Printer Not Available",
               description: "System print service not found on this device",
@@ -933,7 +933,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
             return;
           }
         } catch (directPrintError: any) {
-          console.error('❌ Direct Print failed:', directPrintError);
+          console.error('? Direct Print failed:', directPrintError);
           toast({
             title: "Direct Print Failed",
             description: directPrintError.message || "Unknown error",
@@ -945,7 +945,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
       
       // Check if this is a Bluetooth printer
       if (printer && printer.type === 'bluetooth') {
-        console.log('🔵 Using simple Bluetooth printer for test print');
+        console.log('?? Using simple Bluetooth printer for test print');
         
         const { SimpleBluetoothPrinter } = await import('./simple-bluetooth-printer');
         const btPrinter = new SimpleBluetoothPrinter();
@@ -964,7 +964,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
           });
           return;
         } catch (btError: any) {
-          console.error('❌ Bluetooth test print failed:', btError);
+          console.error('? Bluetooth test print failed:', btError);
           toast({
             title: "Test Print Failed",
             description: `Bluetooth Error: ${btError.message || 'Unknown error'}`,
@@ -990,7 +990,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         });
       }
     } catch (error) {
-      console.error(`❌ Test print failed: ${error}`);
+      console.error(`? Test print failed: ${error}`);
       toast({
         title: "Test Print Failed",
         description: error instanceof Error ? error.message : "Unknown error occurred",
@@ -1009,7 +1009,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         printer.status = isConnected ? 'idle' : 'offline';
         setPrinters(current => current.map(p => p.id === printerId ? printer : p));
       } catch (error) {
-        console.error(`❌ Status refresh failed: ${error}`);
+        console.error(`? Status refresh failed: ${error}`);
       }
     }
   }, [printers, printerService]);
@@ -1027,7 +1027,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
         await printReceipt(job.content.data as ReceiptData);
         setPrintQueue(current => current.filter(j => j.id !== job.id));
       } catch (error) {
-        console.error(`❌ Failed to process print job ${job.id}:`, error);
+        console.error(`? Failed to process print job ${job.id}:`, error);
         break; // Stop processing on error
       }
     }
@@ -1039,7 +1039,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
 
   // Initialize
   useEffect(() => {
-    console.log('🚀 Initializing printer service...');
+    console.log('?? Initializing printer service...');
     
     // Load saved active printer from localStorage
     const savedPrinterId = localStorage.getItem('activePrinterId');
@@ -1064,7 +1064,7 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
     if (printer) {
       localStorage.setItem('activePrinterId', printer.id);
       LocalPrinterManager.setDefaultPrinter(printer.id);
-      console.log(`💾 Saved active printer to localStorage: ${printer.name}`);
+      console.log(`?? Saved active printer to localStorage: ${printer.name}`);
       
       // Save to Supabase
       if (user) {
@@ -1097,14 +1097,14 @@ export function PrinterProvider({ children }: PrinterProviderProps) {
                 ...printerData,
               });
           }
-          console.log(`☁️ Saved active printer to Supabase: ${printer.name}`);
+          console.log(`?? Saved active printer to Supabase: ${printer.name}`);
         } catch (error) {
-          console.error('❌ Failed to save printer to Supabase:', error);
+          console.error('? Failed to save printer to Supabase:', error);
         }
       }
     } else {
       localStorage.removeItem('activePrinterId');
-      console.log('🗑️ Cleared active printer from localStorage');
+      console.log('??? Cleared active printer from localStorage');
     }
   }, [user, userBranch]);
 
@@ -1175,27 +1175,27 @@ function convertReceiptToESCPOS(data: ReceiptData): Uint8Array {
       // Handle special characters for thermal printers
       switch (char) {
         // Euro symbol - CP850 encoding
-        case '€':
+        case '�':
           bytes.push(0xEE); // CP850 encoding for Euro
           break;
         // Finnish characters
-        case 'ä':
-          bytes.push(0x84); // CP850 encoding for ä
+        case '�':
+          bytes.push(0x84); // CP850 encoding for �
           break;
-        case 'Ä':
-          bytes.push(0x8E); // CP850 encoding for Ä
+        case '�':
+          bytes.push(0x8E); // CP850 encoding for �
           break;
-        case 'ö':
-          bytes.push(0x94); // CP850 encoding for ö
+        case '�':
+          bytes.push(0x94); // CP850 encoding for �
           break;
-        case 'Ö':
-          bytes.push(0x99); // CP850 encoding for Ö
+        case '�':
+          bytes.push(0x99); // CP850 encoding for �
           break;
-        case 'å':
-          bytes.push(0x86); // CP850 encoding for å
+        case '�':
+          bytes.push(0x86); // CP850 encoding for �
           break;
-        case 'Å':
-          bytes.push(0x8F); // CP850 encoding for Å
+        case '�':
+          bytes.push(0x8F); // CP850 encoding for �
           break;
         // Standard ASCII characters (0-127)
         default:
@@ -1233,7 +1233,7 @@ function convertReceiptToESCPOS(data: ReceiptData): Uint8Array {
     
     data.items.forEach(item => {
       // Item name and price
-      const line = `${item.name.padEnd(20)} €${item.price.toFixed(2).padStart(7)}`;
+      const line = `${item.name.padEnd(20)} �${item.price.toFixed(2).padStart(7)}`;
       commands.push(...encodeForThermalPrinter(line));
       commands.push(0x0A);
       
@@ -1247,7 +1247,7 @@ function convertReceiptToESCPOS(data: ReceiptData): Uint8Array {
       // Toppings
       if (item.toppings && item.toppings.length > 0) {
         item.toppings.forEach(topping => {
-          const toppingLine = `  + ${topping.name}${topping.price > 0 ? ` (+€${topping.price.toFixed(2)})` : ''}`;
+          const toppingLine = `  + ${topping.name}${topping.price > 0 ? ` (+�${topping.price.toFixed(2)})` : ''}`;
           commands.push(...encodeForThermalPrinter(toppingLine));
           commands.push(0x0A);
         });
@@ -1267,7 +1267,7 @@ function convertReceiptToESCPOS(data: ReceiptData): Uint8Array {
   // Total
   if (data.total !== undefined) {
     commands.push(0x1B, 0x45, 0x01); // Bold on
-    const totalLine = `${'TOTAL'.padEnd(20)} €${data.total.toFixed(2).padStart(8)}`;
+    const totalLine = `${'TOTAL'.padEnd(20)} �${data.total.toFixed(2).padStart(8)}`;
     commands.push(...encodeForThermalPrinter(totalLine));
     commands.push(0x1B, 0x45, 0x00); // Bold off
     commands.push(0x0A, 0x0A);

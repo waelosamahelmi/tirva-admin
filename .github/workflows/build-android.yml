@@ -67,8 +67,8 @@ jobs:
       - name: Rename APK
         run: |
           VERSION=$(date +'%Y%m%d_%H%M%S')
-          mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/antonio-admin-${VERSION}.apk
-          echo "APK_FILE=antonio-admin-${VERSION}.apk" >> $GITHUB_ENV
+          mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/tirva-admin-${VERSION}.apk
+          echo "APK_FILE=tirva-admin-${VERSION}.apk" >> $GITHUB_ENV
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "APK_PATH=android/app/build/outputs/apk/debug" >> $GITHUB_ENV
 
@@ -79,7 +79,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ env.VERSION }}
-          release_name: Antonio Admin v${{ env.VERSION }}
+          release_name: tirva Admin v${{ env.VERSION }}
           body: |
             Automated build from commit ${{ github.sha }}
             

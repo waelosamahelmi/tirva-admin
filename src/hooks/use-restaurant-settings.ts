@@ -79,6 +79,14 @@ export function useUpdateRestaurantSettings() {
       if (settingsData.stripeEnabled !== undefined) dbData.stripe_enabled = settingsData.stripeEnabled;
       if (settingsData.stripePublishableKey !== undefined) dbData.stripe_publishable_key = settingsData.stripePublishableKey;
       if (settingsData.stripeSecretKey !== undefined) dbData.stripe_secret_key = settingsData.stripeSecretKey;
+      if (settingsData.stripeWebhookSecret !== undefined) dbData.stripe_webhook_secret = settingsData.stripeWebhookSecret;
+      if (settingsData.stripeTestMode !== undefined) dbData.stripe_test_mode = settingsData.stripeTestMode;
+      if (settingsData.stripeConnectAccountId !== undefined) dbData.stripe_connect_account_id = settingsData.stripeConnectAccountId;
+      if (settingsData.stripeAccountEmail !== undefined) dbData.stripe_account_email = settingsData.stripeAccountEmail;
+      if (settingsData.stripeAccountCountry !== undefined) dbData.stripe_account_country = settingsData.stripeAccountCountry;
+      if (settingsData.stripePaymentMethodsConfig !== undefined) dbData.stripe_payment_methods_config = settingsData.stripePaymentMethodsConfig;
+      if (settingsData.onlinePaymentServiceFee !== undefined) dbData.online_payment_service_fee = settingsData.onlinePaymentServiceFee;
+      if (settingsData.onlinePaymentServiceFeeType !== undefined) dbData.online_payment_service_fee_type = settingsData.onlinePaymentServiceFeeType;
       
       // Try to update first, if no rows exist, insert
       const { data: existingData } = await supabase

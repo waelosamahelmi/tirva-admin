@@ -1,4 +1,4 @@
-﻿import { backgroundNotificationManager } from "@/lib/background-notification-manager";
+import { backgroundNotificationManager } from "@/lib/background-notification-manager";
 import { NotificationSoundManager } from "@/lib/notification-sound-manager-enhanced";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSupabaseOrders, useSupabaseUpdateOrderStatus } from "@/hooks/use-supabase-orders";
@@ -163,7 +163,7 @@ export default function Admin() {
   useEffect(() => {
     const handleSettingsUpdate = (event: CustomEvent) => {
       setRestaurantSettings(event.detail);
-      console.log('📋 Restaurant settings updated:', event.detail);
+      console.log('?? Restaurant settings updated:', event.detail);
     };
     
     window.addEventListener('restaurantSettingsUpdated', handleSettingsUpdate as EventListener);
@@ -261,17 +261,17 @@ export default function Admin() {
       setIsRestaurantBusy(newStatus);
       toast({
         title: newStatus 
-          ? adminT("pizzeria asetettu kiireiseksi", "Restaurant set to busy", "تم تعيين المطعم مشغول")
-          : adminT("pizzeria ei ole enää kiireinen", "Restaurant no longer busy", "المطعم لم يعد مشغولاً"),
+          ? adminT("pizzeria asetettu kiireiseksi", "Restaurant set to busy", "?? ????? ?????? ?????")
+          : adminT("pizzeria ei ole en�� kiireinen", "Restaurant no longer busy", "?????? ?? ??? ???????"),
         description: newStatus
-          ? adminT("Asiakkaat näkevät, että olet kiireinen", "Customers will see you're busy", "سيرى العملاء أنك مشغول")
-          : adminT("Asiakkaat voivat taas tehdä tilauksia normaalisti", "Customers can order normally again", "يمكن للعملاء الطلب بشكل طبيعي مرة أخرى"),
+          ? adminT("Asiakkaat n�kev�t, ett� olet kiireinen", "Customers will see you're busy", "???? ??????? ??? ?????")
+          : adminT("Asiakkaat voivat taas tehd� tilauksia normaalisti", "Customers can order normally again", "???? ??????? ????? ???? ????? ??? ????"),
       });
     } catch (error) {
       console.error('Error toggling busy status:', error);
       toast({
-        title: adminT("Virhe", "Error", "خطأ"),
-        description: adminT("Kiireisyystilan muuttaminen epäonnistui", "Failed to update busy status", "فشل تحديث الحالة"),
+        title: adminT("Virhe", "Error", "???"),
+        description: adminT("Kiireisyystilan muuttaminen ep�onnistui", "Failed to update busy status", "??? ????? ??????"),
         variant: "destructive"
       });
     } finally {
@@ -279,7 +279,7 @@ export default function Admin() {
     }
   };  // Memoize realtime callbacks to prevent unnecessary reconnections
   const handleNewOrder = useCallback(async (order: any) => {
-    console.log('🆕 New order notification:', order);
+    console.log('?? New order notification:', order);
     
     // Create properly formatted order data for background notification
     const orderData = {
@@ -312,15 +312,15 @@ export default function Admin() {
     // Send urgent Android notification if available
     if (isAndroid && hasNotificationPermission) {
       sendNotification(
-        "🚨 NEW ORDER RECEIVED! 🚨",
-        `Order #${orderData.orderNumber} - ${orderData.customerName} - €${orderData.totalAmount.toFixed(2)}`,
+        "?? NEW ORDER RECEIVED! ??",
+        `Order #${orderData.orderNumber} - ${orderData.customerName} - �${orderData.totalAmount.toFixed(2)}`,
         "alert"
       );
     }
   }, [refetchOrders, isAndroid, hasNotificationPermission, sendNotification]);
 
   const handleOrderUpdate = useCallback((order: any) => {
-    console.log('🔄 Order update notification:', order);
+    console.log('?? Order update notification:', order);
     refetchOrders();
   }, [refetchOrders]);
   // Supabase real-time notifications
@@ -332,7 +332,7 @@ export default function Admin() {
   // Define handleStatusUpdate early to avoid hook order issues
   const handleStatusUpdate = useCallback(async (orderId: number, status: string, prepTime?: number) => {
     try {
-      console.log(`🔄 Updating order ${orderId} to status ${status}`, prepTime ? `with prep time ${prepTime} mins` : '');
+      console.log(`?? Updating order ${orderId} to status ${status}`, prepTime ? `with prep time ${prepTime} mins` : '');
       
       // Update order status in database with prep time if provided
       const updateData: any = { id: orderId, status };
@@ -366,9 +366,9 @@ export default function Admin() {
             totalAmount: parseFloat(order.total_amount || order.totalAmount || '0'),
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'pizzeria antonio',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: 'Tirvan Kahvila',
+            branchPhone: '+358 41 3152619',
+            branchAddress: 'Pasintie 2, 45410 Utti',
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: order.payment_method || order.paymentMethod || 'Cash',
             prepTime: prepTime
@@ -376,12 +376,12 @@ export default function Admin() {
           
           sendOrderAcceptedEmail(emailData).then(result => {
             if (result.success) {
-              console.log('✅ Order accepted email sent to customer');
+              console.log('? Order accepted email sent to customer');
             } else {
-              console.warn('⚠️ Failed to send order accepted email:', result.error);
+              console.warn('?? Failed to send order accepted email:', result.error);
             }
           }).catch(err => {
-            console.error('❌ Error sending order accepted email:', err);
+            console.error('? Error sending order accepted email:', err);
           });
         }
       }
@@ -405,7 +405,7 @@ export default function Admin() {
           let refundStatus = undefined;
           if (isOnlinePayment && totalAmount > 0 && stripePaymentIntentId) {
             refundAmount = totalAmount;
-            console.log(`💳 Processing refund for order ${orderId}: €${refundAmount}`);
+            console.log(`?? Processing refund for order ${orderId}: �${refundAmount}`);
             
             try {
               const refundResult = await processOrderRefund({
@@ -416,31 +416,31 @@ export default function Admin() {
               });
               
               if (refundResult.success) {
-                console.log(`✅ Refund processed successfully: ${refundResult.refundId}`);
+                console.log(`? Refund processed successfully: ${refundResult.refundId}`);
                 refundStatus = 'processed';
                 toast({
-                  title: adminT("Hyvitys käsitelty", "Refund Processed", "تمت المعالجة"),
+                  title: adminT("Hyvitys k�sitelty", "Refund Processed", "??? ????????"),
                   description: adminT(
-                    `Hyvitys €${refundAmount.toFixed(2)} käsitelty onnistuneesti`,
-                    `Refund of €${refundAmount.toFixed(2)} processed successfully`,
-                    `تمت معالجة استرداد €${refundAmount.toFixed(2)} بنجاح`
+                    `Hyvitys �${refundAmount.toFixed(2)} k�sitelty onnistuneesti`,
+                    `Refund of �${refundAmount.toFixed(2)} processed successfully`,
+                    `??? ?????? ??????? �${refundAmount.toFixed(2)} ?????`
                   ),
                 });
               } else {
-                console.error(`❌ Refund failed: ${refundResult.error}`);
+                console.error(`? Refund failed: ${refundResult.error}`);
                 refundStatus = 'failed';
                 toast({
-                  title: adminT("Hyvitys epäonnistui", "Refund Failed", "فشل الاسترداد"),
-                  description: refundResult.error || adminT("Hyvityksen käsittely epäonnistui", "Failed to process refund", "فشل معالجة الاسترداد"),
+                  title: adminT("Hyvitys ep�onnistui", "Refund Failed", "??? ?????????"),
+                  description: refundResult.error || adminT("Hyvityksen k�sittely ep�onnistui", "Failed to process refund", "??? ?????? ?????????"),
                   variant: "destructive",
                 });
               }
             } catch (error) {
-              console.error(`❌ Error processing refund:`, error);
+              console.error(`? Error processing refund:`, error);
               refundStatus = 'error';
               toast({
-                title: adminT("Hyvitysvirhe", "Refund Error", "خطأ في الاسترداد"),
-                description: adminT("Hyvityksen käsittelyssä tapahtui virhe", "An error occurred processing the refund", "حدث خطأ في معالجة الاسترداد"),
+                title: adminT("Hyvitysvirhe", "Refund Error", "??? ?? ?????????"),
+                description: adminT("Hyvityksen k�sittelyss� tapahtui virhe", "An error occurred processing the refund", "??? ??? ?? ?????? ?????????"),
                 variant: "destructive",
               });
             }
@@ -460,9 +460,9 @@ export default function Admin() {
             totalAmount: totalAmount,
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'pizzeria antonio',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: 'Tirvan Kahvila',
+            branchPhone: '+358 41 3152619',
+            branchAddress: 'Pasintie 2, 45410 Utti',
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: paymentMethod,
             refundAmount: refundAmount,
@@ -471,12 +471,12 @@ export default function Admin() {
           
           sendOrderCancelledEmail(emailData).then(result => {
             if (result.success) {
-              console.log('✅ Order cancellation email sent to customer');
+              console.log('? Order cancellation email sent to customer');
             } else {
-              console.warn('⚠️ Failed to send order cancellation email:', result.error);
+              console.warn('?? Failed to send order cancellation email:', result.error);
             }
           }).catch(err => {
-            console.error('❌ Error sending order cancellation email:', err);
+            console.error('? Error sending order cancellation email:', err);
           });
         }
       }
@@ -499,9 +499,9 @@ export default function Admin() {
             totalAmount: parseFloat(order.total_amount || order.totalAmount || '0'),
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'pizzeria antonio',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: 'Tirvan Kahvila',
+            branchPhone: '+358 41 3152619',
+            branchAddress: 'Pasintie 2, 45410 Utti',
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: order.payment_method || order.paymentMethod || 'Cash',
             reviewLink: 'https://share.google/lgfzGpNmPplzeeIBI'
@@ -509,12 +509,12 @@ export default function Admin() {
           
           sendOrderDeliveredEmail(emailData).then(result => {
             if (result.success) {
-              console.log('✅ Order delivered email sent to customer');
+              console.log('? Order delivered email sent to customer');
             } else {
-              console.warn('⚠️ Failed to send order delivered email:', result.error);
+              console.warn('?? Failed to send order delivered email:', result.error);
             }
           }).catch(err => {
-            console.error('❌ Error sending order delivered email:', err);
+            console.error('? Error sending order delivered email:', err);
           });
         }
       }
@@ -523,28 +523,28 @@ export default function Admin() {
       if (status === "accepted" && activePrinter) {
         // Check if this order has already been auto-printed to prevent duplicates
         if (autoPrintedOrders.has(orderId)) {
-          console.log(`⏭️ Order ${orderId} already auto-printed, skipping duplicate print`);
+          console.log(`?? Order ${orderId} already auto-printed, skipping duplicate print`);
           toast({
-            title: adminT("Tilaus hyväksytty", "Order accepted", "تم قبول الطلب"),
-            description: adminT(`Tilaus #${orderId} hyväksytty (kuitti jo tulostettu)`, `Order #${orderId} accepted (receipt already printed)`, `تم قبول الطلب #${orderId} (تم طباعة الإيصال بالفعل)`),
+            title: adminT("Tilaus hyv�ksytty", "Order accepted", "?? ???? ?????"),
+            description: adminT(`Tilaus #${orderId} hyv�ksytty (kuitti jo tulostettu)`, `Order #${orderId} accepted (receipt already printed)`, `?? ???? ????? #${orderId} (?? ????? ??????? ??????)`),
           });
         } else {
           // Immediately mark as auto-printed to prevent any race conditions
           setAutoPrintedOrders(prev => new Set(prev).add(orderId));
           
-          console.log(`🖨️ Auto-printing order ${orderId} after acceptance`);
+          console.log(`??? Auto-printing order ${orderId} after acceptance`);
           const order = orders?.find((o: any) => o.id === orderId);
           if (order) {
             try {
               const success = await printOrder(order);
               if (success) {
-                console.log(`✅ Order ${orderId} printed successfully after acceptance`);
+                console.log(`? Order ${orderId} printed successfully after acceptance`);
                 toast({
-                  title: adminT("Tilaus hyväksytty ja tulostettu", "Order accepted and printed", "تم قبول الطلب وطباعته"),
-                  description: adminT(`Tilaus #${orderId} hyväksytty ja kuitti tulostettu`, `Order #${orderId} accepted and receipt printed`, `تم قبول الطلب #${orderId} وطباعة الإيصال`),
+                  title: adminT("Tilaus hyv�ksytty ja tulostettu", "Order accepted and printed", "?? ???? ????? ???????"),
+                  description: adminT(`Tilaus #${orderId} hyv�ksytty ja kuitti tulostettu`, `Order #${orderId} accepted and receipt printed`, `?? ???? ????? #${orderId} ?????? ???????`),
                 });
               } else {
-                console.warn(`⚠️ Order ${orderId} accepted but printing failed`);
+                console.warn(`?? Order ${orderId} accepted but printing failed`);
                 // Remove from auto-printed set if printing failed
                 setAutoPrintedOrders(prev => {
                   const newSet = new Set(prev);
@@ -552,13 +552,13 @@ export default function Admin() {
                   return newSet;
                 });
                 toast({
-                  title: adminT("Tilaus hyväksytty", "Order accepted", "تم قبول الطلب"),
-                  description: adminT(`Tilaus #${orderId} hyväksytty, mutta tulostus epäonnistui`, `Order #${orderId} accepted, but printing failed`, `تم قبول الطلب #${orderId}، لكن فشلت الطباعة`),
+                  title: adminT("Tilaus hyv�ksytty", "Order accepted", "?? ???? ?????"),
+                  description: adminT(`Tilaus #${orderId} hyv�ksytty, mutta tulostus ep�onnistui`, `Order #${orderId} accepted, but printing failed`, `?? ???? ????? #${orderId}? ??? ???? ???????`),
                   variant: "destructive",
                 });
               }
             } catch (printError) {
-              console.error(`❌ Failed to print order ${orderId} after acceptance:`, printError);
+              console.error(`? Failed to print order ${orderId} after acceptance:`, printError);
               // Remove from auto-printed set if printing failed
               setAutoPrintedOrders(prev => {
                 const newSet = new Set(prev);
@@ -566,8 +566,8 @@ export default function Admin() {
                 return newSet;
               });
               toast({
-                title: adminT("Tilaus hyväksytty", "Order accepted", "تم قبول الطلب"),
-                description: adminT(`Tilaus #${orderId} hyväksytty, mutta tulostus epäonnistui`, `Order #${orderId} accepted, but printing failed`, `تم قبول الطلب #${orderId}، لكن فشلت الطباعة`),
+                title: adminT("Tilaus hyv�ksytty", "Order accepted", "?? ???? ?????"),
+                description: adminT(`Tilaus #${orderId} hyv�ksytty, mutta tulostus ep�onnistui`, `Order #${orderId} accepted, but printing failed`, `?? ???? ????? #${orderId}? ??? ???? ???????`),
                 variant: "destructive",
               });
             }
@@ -575,12 +575,12 @@ export default function Admin() {
         }
       } else {
         toast({
-          title: adminT("Tilauksen tila päivitetty", "Order status updated", "تم تحديث حالة الطلب"),
-          description: adminT(`Tilaus #${orderId} merkitty tilaan ${getStatusDisplayName(status)}`, `Order #${orderId} marked as ${getStatusDisplayName(status)}`, `تم وضع علامة على الطلب #${orderId} كـ ${getStatusDisplayName(status)}`),
+          title: adminT("Tilauksen tila p�ivitetty", "Order status updated", "?? ????? ???? ?????"),
+          description: adminT(`Tilaus #${orderId} merkitty tilaan ${getStatusDisplayName(status)}`, `Order #${orderId} marked as ${getStatusDisplayName(status)}`, `?? ??? ????? ??? ????? #${orderId} ?? ${getStatusDisplayName(status)}`),
         });
       }
       
-      console.log(`✅ Order ${orderId} status updated successfully to ${status}`);
+      console.log(`? Order ${orderId} status updated successfully to ${status}`);
       
       // Clean up processing state after successful completion
       setOrdersBeingProcessed(prev => {
@@ -589,7 +589,7 @@ export default function Admin() {
         return newSet;
       });
     } catch (error) {
-      console.error(`❌ Failed to update order ${orderId} status:`, error);
+      console.error(`? Failed to update order ${orderId} status:`, error);
       
       // Clean up processing state on error
       setOrdersBeingProcessed(prev => {
@@ -599,8 +599,8 @@ export default function Admin() {
       });
       
       toast({
-        title: adminT("Virhe", "Error", "خطأ"),
-        description: adminT("Tilauksen tilan päivitys epäonnistui", "Failed to update order status", "فشل في تحديث حالة الطلب"),
+        title: adminT("Virhe", "Error", "???"),
+        description: adminT("Tilauksen tilan p�ivitys ep�onnistui", "Failed to update order status", "??? ?? ????? ???? ?????"),
         variant: "destructive",
       });
     }
@@ -617,7 +617,7 @@ export default function Admin() {
     );
     
     if (pendingOrders.length > 0) {
-      console.log(`🤖 Auto-accept enabled: Found ${pendingOrders.length} new pending orders`);
+      console.log(`?? Auto-accept enabled: Found ${pendingOrders.length} new pending orders`);
       
       // Auto-accept each pending order with staggered delays
       pendingOrders.forEach((order: any, index: number) => {
@@ -627,7 +627,7 @@ export default function Admin() {
         // Add a progressive delay to avoid overwhelming the system and printer
         const delay = 1000 + (index * 500) + Math.random() * 1000; // 1-2.5 seconds with progressive delay
         setTimeout(() => {
-          console.log(`🟢 Auto-accepting order ${order.id} (${index + 1}/${pendingOrders.length})`);
+          console.log(`?? Auto-accepting order ${order.id} (${index + 1}/${pendingOrders.length})`);
           handleStatusUpdate(order.id, "accepted");
         }, delay);
       });
@@ -656,7 +656,7 @@ export default function Admin() {
       },
       onShow: (orderData) => {
         // Just log - no popup to show
-        console.log('🔔 Background notification shown for order:', orderData.orderId);
+        console.log('?? Background notification shown for order:', orderData.orderId);
       }
     });// Cleanup on unmount
     return () => {
@@ -668,7 +668,7 @@ export default function Admin() {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', (event) => {
-        console.log('📱 Service Worker message received:', event.data);
+        console.log('?? Service Worker message received:', event.data);
         
         if (event.data.type === 'ACCEPT_ORDER') {
           handleStatusUpdate(event.data.orderId, 'accepted');
@@ -698,13 +698,13 @@ export default function Admin() {
     if (!orders || !user) return;
     
     const pendingOrdersList = orders.filter((order: any) => order.status === "pending");
-    console.log(`🔔 Checking for pending orders: found ${pendingOrdersList.length} pending orders`);
+    console.log(`?? Checking for pending orders: found ${pendingOrdersList.length} pending orders`);
     
     const soundManager = NotificationSoundManager.getInstance();
     
     if (pendingOrdersList.length > 0) {
       // Start continuous sound for pending orders
-      console.log('🔔 Starting continuous notification sound for pending orders');
+      console.log('?? Starting continuous notification sound for pending orders');
       soundManager.startNotificationSound();
       
       // Add vibration pattern
@@ -716,8 +716,8 @@ export default function Admin() {
         pendingOrdersList.forEach((order: any) => {
           const totalAmount = parseFloat(order.total_amount || order.totalAmount || '0');
           sendNotification(
-            "🚨 PENDING ORDER!",
-            `Order #${order.id} from ${order.customer_name || order.customerName || 'Customer'} - €${totalAmount.toFixed(2)}`,
+            "?? PENDING ORDER!",
+            `Order #${order.id} from ${order.customer_name || order.customerName || 'Customer'} - �${totalAmount.toFixed(2)}`,
             "alert"
           );
         });
@@ -725,7 +725,7 @@ export default function Admin() {
       
     } else {
       // No pending orders, stop sound
-      console.log('� No pending orders, stopping notification sound');
+      console.log('? No pending orders, stopping notification sound');
       soundManager.stopNotificationSound();
     }
   }, [orders, user, isAndroid, hasNotificationPermission, sendNotification]);
@@ -737,13 +737,13 @@ export default function Admin() {
     const pendingOrdersList = orders.filter((order: any) => order.status === "pending");
     
     if (pendingOrdersList.length > 0) {
-      console.log(`🔔 Setting up background notification pusher for ${pendingOrdersList.length} pending orders`);
+      console.log(`?? Setting up background notification pusher for ${pendingOrdersList.length} pending orders`);
       
       const interval = setInterval(() => {
         const currentPendingOrders = orders?.filter((order: any) => order.status === "pending") || [];
         
         if (currentPendingOrders.length > 0) {
-          console.log(`🔔 Pushing background notifications for ${currentPendingOrders.length} pending orders`);
+          console.log(`?? Pushing background notifications for ${currentPendingOrders.length} pending orders`);
           
           // Strong vibration
           if ('vibrate' in navigator) {
@@ -755,8 +755,8 @@ export default function Admin() {
               setTimeout(() => {
                 const totalAmount = parseFloat(order.total_amount || order.totalAmount || '0');
                 sendNotification(
-                  `🚨 URGENT: Order #${order.id}`,
-                  `${order.customer_name || order.customerName || 'Customer'} is waiting! €${totalAmount.toFixed(2)} - ${order.order_type || order.orderType || 'pickup'}`,
+                  `?? URGENT: Order #${order.id}`,
+                  `${order.customer_name || order.customerName || 'Customer'} is waiting! �${totalAmount.toFixed(2)} - ${order.order_type || order.orderType || 'pickup'}`,
                   "alert"
                 );
               }, index * 1000); // Stagger notifications by 1 second each
@@ -781,12 +781,12 @@ export default function Admin() {
           });
           
         } else {
-          console.log('🔕 No more pending orders, stopping background pusher');
+          console.log('?? No more pending orders, stopping background pusher');
         }
       }, 15000); // Every 15 seconds
       
       return () => {
-        console.log('🔕 Clearing background notification pusher');
+        console.log('?? Clearing background notification pusher');
         clearInterval(interval);
       };
     }  }, [orders, user, isAndroid, hasNotificationPermission, sendNotification]);
@@ -798,7 +798,7 @@ export default function Admin() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400 font-medium">
-            {adminT("Tarkistetaan kirjautumista...", "Checking authentication...", "جاري التحقق من المصادقة...")}
+            {adminT("Tarkistetaan kirjautumista...", "Checking authentication...", "???? ?????? ?? ????????...")}
           </p>
         </div>
       </div>
@@ -816,18 +816,18 @@ export default function Admin() {
                 <UtensilsCrossed className="text-white w-8 h-8" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                pizzeria antonio
+                Tirvan Kahvila
               </CardTitle>
               <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                {adminT("Hallintapaneeli", "Admin Panel", "لوحة الإدارة")}
+                {adminT("Hallintapaneeli", "Admin Panel", "???? ???????")}
               </p>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {adminT("Kirjaudu sisään hallintapaneeliin", "Please login to access admin panel", "يرجى تسجيل الدخول للوصول إلى لوحة الإدارة")}
+                {adminT("Kirjaudu sis��n hallintapaneeliin", "Please login to access admin panel", "???? ????? ?????? ?????? ??? ???? ???????")}
               </p>
               <Button onClick={() => setShowLoginModal(true)} className="w-full">
-                {adminT("Kirjaudu sisään", "Login", "تسجيل الدخول")}
+                {adminT("Kirjaudu sis��n", "Login", "????? ??????")}
               </Button>
             </CardContent>
           </Card>
@@ -846,8 +846,8 @@ export default function Admin() {
     
     if (!activePrinter) {
       toast({
-        title: adminT("Ei tulostinta", "No printer", "لا توجد طابعة"),
-        description: adminT("Valitse ja yhdistä tulostin ensin", "Please select and connect a printer first", "يرجى تحديد الطابعة والاتصال بها أولاً"),
+        title: adminT("Ei tulostinta", "No printer", "?? ???? ?????"),
+        description: adminT("Valitse ja yhdist� tulostin ensin", "Please select and connect a printer first", "???? ????? ??????? ???????? ??? ?????"),
         variant: "destructive",
       });
       setShowDiscoveryModal(true);
@@ -856,15 +856,15 @@ export default function Admin() {
       const success = await printOrder(order);
       if (success) {
         toast({
-          title: adminT("Kuitti tulostettu", "Receipt printed", "تم طباعة الإيصال"),
-          description: adminT("Tilauksen kuitti on tulostettu onnistuneesti", "Order receipt has been printed successfully", "تم طباعة إيصال الطلب بنجاح"),
+          title: adminT("Kuitti tulostettu", "Receipt printed", "?? ????? ???????"),
+          description: adminT("Tilauksen kuitti on tulostettu onnistuneesti", "Order receipt has been printed successfully", "?? ????? ????? ????? ?????"),
         });
       }
     } catch (error) {
       console.error('Failed to print receipt:', error);
       toast({
-        title: adminT("Tulostusvirhe", "Print error", "خطأ في الطباعة"),
-        description: adminT("Kuitin tulostus epäonnistui", "Failed to print receipt", "فشل في طباعة الإيصال"),
+        title: adminT("Tulostusvirhe", "Print error", "??? ?? ???????"),
+        description: adminT("Kuitin tulostus ep�onnistui", "Failed to print receipt", "??? ?? ????? ???????"),
         variant: "destructive",
       });
     }
@@ -872,12 +872,12 @@ export default function Admin() {
 
   const getStatusDisplayName = (status: string) => {
     const statusMap: Record<string, string> = {
-      pending: adminT("Odottaa", "Pending", "في الانتظار"),
-      accepted: adminT("Hyväksytty", "Accepted", "مقبول"),
-      preparing: adminT("Valmistellaan", "Preparing", "قيد التحضير"),
-      ready: adminT("Valmis", "Ready", "جاهز"),
-      delivered: adminT("Toimitettu", "Delivered", "تم التسليم"),
-      cancelled: adminT("Peruttu", "Cancelled", "ملغى")
+      pending: adminT("Odottaa", "Pending", "?? ????????"),
+      accepted: adminT("Hyv�ksytty", "Accepted", "?????"),
+      preparing: adminT("Valmistellaan", "Preparing", "??? ???????"),
+      ready: adminT("Valmis", "Ready", "????"),
+      delivered: adminT("Toimitettu", "Delivered", "?? ???????"),
+      cancelled: adminT("Peruttu", "Cancelled", "????")
     };
     return statusMap[status] || status;
   };
@@ -931,7 +931,7 @@ export default function Admin() {
   
   // Debug logging for mobile app
   if (isAndroid) {
-    console.log('📊 Stats Debug:', {
+    console.log('?? Stats Debug:', {
       ordersTotal: orders?.length || 0,
       filteredOrdersTotal: filteredOrders.length,
       todayOrdersCount: todayOrders.length,
@@ -1065,11 +1065,11 @@ export default function Admin() {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                  <span className="hidden sm:inline">pizzeria antonio</span>
+                  <span className="hidden sm:inline">Tirvan Kahvila</span>
                   <span className="sm:hidden">antonio</span>
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
-                  {adminT("Hallintapaneeli", "Admin Panel", "لوحة الإدارة")}
+                  {adminT("Hallintapaneeli", "Admin Panel", "???? ???????")}
                 </p>
               </div>
             </div>
@@ -1083,13 +1083,13 @@ export default function Admin() {
                   : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
               }`}>
                 <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
-                <span>{isConnected ? adminT("Yhdistetty", "Connected", "متصل") : adminT("Ei yhteyttä", "Disconnected", "غير متصل")}</span>
+                <span>{isConnected ? adminT("Yhdistetty", "Connected", "????") : adminT("Ei yhteytt�", "Disconnected", "??? ????")}</span>
               </div>
 
               {/* Busy Status Toggle */}
               <div className="flex items-center space-x-2 px-3 py-1.5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg">
                 <label htmlFor="busy-toggle" className="text-xs font-medium cursor-pointer">
-                  {adminT("Kiireinen", "Busy", "مشغول")}
+                  {adminT("Kiireinen", "Busy", "?????")}
                 </label>
                 <Switch
                   id="busy-toggle"
@@ -1135,7 +1135,7 @@ export default function Admin() {
                         language === "fi" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : ""
                       }`}
                     >
-                      🇫🇮 Suomi
+                      ???? Suomi
                     </button>
                     <button
                       onClick={() => {
@@ -1146,7 +1146,7 @@ export default function Admin() {
                         language === "en" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : ""
                       }`}
                     >
-                      🇺🇸 English
+                      ???? English
                     </button>
                     <button
                       onClick={() => {
@@ -1157,7 +1157,7 @@ export default function Admin() {
                         language === "ar" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : ""
                       }`}
                     >
-                      🇸🇦 العربية
+                      ???? ???????
                     </button>
                   </div>
                 )}
@@ -1198,13 +1198,13 @@ export default function Admin() {
                   : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
               }`}>
                 <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
-                <span>{isConnected ? adminT("Yhdistetty", "Connected", "متصل") : adminT("Ei yhteyttä", "Disconnected", "غير متصل")}</span>
+                <span>{isConnected ? adminT("Yhdistetty", "Connected", "????") : adminT("Ei yhteytt�", "Disconnected", "??? ????")}</span>
               </div>
 
               {/* Busy Status Toggle */}
               <div className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <label htmlFor="busy-toggle-mobile" className="text-sm font-medium">
-                  {adminT("pizzeria kiireinen", "Restaurant Busy", "المطعم مشغول")}
+                  {adminT("pizzeria kiireinen", "Restaurant Busy", "?????? ?????")}
                 </label>
                 <Switch
                   id="busy-toggle-mobile"
@@ -1222,13 +1222,13 @@ export default function Admin() {
                 className="w-full justify-start"
               >
                 {theme === "dark" ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
-                {theme === "dark" ? adminT("Vaalea teema", "Light theme", "السمة الفاتحة") : adminT("Tumma teema", "Dark theme", "السمة المظلمة")}
+                {theme === "dark" ? adminT("Vaalea teema", "Light theme", "????? ???????") : adminT("Tumma teema", "Dark theme", "????? ???????")}
               </Button>
 
               {/* Language Selection */}
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {adminT("Kieli", "Language", "اللغة")}
+                  {adminT("Kieli", "Language", "?????")}
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   <button
@@ -1242,7 +1242,7 @@ export default function Admin() {
                         : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                   >
-                    🇫🇮 FI
+                    ???? FI
                   </button>
                   <button
                     onClick={() => {
@@ -1255,7 +1255,7 @@ export default function Admin() {
                         : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                   >
-                    🇺🇸 EN
+                    ???? EN
                   </button>
                   <button
                     onClick={() => {
@@ -1268,7 +1268,7 @@ export default function Admin() {
                         : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                   >
-                    🇸🇦 AR
+                    ???? AR
                   </button>
                 </div>
               </div>
@@ -1281,7 +1281,7 @@ export default function Admin() {
                 className="w-full justify-start"
               >
                 <LogOut className="w-4 h-4 mr-2" />
-                {adminT("Kirjaudu ulos", "Logout", "تسجيل الخروج")}
+                {adminT("Kirjaudu ulos", "Logout", "????? ??????")}
               </Button>
             </div>
           </div>
@@ -1295,7 +1295,7 @@ export default function Admin() {
           <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-lg">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <div>                  <p className="text-blue-100 text-sm font-medium">{adminT("Tänään tilauksia", "Today's Orders", "طلبات اليوم")}</p>
+                <div>                  <p className="text-blue-100 text-sm font-medium">{adminT("T�n��n tilauksia", "Today's Orders", "????? ?????")}</p>
                   {ordersLoading ? (
                     <div className="animate-pulse bg-white/20 h-8 w-16 rounded mt-1"></div>
                   ) : (
@@ -1312,7 +1312,7 @@ export default function Admin() {
           <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-0 shadow-lg">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <div>                  <p className="text-orange-100 text-sm font-medium">{adminT("Odottaa", "Pending", "في الانتظار")}</p>
+                <div>                  <p className="text-orange-100 text-sm font-medium">{adminT("Odottaa", "Pending", "?? ????????")}</p>
                   {ordersLoading ? (
                     <div className="animate-pulse bg-white/20 h-8 w-16 rounded mt-1"></div>
                   ) : (
@@ -1329,11 +1329,11 @@ export default function Admin() {
           <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0 shadow-lg">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <div>                  <p className="text-green-100 text-sm font-medium">{adminT("Liikevaihto", "Revenue", "الإيرادات")}</p>
+                <div>                  <p className="text-green-100 text-sm font-medium">{adminT("Liikevaihto", "Revenue", "?????????")}</p>
                   {ordersLoading ? (
                     <div className="animate-pulse bg-white/20 h-8 w-16 rounded mt-1"></div>
                   ) : (
-                    <p className="text-2xl font-bold">€{todayRevenue.toFixed(2)}</p>
+                    <p className="text-2xl font-bold">�{todayRevenue.toFixed(2)}</p>
                   )}
                 </div>
                 <div className="bg-white/20 rounded-lg p-3">
@@ -1346,7 +1346,7 @@ export default function Admin() {
           <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0 shadow-lg">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <div>                  <p className="text-purple-100 text-sm font-medium">{adminT("Tuotteita", "Products", "المنتجات")}</p>
+                <div>                  <p className="text-purple-100 text-sm font-medium">{adminT("Tuotteita", "Products", "????????")}</p>
                   {menuLoading ? (
                     <div className="animate-pulse bg-white/20 h-8 w-16 rounded mt-1"></div>
                   ) : (
@@ -1366,27 +1366,27 @@ export default function Admin() {
           <TabsList className="grid w-full grid-cols-6 h-auto p-1 bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
             <TabsTrigger value="orders" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <Clock className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Tilaukset", "Orders", "الطلبات")}</span>
+              <span className="text-center leading-tight">{adminT("Tilaukset", "Orders", "???????")}</span>
             </TabsTrigger>
             <TabsTrigger value="menu" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <ChefHat className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Ruokalista", "Menu", "القائمة")}</span>
+              <span className="text-center leading-tight">{adminT("Ruokalista", "Menu", "???????")}</span>
             </TabsTrigger>
             <TabsTrigger value="promotions" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <Tag className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Tarjoukset", "Promotions", "العروض")}</span>
+              <span className="text-center leading-tight">{adminT("Tarjoukset", "Promotions", "??????")}</span>
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <BarChart3 className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Analytiikka", "Analytics", "التحليلات")}</span>
+              <span className="text-center leading-tight">{adminT("Analytiikka", "Analytics", "?????????")}</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <Settings className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Asetukset", "Settings", "الإعدادات")}</span>
+              <span className="text-center leading-tight">{adminT("Asetukset", "Settings", "?????????")}</span>
             </TabsTrigger>
             <TabsTrigger value="marketing" className="flex flex-col items-center justify-center space-y-1 px-2 py-3 text-xs font-medium h-auto">
               <Mail className="w-4 h-4" />
-              <span className="text-center leading-tight">{adminT("Markkinointi", "Marketing", "التسويق")}</span>
+              <span className="text-center leading-tight">{adminT("Markkinointi", "Marketing", "???????")}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -1396,7 +1396,7 @@ export default function Admin() {
               <CardHeader className="pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                   <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">
-                    {adminT("Tilaukset", "Orders", "الطلبات")}
+                    {adminT("Tilaukset", "Orders", "???????")}
                   </CardTitle>
                 </div>
               </CardHeader>
@@ -1406,7 +1406,7 @@ export default function Admin() {
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder={adminT("Hae tilauksia...", "Search orders...", "البحث في الطلبات...")}
+                      placeholder={adminT("Hae tilauksia...", "Search orders...", "????? ?? ???????...")}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -1414,16 +1414,16 @@ export default function Admin() {
                   </div>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue placeholder={adminT("Valitse tila", "Select status", "اختر الحالة")} />
+                      <SelectValue placeholder={adminT("Valitse tila", "Select status", "???? ??????")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">{adminT("Kaikki tilat", "All statuses", "جميع الحالات")}</SelectItem>
-                      <SelectItem value="pending">{adminT("Odottaa", "Pending", "في الانتظار")}</SelectItem>
-                      <SelectItem value="accepted">{adminT("Hyväksytty", "Accepted", "مقبول")}</SelectItem>
-                      <SelectItem value="preparing">{adminT("Valmistellaan", "Preparing", "قيد التحضير")}</SelectItem>
-                      <SelectItem value="ready">{adminT("Valmis", "Ready", "جاهز")}</SelectItem>
-                      <SelectItem value="delivered">{adminT("Toimitettu", "Delivered", "تم التسليم")}</SelectItem>
-                      <SelectItem value="cancelled">{adminT("Peruttu", "Cancelled", "ملغى")}</SelectItem>
+                      <SelectItem value="all">{adminT("Kaikki tilat", "All statuses", "???? ???????")}</SelectItem>
+                      <SelectItem value="pending">{adminT("Odottaa", "Pending", "?? ????????")}</SelectItem>
+                      <SelectItem value="accepted">{adminT("Hyv�ksytty", "Accepted", "?????")}</SelectItem>
+                      <SelectItem value="preparing">{adminT("Valmistellaan", "Preparing", "??? ???????")}</SelectItem>
+                      <SelectItem value="ready">{adminT("Valmis", "Ready", "????")}</SelectItem>
+                      <SelectItem value="delivered">{adminT("Toimitettu", "Delivered", "?? ???????")}</SelectItem>
+                      <SelectItem value="cancelled">{adminT("Peruttu", "Cancelled", "????")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1439,7 +1439,7 @@ export default function Admin() {
                   <div className="text-center py-12">
                     <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500 dark:text-gray-400 text-lg">
-                      {adminT("Ei tilauksia löytynyt", "No orders found", "لم يتم العثور على طلبات")}
+                      {adminT("Ei tilauksia l�ytynyt", "No orders found", "?? ??? ?????? ??? ?????")}
                     </p>
                   </div>
                 ) : (
@@ -1465,10 +1465,10 @@ export default function Admin() {
                                 </span>
                               </div>
                               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                                {order.customerName || adminT("Tuntematon asiakas", "Unknown customer", "عميل غير معروف")}
+                                {order.customerName || adminT("Tuntematon asiakas", "Unknown customer", "???? ??? ?????")}
                               </h3>
                               <p className="text-gray-600 dark:text-gray-400">
-                                {adminT("Yhteensä", "Total", "المجموع")}: €{order.totalAmount}
+                                {adminT("Yhteens�", "Total", "???????")}: �{order.totalAmount}
                               </p>
                               <p className="text-sm text-gray-500 dark:text-gray-400">
                                 {order.createdAt && new Date(order.createdAt).toLocaleString(language === "ar" ? "ar-SA" : language === "fi" ? "fi-FI" : "en-US")}
@@ -1488,7 +1488,7 @@ export default function Admin() {
                                     className="bg-green-600 hover:bg-green-700"
                                   >
                                     <CheckCircle className="w-4 h-4 mr-1" />
-                                    {adminT("Hyväksy", "Accept", "قبول")}
+                                    {adminT("Hyv�ksy", "Accept", "????")}
                                   </Button>
                                   <Button
                                     size="sm"
@@ -1500,7 +1500,7 @@ export default function Admin() {
                                     className="border-red-300 text-red-600 hover:bg-red-50"
                                   >
                                     <XCircle className="w-4 h-4 mr-1" />
-                                    {adminT("Hylkää", "Decline", "رفض")}
+                                    {adminT("Hylk��", "Decline", "???")}
                                   </Button>
                                 </>
                               )}
@@ -1514,7 +1514,7 @@ export default function Admin() {
                                   className="bg-orange-600 hover:bg-orange-700"
                                 >
                                   <Clock className="w-4 h-4 mr-1" />
-                                  {adminT("Aloita valmistus", "Start preparing", "بدء التحضير")}
+                                  {adminT("Aloita valmistus", "Start preparing", "??? ???????")}
                                 </Button>
                               )}
                               {order.status === "preparing" && (
@@ -1527,7 +1527,7 @@ export default function Admin() {
                                   className="bg-blue-600 hover:bg-blue-700"
                                 >
                                   <CheckCircle className="w-4 h-4 mr-1" />
-                                  {adminT("Merkitse valmiiksi", "Mark ready", "وضع علامة جاهز")}
+                                  {adminT("Merkitse valmiiksi", "Mark ready", "??? ????? ????")}
                                 </Button>
                               )}
                               {order.status === "ready" && (
@@ -1540,7 +1540,7 @@ export default function Admin() {
                                   className="bg-green-600 hover:bg-green-700"
                                 >
                                   <Truck className="w-4 h-4 mr-1" />
-                                  {adminT("Toimitettu", "Delivered", "تم التسليم")}
+                                  {adminT("Toimitettu", "Delivered", "?? ???????")}
                                 </Button>
                               )}
                                 {/* Print Receipt Button - Available for all orders */}
@@ -1552,7 +1552,7 @@ export default function Admin() {
                                 disabled={!activePrinter}
                               >
                                 <Printer className="w-4 h-4 mr-1" />
-                                {adminT("Tulosta", "Print", "طباعة")}
+                                {adminT("Tulosta", "Print", "?????")}
                               </Button>
                             </div>
                           </div>
@@ -1571,14 +1571,14 @@ export default function Admin() {
               <CardHeader className="pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                   <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">
-                    {adminT("Ruokalistan hallinta", "Menu Management", "إدارة القائمة")}
+                    {adminT("Ruokalistan hallinta", "Menu Management", "????? ???????")}
                   </CardTitle>
                   <Button 
                     onClick={() => setShowProductModal(true)}
                     className="bg-blue-600 hover:bg-blue-700"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    {adminT("Lisää tuote", "Add Product", "إضافة منتج")}
+                    {adminT("Lis�� tuote", "Add Product", "????? ????")}
                   </Button>
                 </div>
               </CardHeader>
@@ -1588,7 +1588,7 @@ export default function Admin() {
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder={adminT("Hae tuotteita...", "Search products...", "البحث في المنتجات...")}
+                      placeholder={adminT("Hae tuotteita...", "Search products...", "????? ?? ????????...")}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -1596,10 +1596,10 @@ export default function Admin() {
                   </div>
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                     <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue placeholder={adminT("Valitse kategoria", "Select category", "اختر الفئة")} />
+                      <SelectValue placeholder={adminT("Valitse kategoria", "Select category", "???? ?????")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">{adminT("Kaikki kategoriat", "All categories", "جميع الفئات")}</SelectItem>
+                      <SelectItem value="all">{adminT("Kaikki kategoriat", "All categories", "???? ??????")}</SelectItem>
                       {categories?.map((category) => (
                         <SelectItem key={category.id} value={category.id.toString()}>
                           {language === "en" ? category.nameEn : category.name}
@@ -1609,12 +1609,12 @@ export default function Admin() {
                   </Select>
                   <Select value={availabilityFilter} onValueChange={setAvailabilityFilter}>
                     <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue placeholder={adminT("Saatavuus", "Availability", "التوفر")} />
+                      <SelectValue placeholder={adminT("Saatavuus", "Availability", "??????")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">{adminT("Kaikki tuotteet", "All products", "جميع المنتجات")}</SelectItem>
-                      <SelectItem value="enabled">{adminT("Käytössä", "Enabled", "مفعل")}</SelectItem>
-                      <SelectItem value="disabled">{adminT("Pois käytöstä", "Disabled", "معطل")}</SelectItem>
+                      <SelectItem value="all">{adminT("Kaikki tuotteet", "All products", "???? ????????")}</SelectItem>
+                      <SelectItem value="enabled">{adminT("K�yt�ss�", "Enabled", "????")}</SelectItem>
+                      <SelectItem value="disabled">{adminT("Pois k�yt�st�", "Disabled", "????")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1630,7 +1630,7 @@ export default function Admin() {
                   <div className="text-center py-12">
                     <ChefHat className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500 dark:text-gray-400 text-lg">
-                      {adminT("Ei tuotteita löytynyt", "No products found", "لم يتم العثور على منتجات")}
+                      {adminT("Ei tuotteita l�ytynyt", "No products found", "?? ??? ?????? ??? ??????")}
                     </p>
                   </div>
                 ) : (
@@ -1647,7 +1647,7 @@ export default function Admin() {
                         {!item.isAvailable && (
                           <div className="absolute top-2 left-2 z-10">
                             <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
-                              {adminT("Pois käytöstä", "Disabled", "معطل")}
+                              {adminT("Pois k�yt�st�", "Disabled", "????")}
                             </span>
                           </div>
                         )}
@@ -1674,7 +1674,7 @@ export default function Admin() {
                             </p>
                             <div className="flex items-center justify-between">
                               <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                                €{item.price}
+                                �{item.price}
                               </span>
                               <div className="flex items-center space-x-2">
                                 <div className="flex items-center space-x-1">
@@ -1688,8 +1688,8 @@ export default function Admin() {
                                         });
                                       } catch (error) {
                                         toast({
-                                          title: adminT("Virhe", "Error", "خطأ"),
-                                          description: adminT("Tuotteen päivitys epäonnistui", "Failed to update product", "فشل في تحديث المنتج"),
+                                          title: adminT("Virhe", "Error", "???"),
+                                          description: adminT("Tuotteen p�ivitys ep�onnistui", "Failed to update product", "??? ?? ????? ??????"),
                                           variant: "destructive",
                                         });
                                       }
@@ -1702,8 +1702,8 @@ export default function Admin() {
                                       : 'text-red-600 dark:text-red-400'
                                   }`}>
                                     {item.isAvailable 
-                                      ? adminT("Käytössä", "Enabled", "مفعل")
-                                      : adminT("Pois", "Disabled", "معطل")
+                                      ? adminT("K�yt�ss�", "Enabled", "????")
+                                      : adminT("Pois", "Disabled", "????")
                                     }
                                   </span>
                                 </div>
@@ -1737,15 +1737,15 @@ export default function Admin() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Tag className="w-5 h-5" />
-                  {adminT("Hallitse tarjouksia", "Manage Promotions", "إدارة العروض")}
+                  {adminT("Hallitse tarjouksia", "Manage Promotions", "????? ??????")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
                   {adminT(
-                    "Luo ja hallitse tarjouksia kategorioille ja toimipisteille. Tarjoukset voivat olla prosenttipohjaisia tai kiinteitä alennuksia.",
+                    "Luo ja hallitse tarjouksia kategorioille ja toimipisteille. Tarjoukset voivat olla prosenttipohjaisia tai kiinteit� alennuksia.",
                     "Create and manage promotions for categories and branches. Promotions can be percentage-based or fixed discounts.",
-                    "إنشاء وإدارة العروض الترويجية للفئات والفروع. يمكن أن تكون العروض الترويجية على أساس النسبة المئوية أو خصومات ثابتة."
+                    "????? ?????? ?????? ????????? ?????? ???????. ???? ?? ???? ?????? ????????? ??? ???? ?????? ??????? ?? ?????? ?????."
                   )}
                 </p>
                 <Button 
@@ -1754,7 +1754,7 @@ export default function Admin() {
                   size="lg"
                 >
                   <Tag className="w-5 h-5 mr-2" />
-                  {adminT("Avaa tarjousten hallinta", "Open Promotions Management", "فتح إدارة العروض")}
+                  {adminT("Avaa tarjousten hallinta", "Open Promotions Management", "??? ????? ??????")}
                 </Button>
               </CardContent>
             </Card>
@@ -1765,14 +1765,14 @@ export default function Admin() {
             {/* Analytics Header with Export Button */}
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {adminT("Analytiikka", "Analytics", "التحليلات")}
+                {adminT("Analytiikka", "Analytics", "?????????")}
               </h2>
               <Button
                 onClick={() => setShowAnalyticsExportModal(true)}
                 className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
               >
                 <Download className="w-4 h-4 mr-2" />
-                {adminT("Vie raportti", "Export Report", "تصدير التقرير")}
+                {adminT("Vie raportti", "Export Report", "????? ???????")}
               </Button>
             </div>
 
@@ -1782,10 +1782,10 @@ export default function Admin() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-indigo-100 text-sm font-medium">{adminT("Kaikki tilaukset", "Total Orders", "إجمالي الطلبات")}</p>
+                      <p className="text-indigo-100 text-sm font-medium">{adminT("Kaikki tilaukset", "Total Orders", "?????? ???????")}</p>
                       <p className="text-2xl font-bold">{filteredOrders.length}</p>
                       <p className="text-xs text-indigo-200 mt-1">
-                        {adminT("Viikko", "Week", "أسبوع")}: {weeklyOrders.length}
+                        {adminT("Viikko", "Week", "?????")}: {weeklyOrders.length}
                       </p>
                     </div>
                     <div className="bg-white/20 rounded-lg p-3">
@@ -1799,10 +1799,10 @@ export default function Admin() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-emerald-100 text-sm font-medium">{adminT("Kokonaisliikevaihto", "Total Revenue", "إجمالي الإيرادات")}</p>
-                      <p className="text-2xl font-bold">€{monthlyRevenue.toFixed(0)}</p>
+                      <p className="text-emerald-100 text-sm font-medium">{adminT("Kokonaisliikevaihto", "Total Revenue", "?????? ?????????")}</p>
+                      <p className="text-2xl font-bold">�{monthlyRevenue.toFixed(0)}</p>
                       <p className="text-xs text-emerald-200 mt-1">
-                        {adminT("Viikko", "Week", "أسبوع")}: €{weeklyRevenue.toFixed(0)}
+                        {adminT("Viikko", "Week", "?????")}: �{weeklyRevenue.toFixed(0)}
                       </p>
                     </div>
                     <div className="bg-white/20 rounded-lg p-3">
@@ -1816,10 +1816,10 @@ export default function Admin() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-amber-100 text-sm font-medium">{adminT("Keskitilausarvo", "Avg Order Value", "متوسط قيمة الطلب")}</p>
-                      <p className="text-2xl font-bold">€{averageOrderValue.toFixed(2)}</p>
+                      <p className="text-amber-100 text-sm font-medium">{adminT("Keskitilausarvo", "Avg Order Value", "????? ???? ?????")}</p>
+                      <p className="text-2xl font-bold">�{averageOrderValue.toFixed(2)}</p>
                       <p className="text-xs text-amber-200 mt-1">
-                        {adminT("Onnistumisaste", "Success Rate", "معدل النجاح")}: {successRate}%
+                        {adminT("Onnistumisaste", "Success Rate", "???? ??????")}: {successRate}%
                       </p>
                     </div>
                     <div className="bg-white/20 rounded-lg p-3">
@@ -1833,10 +1833,10 @@ export default function Admin() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-rose-100 text-sm font-medium">{adminT("Aktiiviset tilaukset", "Active Orders", "الطلبات النشطة")}</p>
+                      <p className="text-rose-100 text-sm font-medium">{adminT("Aktiiviset tilaukset", "Active Orders", "??????? ??????")}</p>
                       <p className="text-2xl font-bold">{ordersByStatus.pending + ordersByStatus.accepted + ordersByStatus.preparing}</p>
                       <p className="text-xs text-rose-200 mt-1">
-                        {adminT("Peruutukset", "Cancelled", "ملغاة")}: {cancelledOrders} ({cancellationRate}%)
+                        {adminT("Peruutukset", "Cancelled", "?????")}: {cancelledOrders} ({cancellationRate}%)
                       </p>
                     </div>
                     <div className="bg-white/20 rounded-lg p-3">
@@ -1853,7 +1853,7 @@ export default function Admin() {
               <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                    <span>{adminT("Maksutavat", "Payment Methods", "طرق الدفع")}</span>
+                    <span>{adminT("Maksutavat", "Payment Methods", "??? ?????")}</span>
                     <CreditCard className="w-5 h-5 text-blue-600" />
                   </CardTitle>
                 </CardHeader>
@@ -1861,7 +1861,7 @@ export default function Admin() {
                   <div className="space-y-4">
                     {Object.entries(paymentMethodStats).length === 0 ? (
                       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                        <p className="text-sm">{adminT("Ei maksutietoja", "No payment data", "لا توجد بيانات")}</p>
+                        <p className="text-sm">{adminT("Ei maksutietoja", "No payment data", "?? ???? ??????")}</p>
                       </div>
                     ) : (
                       Object.entries(paymentMethodStats)
@@ -1869,9 +1869,9 @@ export default function Admin() {
                         .map(([method, data]) => {
                           const percentage = filteredOrders.length > 0 ? (data.count / filteredOrders.length) * 100 : 0;
                           const methodName = method === 'cash_or_card' 
-                            ? adminT('Käteinen tai kortti', 'Cash or Card', 'نقداً أو بطاقة')
+                            ? adminT('K�teinen tai kortti', 'Cash or Card', '????? ?? ?????')
                             : method === 'stripe'
-                            ? adminT('Verkkomaksu', 'Online Payment', 'دفع إلكتروني')
+                            ? adminT('Verkkomaksu', 'Online Payment', '??? ????????')
                             : method;
                           
                           return (
@@ -1889,13 +1889,13 @@ export default function Admin() {
                                   <div>
                                     <p className="font-medium">{methodName}</p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                                      {data.count} {adminT("tilausta", "orders", "طلبات")}
+                                      {data.count} {adminT("tilausta", "orders", "?????")}
                                     </p>
                                   </div>
                                 </div>
                                 <div className="text-right">
                                   <p className="font-bold text-green-600 dark:text-green-400">
-                                    €{data.revenue.toFixed(2)}
+                                    �{data.revenue.toFixed(2)}
                                   </p>
                                   <p className="text-xs text-gray-500 dark:text-gray-400">
                                     {percentage.toFixed(1)}%
@@ -1920,7 +1920,7 @@ export default function Admin() {
               <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                    <span>{adminT("Toimitustapa", "Delivery Method", "طريقة التوصيل")}</span>
+                    <span>{adminT("Toimitustapa", "Delivery Method", "????? ???????")}</span>
                     <TrendingUp className="w-5 h-5 text-green-600" />
                   </CardTitle>
                 </CardHeader>
@@ -1933,15 +1933,15 @@ export default function Admin() {
                             <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                           </div>
                           <div>
-                            <p className="font-medium">{adminT("Kotiinkuljetus", "Delivery", "توصيل")}</p>
+                            <p className="font-medium">{adminT("Kotiinkuljetus", "Delivery", "?????")}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {orderTypeStats.delivery} {adminT("tilausta", "orders", "طلبات")}
+                              {orderTypeStats.delivery} {adminT("tilausta", "orders", "?????")}
                             </p>
                           </div>
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-green-600 dark:text-green-400">
-                            €{orderTypeStats.deliveryRevenue.toFixed(2)}
+                            �{orderTypeStats.deliveryRevenue.toFixed(2)}
                           </p>
                           <p className="text-xs text-gray-500 dark:text-gray-400">
                             {filteredOrders.length > 0 ? ((orderTypeStats.delivery / filteredOrders.length) * 100).toFixed(1) : 0}%
@@ -1963,15 +1963,15 @@ export default function Admin() {
                             <Store className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                           </div>
                           <div>
-                            <p className="font-medium">{adminT("Nouto", "Pickup", "استلام")}</p>
+                            <p className="font-medium">{adminT("Nouto", "Pickup", "??????")}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {orderTypeStats.pickup} {adminT("tilausta", "orders", "طلبات")}
+                              {orderTypeStats.pickup} {adminT("tilausta", "orders", "?????")}
                             </p>
                           </div>
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-green-600 dark:text-green-400">
-                            €{orderTypeStats.pickupRevenue.toFixed(2)}
+                            �{orderTypeStats.pickupRevenue.toFixed(2)}
                           </p>
                           <p className="text-xs text-gray-500 dark:text-gray-400">
                             {filteredOrders.length > 0 ? ((orderTypeStats.pickup / filteredOrders.length) * 100).toFixed(1) : 0}%
@@ -1989,13 +1989,13 @@ export default function Admin() {
                     {peakHour && (
                       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                          {adminT("Kiireisin tunti", "Peak Hour", "ساعة الذروة")}
+                          {adminT("Kiireisin tunti", "Peak Hour", "???? ??????")}
                         </p>
                         <div className="flex items-center justify-between">
                           <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300">
                             {peakHour[0]}:00 - {parseInt(peakHour[0]) + 1}:00
                           </Badge>
-                          <span className="font-semibold text-lg">{peakHour[1]} {adminT("tilausta", "orders", "طلبات")}</span>
+                          <span className="font-semibold text-lg">{peakHour[1]} {adminT("tilausta", "orders", "?????")}</span>
                         </div>
                       </div>
                     )}
@@ -2014,7 +2014,7 @@ export default function Admin() {
               <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">
-                    {adminT("Tilausten tilat", "Order Status Breakdown", "توزيع حالات الطلبات")}
+                    {adminT("Tilausten tilat", "Order Status Breakdown", "????? ????? ???????")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -2037,14 +2037,14 @@ export default function Admin() {
               <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">
-                    {adminT("Suosituimmat tuotteet", "Popular Products", "المنتجات الشائعة")}
+                    {adminT("Suosituimmat tuotteet", "Popular Products", "???????? ???????")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {topMenuItems.length === 0 ? (
                       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                        <p className="text-sm">{adminT("Ei tuotetietoja", "No product data", "لا توجد بيانات")}</p>
+                        <p className="text-sm">{adminT("Ei tuotetietoja", "No product data", "?? ???? ??????")}</p>
                       </div>
                     ) : (
                       topMenuItems.map((item, index) => (
@@ -2063,16 +2063,16 @@ export default function Admin() {
                                 {language === "en" ? item.nameEn : item.name}
                               </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400">
-                                {item.count} {adminT("kertaa tilattu", "times ordered", "مرات الطلب")}
+                                {item.count} {adminT("kertaa tilattu", "times ordered", "???? ?????")}
                               </p>
                             </div>
                           </div>
                           <div className="text-right">
                             <p className="text-green-600 dark:text-green-400 font-semibold">
-                              €{item.revenue.toFixed(2)}
+                              �{item.revenue.toFixed(2)}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {adminT("liikevaihto", "revenue", "إيرادات")}
+                              {adminT("liikevaihto", "revenue", "???????")}
                             </p>
                           </div>
                         </div>
@@ -2087,7 +2087,7 @@ export default function Admin() {
             <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">
-                  {adminT("Viimeaikainen toiminta", "Recent Activity", "النشاط الأخير")}
+                  {adminT("Viimeaikainen toiminta", "Recent Activity", "?????? ??????")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -2100,11 +2100,11 @@ export default function Admin() {
                         </Badge>
                         <span className="font-medium">#{order.orderNumber}</span>
                         <span className="text-gray-600 dark:text-gray-400">
-                          {order.customerName || adminT("Tuntematon", "Unknown", "غير معروف")}
+                          {order.customerName || adminT("Tuntematon", "Unknown", "??? ?????")}
                         </span>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">€{order.totalAmount}</p>
+                        <p className="font-semibold">�{order.totalAmount}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                           {order.createdAt && new Date(order.createdAt).toLocaleDateString()}
                         </p>
@@ -2122,7 +2122,7 @@ export default function Admin() {
               <Card className="border-0 shadow-lg bg-white dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">
-                    {adminT("Yleiset asetukset", "General Settings", "الإعدادات العامة")}
+                    {adminT("Yleiset asetukset", "General Settings", "????????? ??????")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -2132,7 +2132,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Store className="w-4 h-4 mr-2" />
-                    {adminT("pizzerian asetukset", "Restaurant Settings", "إعدادات المطعم")}
+                    {adminT("pizzerian asetukset", "Restaurant Settings", "??????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => setShowSiteConfigModal(true)}
@@ -2140,7 +2140,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Globe className="w-4 h-4 mr-2" />
-                    {adminT("Sivuston asetukset", "Site Configuration", "إعدادات الموقع")}
+                    {adminT("Sivuston asetukset", "Site Configuration", "??????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => setShowThemeLayoutModal(true)}
@@ -2148,7 +2148,7 @@ export default function Admin() {
                     className="w-full justify-start bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 border-purple-200 dark:border-purple-800"
                   >
                     <Palette className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
-                    {adminT("Teema & ulkoasu", "Theme & Layout", "المظهر والتخطيط")}
+                    {adminT("Teema & ulkoasu", "Theme & Layout", "?????? ????????")}
                   </Button>
                   <Button 
                     onClick={() => setShowPaymentMethodsModal(true)}
@@ -2156,7 +2156,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <CreditCard className="w-4 h-4 mr-2" />
-                    {adminT("Maksutavat", "Payment Methods", "طرق الدفع")}
+                    {adminT("Maksutavat", "Payment Methods", "??? ?????")}
                   </Button>
                   <Button
                     onClick={() => setShowToppingGroupsModal(true)}
@@ -2164,7 +2164,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Tag className="w-4 h-4 mr-2" />
-                    {adminT("Täytteiden hallinta", "Toppings Management", "إدارة الإضافات")}
+                    {adminT("T�ytteiden hallinta", "Toppings Management", "????? ????????")}
                   </Button>
                   <Button 
                     onClick={() => setShowCategoryModal(true)}
@@ -2172,7 +2172,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Coffee className="w-4 h-4 mr-2" />
-                    {adminT("Kategorioiden hallinta", "Category Management", "إدارة الفئات")}
+                    {adminT("Kategorioiden hallinta", "Category Management", "????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => setShowBranchModal(true)}
@@ -2180,7 +2180,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Store className="w-4 h-4 mr-2" />
-                    {adminT("Toimipisteiden hallinta", "Branch Management", "إدارة الفروع")}
+                    {adminT("Toimipisteiden hallinta", "Branch Management", "????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => navigate("/locations")}
@@ -2188,7 +2188,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <MapPin className="w-4 h-4 mr-2" />
-                    {adminT("Ruokapisteet", "Food Locations", "مواقع الطعام")}
+                    {adminT("Ruokapisteet", "Food Locations", "????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => navigate("/lounas")}
@@ -2196,7 +2196,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <UtensilsCrossed className="w-4 h-4 mr-2" />
-                    {adminT("Lounas-valikko", "Lunch Menu", "قائمة الغداء")}
+                    {adminT("Lounas-valikko", "Lunch Menu", "????? ??????")}
                   </Button>
                   <Button 
                     onClick={() => setShowDiscoveryModal(true)}
@@ -2204,7 +2204,7 @@ export default function Admin() {
                     className="w-full justify-start"
                   >
                     <Printer className="w-4 h-4 mr-2" />
-                    {adminT("Tulostimet", "Printers", "الطابعات")}
+                    {adminT("Tulostimet", "Printers", "????????")}
                   </Button>
                   <ManualUpdateButton />
                 </CardContent>
@@ -2229,9 +2229,9 @@ export default function Admin() {
         product={editingProduct}
         onSave={async (productData) => {
           try {
-            console.log("💾 Saving product data:", productData);
-            console.log("🔍 hasConditionalPricing:", productData.hasConditionalPricing);
-            console.log("🔍 includedToppingsCount:", productData.includedToppingsCount);
+            console.log("?? Saving product data:", productData);
+            console.log("?? hasConditionalPricing:", productData.hasConditionalPricing);
+            console.log("?? includedToppingsCount:", productData.includedToppingsCount);
             
             if (editingProduct?.id) {
               // Editing existing product - preserve displayOrder
@@ -2243,9 +2243,9 @@ export default function Admin() {
                 displayOrder: editingProduct.displayOrder // Preserve original order
               };
               
-              console.log("📤 Update payload:", updatePayload);
-              console.log("📤 Payload hasConditionalPricing:", updatePayload.hasConditionalPricing);
-              console.log("📤 Payload includedToppingsCount:", updatePayload.includedToppingsCount);
+              console.log("?? Update payload:", updatePayload);
+              console.log("?? Payload hasConditionalPricing:", updatePayload.hasConditionalPricing);
+              console.log("?? Payload includedToppingsCount:", updatePayload.includedToppingsCount);
               
               await updateMenuItem.mutateAsync({
                 id: editingProduct.id,
@@ -2268,13 +2268,13 @@ export default function Admin() {
             }
             
             toast({
-              title: adminT("Tallennettu", "Saved", "محفوظ"),
-              description: adminT("Tuote tallennettu onnistuneesti", "Product saved successfully", "تم حفظ المنتج بنجاح"),
+              title: adminT("Tallennettu", "Saved", "?????"),
+              description: adminT("Tuote tallennettu onnistuneesti", "Product saved successfully", "?? ??? ?????? ?????"),
             });
           } catch (error) {
             toast({
-              title: adminT("Virhe", "Error", "خطأ"),
-              description: adminT("Tuotteen tallentaminen epäonnistui", "Failed to save product", "فشل في حفظ المنتج"),
+              title: adminT("Virhe", "Error", "???"),
+              description: adminT("Tuotteen tallentaminen ep�onnistui", "Failed to save product", "??? ?? ??? ??????"),
               variant: "destructive",
             });
           }

@@ -1,4 +1,4 @@
-ï»¿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useRestaurantConfig, useUpdateRestaurantConfig, useCreateRestaurantConfig, useActivateRestaurantConfig } from "@/hooks/use-restaurant-config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -349,7 +349,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="pizzeria antonio"
+                  placeholder="Tirvan Kahvila"
                 />
               </div>
               <div className="space-y-2">
@@ -358,7 +358,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="nameEn"
                   value={formData.nameEn}
                   onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
-                  placeholder="pizzeria antonio"
+                  placeholder="Tirvan Kahvila"
                 />
               </div>
               <div className="space-y-2">
@@ -367,7 +367,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="tagline"
                   value={formData.tagline}
                   onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
-                  placeholder="Laadukkaita aterioita Lahden sydÃ¤messÃ¤"
+                  placeholder="Laadukkaita aterioita Lahden sydämessä"
                 />
               </div>
               <div className="space-y-2">
@@ -388,7 +388,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="pizzeria antoniossa tarjoamme laadukkaita aterioita..."
+                  placeholder="Tirvan Kahvilassa tarjoamme laadukkaita aterioita..."
                   rows={3}
                 />
               </div>
@@ -398,7 +398,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   id="descriptionEn"
                   value={formData.descriptionEn}
                   onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
-                  placeholder="At pizzeria antonio we offer quality meals..."
+                  placeholder="At Tirvan Kahvila we offer quality meals..."
                   rows={3}
                 />
               </div>
@@ -424,7 +424,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="info@pizzeriaantonio.fi"
+                  placeholder="info@tirvankahvila.fi"
                 />
               </div>
             </div>
@@ -442,7 +442,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                       ...formData, 
                       address: { ...formData.address, street: e.target.value }
                     })}
-                    placeholder="Rauhankatu 19 c"
+                    placeholder="Pasintie 2"
                   />
                 </div>
                 <div className="space-y-2">
@@ -454,7 +454,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                       ...formData, 
                       address: { ...formData.address, postalCode: e.target.value }
                     })}
-                    placeholder="15110"
+                    placeholder="45410"
                   />
                 </div>
                 <div className="space-y-2">
@@ -845,7 +845,7 @@ export function RestaurantSiteConfig({ onClose }: RestaurantSiteConfigProps) {
                         />
                       </div>
                       <div className="flex-1">
-                        <Label>Delivery Fee (â‚¬)</Label>
+                        <Label>Delivery Fee (€)</Label>
                         <Input
                           type="number"
                           step="0.50"

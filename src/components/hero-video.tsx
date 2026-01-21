@@ -1,4 +1,4 @@
-Ôªøimport { useLanguage } from "@/lib/language-context";
+import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { UtensilsCrossed, Play, Phone } from "lucide-react";
 import { Link } from "wouter";
@@ -32,16 +32,16 @@ export function HeroVideo() {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          {t("pizzeria antonio", "pizzeria antonio")}
+          {t("Tirvan Kahvila", "Tirvan Kahvila")}
         </h1>
         
         <p className="text-xl md:text-2xl lg:text-3xl mb-4 opacity-90 font-light">
-          {t("Aitoja makuja Suomen syd√§mest√§", "Authentic flavors from the heart of Finland")}
+          {t("Aitoja makuja Suomen syd‰mest‰", "Authentic flavors from the heart of Finland")}
         </p>
         
         <p className="text-lg md:text-xl mb-8 opacity-80 max-w-2xl mx-auto">
           {t(
-            "Nautiskele perinteisist√§ suomalaisista mauista ja tuoreista raaka-aineista valmistetusta ruoasta",
+            "Nautiskele perinteisist‰ suomalaisista mauista ja tuoreista raaka-aineista valmistetusta ruoasta",
             "Enjoy traditional Finnish flavors and food made from fresh ingredients"
           )}
         </p>

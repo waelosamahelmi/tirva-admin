@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer - QR Code as Bitmap (Raster Graphics)
  * Generate QR code and print as raster image
  */
@@ -33,7 +33,7 @@ async function qrCodeToRaster(url) {
   const base64Data = qrDataUrl.replace(/^data:image\/png;base64,/, '');
   const imgBuffer = Buffer.from(base64Data, 'base64');
   
-  console.log(`✓ QR code generated: ${imgBuffer.length} bytes PNG`);
+  console.log(`? QR code generated: ${imgBuffer.length} bytes PNG`);
   
   // For now, return the buffer - we'll convert to raster format
   // Star raster format: ESC GS ( L for graphics
@@ -59,7 +59,7 @@ async function generateReceiptWithQR() {
   // Header
   cmd.push(ESC, 0x45); // Bold on
   cmd.push(ESC, 0x69, 0x02, 0x02); // 2x2
-  cmd.push(...encode('antonio'));
+  cmd.push(...encode('tirva'));
   cmd.push(LF);
   cmd.push(ESC, 0x69, 0x01, 0x01); // Normal
   cmd.push(ESC, 0x46); // Bold off
@@ -71,9 +71,9 @@ async function generateReceiptWithQR() {
   cmd.push(LF, LF);
   
   // Method 1: Star's native QR code command (2D barcode)
-  console.log('→ Using Star 2D barcode command for QR code');
+  console.log('? Using Star 2D barcode command for QR code');
   
-  const url = 'https://pizzeriaantonio.fi';
+  const url = 'https://tirvankahvila.fi';
   const urlBytes = encode(url);
   const dataLen = urlBytes.length;
   
@@ -93,14 +93,14 @@ async function generateReceiptWithQR() {
   cmd.push(LF, LF);
   
   // URL text below QR
-  cmd.push(...encode('pizzeriaantonio.fi'));
+  cmd.push(...encode('tirvankahvila.fi'));
   cmd.push(LF, LF, LF);
   
   // Method 2: Also try bitmap QR (in case native doesn't work)
-  console.log('→ Generating backup QR as 1D barcode');
+  console.log('? Generating backup QR as 1D barcode');
   
   // Simple text barcode as fallback
-  cmd.push(...encode('Barcode: antonio-2025'));
+  cmd.push(...encode('Barcode: tirva-2025'));
   cmd.push(LF, LF);
   
   // Cut
@@ -110,42 +110,42 @@ async function generateReceiptWithQR() {
 }
 
 async function sendToPrinter(host, port) {
-  console.log(`🖨️  ===== QR CODE BITMAP TEST =====`);
-  console.log(`📍 Target: ${host}:${port}\n`);
+  console.log(`???  ===== QR CODE BITMAP TEST =====`);
+  console.log(`?? Target: ${host}:${port}\n`);
   
   try {
     const receipt = await generateReceiptWithQR();
-    console.log(`\n📦 Generated ${receipt.length} bytes\n`);
+    console.log(`\n?? Generated ${receipt.length} bytes\n`);
     
     const client = new net.Socket();
     
     client.setTimeout(5000);
     
     client.on('timeout', () => {
-      console.error('❌ Timeout');
+      console.error('? Timeout');
       client.destroy();
       process.exit(1);
     });
     
     client.on('error', (err) => {
-      console.error(`❌ Error: ${err.message}`);
+      console.error(`? Error: ${err.message}`);
       process.exit(1);
     });
     
     client.on('connect', () => {
-      console.log(`✅ Connected!`);
-      console.log(`📤 Sending QR code test...\n`);
+      console.log(`? Connected!`);
+      console.log(`?? Sending QR code test...\n`);
       
       client.write(receipt, () => {
-        console.log(`✅ Sent successfully!\n`);
+        console.log(`? Sent successfully!\n`);
         console.log(`Expected output:`);
-        console.log(`  1. "antonio" header (2x2, bold)`);
+        console.log(`  1. "tirva" header (2x2, bold)`);
         console.log(`  2. "pizzeria" subtitle`);
         console.log(`  3. QR code (scannable square)`);
-        console.log(`  4. "pizzeriaantonio.fi" below QR`);
+        console.log(`  4. "tirvankahvila.fi" below QR`);
         console.log(`  5. Fallback barcode text\n`);
         console.log(`Try scanning the QR code with your phone!`);
-        console.log(`It should open: https://pizzeriaantonio.fi\n`);
+        console.log(`It should open: https://tirvankahvila.fi\n`);
         
         setTimeout(() => {
           client.end();
@@ -154,11 +154,11 @@ async function sendToPrinter(host, port) {
       });
     });
     
-    console.log(`🔌 Connecting...`);
+    console.log(`?? Connecting...`);
     client.connect(port, host);
     
   } catch (error) {
-    console.error('❌ Error generating receipt:', error);
+    console.error('? Error generating receipt:', error);
     process.exit(1);
   }
 }

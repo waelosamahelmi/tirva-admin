@@ -1,4 +1,4 @@
-﻿import { useLanguage } from "@/lib/language-context";
+import { useLanguage } from "@/lib/language-context";
 
 export function Logo({ className = "h-8" }: { className?: string }) {
   return (
@@ -25,7 +25,7 @@ export function Logo({ className = "h-8" }: { className?: string }) {
       {/* Restaurant Name */}
       <div className="flex flex-col">
         <span className="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-          pizzeria antonio
+          Tirvan Kahvila
         </span>
       </div>
     </div>

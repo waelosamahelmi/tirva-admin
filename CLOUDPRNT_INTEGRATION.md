@@ -1,14 +1,14 @@
-﻿# CloudPRNT Integration Guide
+# CloudPRNT Integration Guide
 
 ## Overview
 
-This implementation integrates **Star Micronics CloudPRNT** protocol into the antonio Admin App. CloudPRNT allows Star thermal printers (mC-Print3, TSP100IV, etc.) to poll a server for print jobs over HTTP, enabling remote printing without direct network connections from the admin app.
+This implementation integrates **Star Micronics CloudPRNT** protocol into the tirva Admin App. CloudPRNT allows Star thermal printers (mC-Print3, TSP100IV, etc.) to poll a server for print jobs over HTTP, enabling remote printing without direct network connections from the admin app.
 
 ## Architecture
 
 ```
-Admin App → CloudPRNT Server → Star Printer
-    ↓                ↓               ↓
+Admin App ? CloudPRNT Server ? Star Printer
+    ?                ?               ?
   Submit Job     Queue Job       Poll Server
                                  Get Job Data
                                  Print Receipt
@@ -17,16 +17,16 @@ Admin App → CloudPRNT Server → Star Printer
 
 ## Features
 
-### ✅ CloudPRNT Protocol Support
+### ? CloudPRNT Protocol Support
 - **HTTP Polling**: Printers poll server every few seconds for jobs
 - **Job Queue**: Server maintains queue of print jobs per printer
 - **Job Confirmation**: Printers confirm successful/failed prints
 - **MAC-based routing**: Jobs routed to specific printers by MAC address
 
-### ✅ Modern Receipt Design
-- **Logo**: Text-based antonio restaurant logo at top
-- **QR Code**: Links to pizzeriaantonio.fi for customer feedback
-- **Finnish Encoding**: Proper CP850 encoding for ä, ö, å characters
+### ? Modern Receipt Design
+- **Logo**: Text-based tirva restaurant logo at top
+- **QR Code**: Links to tirvankahvila.fi for customer feedback
+- **Finnish Encoding**: Proper CP850 encoding for �, �, � characters
 - **Structured Layout**:
   - Order number (large, prominent)
   - Customer information
@@ -36,7 +36,7 @@ Admin App → CloudPRNT Server → Star Printer
   - Large total amount
   - Special instructions
 
-### ✅ Dual Printer Support
+### ? Dual Printer Support
 - **Star Printers**: Native StarPRNT commands with QR codes
 - **ESC/POS Printers**: Generic ESC/POS with QR support
 - Auto-detection based on printer model/name
@@ -44,17 +44,17 @@ Admin App → CloudPRNT Server → Star Printer
 ## Files Structure
 
 ```
-antonio-app/
-├── server/
-│   └── cloudprnt-server.ts         # CloudPRNT server implementation
-├── src/lib/printer/
-│   ├── cloudprnt-client.ts         # Client API for submitting jobs
-│   ├── modern-receipt-formatter.ts # Modern ESC/POS receipts
-│   ├── star-formatter.ts           # Enhanced Star printer formatter
-│   ├── receipt-graphics.ts         # QR code & graphics generation
-│   ├── escpos-formatter.ts         # Original ESC/POS formatter (updated)
-│   └── printer-service.ts          # Main printer service
-└── README_CLOUDPRNT.md            # This file
+tirva-app/
++-- server/
+�   +-- cloudprnt-server.ts         # CloudPRNT server implementation
++-- src/lib/printer/
+�   +-- cloudprnt-client.ts         # Client API for submitting jobs
+�   +-- modern-receipt-formatter.ts # Modern ESC/POS receipts
+�   +-- star-formatter.ts           # Enhanced Star printer formatter
+�   +-- receipt-graphics.ts         # QR code & graphics generation
+�   +-- escpos-formatter.ts         # Original ESC/POS formatter (updated)
+�   +-- printer-service.ts          # Main printer service
++-- README_CLOUDPRNT.md            # This file
 ```
 
 ## Setup Instructions
@@ -112,7 +112,7 @@ const receiptData: ReceiptData = {
   customerName: 'John Doe',
   customerPhone: '+358-123-456-789',
   customerEmail: 'john@example.com',
-  deliveryAddress: 'Vapaudenkatu 1\n15110 Lahti',
+  deliveryAddress: 'Vapaudenkatu 1\n45410 Utti',
   orderType: 'delivery',
   paymentMethod: 'card',
   items: [
@@ -148,16 +148,16 @@ if (result.success) {
 ### Finnish Character Support
 
 All text is encoded using **CP850 (Multilingual Latin I)** which properly supports:
-- ä → 0x84
-- Ä → 0x8E
-- ö → 0x94
-- Ö → 0x99
-- å → 0x86
-- Å → 0x8F
+- � ? 0x84
+- � ? 0x8E
+- � ? 0x94
+- � ? 0x99
+- � ? 0x86
+- � ? 0x8F
 
 Example output:
 ```
-Lisätäytteet:
+Lis�t�ytteet:
   + Juusto
   + Paprika
   + Sipuli
@@ -179,7 +179,7 @@ GS ( k pL pH cn fn n [data]
 ESC GS y S 0 model errorLevel cellSize dataLength [data]
 ```
 
-The QR code links to `https://pizzeriaantonio.fi`
+The QR code links to `https://tirvankahvila.fi`
 
 ### Conditional Pricing
 
@@ -194,15 +194,15 @@ Three logo approaches are supported:
 
 1. **Text Logo** (default, most reliable):
 ```
-╔════════════════════════════════╗
-║      pizzeria antonio         ║
-╚════════════════════════════════╝
++--------------------------------+
+�      Tirvan Kahvila         �
++--------------------------------+
 ```
 
 2. **Large Text**:
 ```
-antonio
-pizzeria
+tirva
+kahvila
 ```
 
 3. **Image Logo** (future enhancement):
@@ -212,7 +212,7 @@ pizzeria
 
 ## CloudPRNT Protocol Details
 
-### POST Poll (Printer → Server)
+### POST Poll (Printer ? Server)
 Printer sends status and asks for jobs:
 
 ```json
@@ -240,7 +240,7 @@ Server response when no jobs:
 }
 ```
 
-### GET Job Data (Printer → Server)
+### GET Job Data (Printer ? Server)
 Printer requests job data using jobToken:
 
 ```
@@ -250,7 +250,7 @@ Accept: application/vnd.star.starprnt
 
 Server responds with binary print data (StarPRNT or ESC/POS commands).
 
-### DELETE Confirmation (Printer → Server)
+### DELETE Confirmation (Printer ? Server)
 Printer confirms print completion:
 
 ```
@@ -310,7 +310,7 @@ DELETE /cloudprnt/001162123456/job_1234567890_abc123?code=success
    ```
 
 2. **Check character mapping**:
-   - ä should print correctly, not as "a" or "?"
+   - � should print correctly, not as "a" or "?"
    - If wrong, printer may not support CP850
 
 3. **Alternative encodings**:
@@ -451,4 +451,4 @@ For issues or questions:
 
 ## License
 
-This implementation is part of the antonio Restaurant Admin App.
+This implementation is part of the tirva Restaurant Admin App.

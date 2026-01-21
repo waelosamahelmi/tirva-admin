@@ -1,4 +1,4 @@
-﻿import type { Express } from "express";
+import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
@@ -32,11 +32,11 @@ const requireAuth = (req: any, res: any, next: any) => {
     const token = authHeader.substring(7);
     // For now, we'll accept any Bearer token as valid
     // In a production environment, you should verify the Supabase JWT
-    console.log(`🔓 Bearer token authentication accepted for ${req.method} ${req.path}`);
+    console.log(`?? Bearer token authentication accepted for ${req.method} ${req.path}`);
     return next();
   }
   
-  console.log(`❌ Authentication failed for ${req.method} ${req.path} - no session or Bearer token`);
+  console.log(`? Authentication failed for ${req.method} ${req.path} - no session or Bearer token`);
   return res.status(401).json({ error: "Authentication required" });
 };
 
@@ -47,9 +47,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { email, password } = req.body;
       
-      console.log(`🔐 Login attempt for email: ${email}`);
-      console.log(`🌐 Origin: ${req.headers.origin}`);
-      console.log(`🍪 Session ID before login: ${req.sessionID}`);
+      console.log(`?? Login attempt for email: ${email}`);
+      console.log(`?? Origin: ${req.headers.origin}`);
+      console.log(`?? Session ID before login: ${req.sessionID}`);
       
       if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
@@ -57,7 +57,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const user = await authService.authenticateUser(email, password);
       if (!user) {
-        console.log(`❌ Authentication failed for email: ${email}`);
+        console.log(`? Authentication failed for email: ${email}`);
         return res.status(401).json({ error: "Invalid credentials" });
       }
 
@@ -66,26 +66,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Force session save to ensure it's written to store
       req.session.save((err) => {
         if (err) {
-          console.error(`❌ Session save error:`, err);
+          console.error(`? Session save error:`, err);
         } else {
-          console.log(`✅ Session saved successfully`);
+          console.log(`? Session saved successfully`);
         }
       });
       
-      console.log(`✅ User logged in successfully: ${user.email}`);
-      console.log(`🍪 Session ID after login: ${req.sessionID}`);
-      console.log(`👤 Session user: ${JSON.stringify(req.session.user)}`);
-      console.log(`🔧 Session cookie config: ${JSON.stringify(req.session.cookie)}`);
+      console.log(`? User logged in successfully: ${user.email}`);
+      console.log(`?? Session ID after login: ${req.sessionID}`);
+      console.log(`?? Session user: ${JSON.stringify(req.session.user)}`);
+      console.log(`?? Session cookie config: ${JSON.stringify(req.session.cookie)}`);
       
       res.json({ user });
     } catch (error) {
-      console.error(`💥 Login error:`, error);
+      console.error(`?? Login error:`, error);
       res.status(500).json({ error: "Authentication failed" });
     }
   });
 
   app.post("/api/auth/logout", (req, res) => {
-    console.log(`🚪 Logout request from session: ${req.sessionID}`);
+    console.log(`?? Logout request from session: ${req.sessionID}`);
     req.session.destroy(() => {
       res.json({ message: "Logged out successfully" });
     });
@@ -110,8 +110,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Subject and HTML content are required" });
       }
 
-      console.log(`📧 Sending marketing email to ${to.length} recipients`);
-      console.log(`📧 Subject: ${subject}`);
+      console.log(`?? Sending marketing email to ${to.length} recipients`);
+      console.log(`?? Subject: ${subject}`);
 
       // Create nodemailer transporter for Hostinger SMTP
       const transporter = nodemailer.createTransport({
@@ -119,22 +119,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-          user: 'no-reply@pizzeriaantonio.fi',
+          user: 'no-reply@tirvankahvila.fi',
           pass: process.env.SMTP_PASSWORD || 'your-password-here' // Set this in .env
         }
       });
 
       // Send email to all recipients
       const info = await transporter.sendMail({
-        from: '"pizzeria antonio" <no-reply@pizzeriaantonio.fi>',
+        from: '"Tirvan Kahvila" <no-reply@tirvankahvila.fi>',
         to: to.join(', '), // Join all recipient emails
         subject: subject,
         html: html,
-        replyTo: replyTo || 'info@pizzeriaantonio.fi'
+        replyTo: replyTo || 'info@tirvankahvila.fi'
       });
 
-      console.log(`✅ Marketing email sent successfully: ${info.messageId}`);
-      console.log(`📬 Recipients: ${to.length}`);
+      console.log(`? Marketing email sent successfully: ${info.messageId}`);
+      console.log(`?? Recipients: ${to.length}`);
 
       res.json({ 
         success: true, 
@@ -142,7 +142,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         recipientCount: to.length 
       });
     } catch (error) {
-      console.error('❌ Failed to send marketing email:', error);
+      console.error('? Failed to send marketing email:', error);
       res.status(500).json({ 
         error: error instanceof Error ? error.message : 'Failed to send email'
       });
@@ -150,18 +150,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/auth/me", (req, res) => {
-    console.log(`🔍 Auth check for session: ${req.sessionID}`);
-    console.log(`🌐 Origin: ${req.headers.origin}`);
-    console.log(`🍪 Cookie header: ${req.headers.cookie}`);
-    console.log(`🍪 Session user: ${JSON.stringify(req.session.user)}`);
-    console.log(`📋 Session data: ${JSON.stringify(req.session)}`);
-    console.log(`🔧 Request session cookie: ${req.session.cookie ? JSON.stringify(req.session.cookie) : 'undefined'}`);
+    console.log(`?? Auth check for session: ${req.sessionID}`);
+    console.log(`?? Origin: ${req.headers.origin}`);
+    console.log(`?? Cookie header: ${req.headers.cookie}`);
+    console.log(`?? Session user: ${JSON.stringify(req.session.user)}`);
+    console.log(`?? Session data: ${JSON.stringify(req.session)}`);
+    console.log(`?? Request session cookie: ${req.session.cookie ? JSON.stringify(req.session.cookie) : 'undefined'}`);
     
     if (req.session.user) {
-      console.log(`✅ Auth check successful for user: ${req.session.user.email}`);
+      console.log(`? Auth check successful for user: ${req.session.user.email}`);
       res.json({ user: req.session.user });
     } else {
-      console.log(`❌ Auth check failed - no user in session`);
+      console.log(`? Auth check failed - no user in session`);
       res.status(401).json({ error: "Not authenticated" });
     }
   });
@@ -171,14 +171,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all printers
   app.get("/api/printers", async (req, res) => {
     try {
-      console.log('📥 [API] GET /api/printers - Fetching all printers');
+      console.log('?? [API] GET /api/printers - Fetching all printers');
       const printers = await storage.getAllPrinters();
-      console.log(`✅ [API] Found ${printers.length} printers`);
+      console.log(`? [API] Found ${printers.length} printers`);
       res.json(printers);
     } catch (error) {
-      console.error('❌ [API] Failed to get printers:', error);
-      console.error('❌ [API] Error details:', error instanceof Error ? error.message : String(error));
-      console.error('❌ [API] Error stack:', error instanceof Error ? error.stack : '');
+      console.error('? [API] Failed to get printers:', error);
+      console.error('? [API] Error details:', error instanceof Error ? error.message : String(error));
+      console.error('? [API] Error stack:', error instanceof Error ? error.stack : '');
       res.status(500).json({ error: "Failed to get printers", details: error instanceof Error ? error.message : String(error) });
     }
   });
@@ -192,7 +192,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(printer);
     } catch (error) {
-      console.error('❌ Failed to get printer:', error);
+      console.error('? Failed to get printer:', error);
       res.status(500).json({ error: "Failed to get printer" });
     }
   });
@@ -202,10 +202,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id, name, address, port, printerType, isActive, fontSettings } = req.body;
       
-      console.log('📥 [API] POST /api/printers - Request body:', { id, name, address, port, printerType, isActive, hasFontSettings: !!fontSettings });
+      console.log('?? [API] POST /api/printers - Request body:', { id, name, address, port, printerType, isActive, hasFontSettings: !!fontSettings });
       
       if (!id || !name || !address || !port || !printerType) {
-        console.error('❌ [API] Missing required fields');
+        console.error('? [API] Missing required fields');
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -219,12 +219,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fontSettings: fontSettings || undefined,
       });
 
-      console.log('✅ [API] Printer saved successfully:', printer.id);
+      console.log('? [API] Printer saved successfully:', printer.id);
       res.json(printer);
     } catch (error) {
-      console.error('❌ [API] Failed to save printer:', error);
-      console.error('❌ [API] Error details:', error instanceof Error ? error.message : String(error));
-      console.error('❌ [API] Error stack:', error instanceof Error ? error.stack : '');
+      console.error('? [API] Failed to save printer:', error);
+      console.error('? [API] Error details:', error instanceof Error ? error.message : String(error));
+      console.error('? [API] Error stack:', error instanceof Error ? error.stack : '');
       res.status(500).json({ error: "Failed to save printer", details: error instanceof Error ? error.message : String(error) });
     }
   });
@@ -234,7 +234,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { name, address, port, printerType, isActive, fontSettings } = req.body;
       
-      console.log('📥 [API] PUT /api/printers/:id - Request:', { id: req.params.id, name, address, port, printerType, isActive, hasFontSettings: !!fontSettings });
+      console.log('?? [API] PUT /api/printers/:id - Request:', { id: req.params.id, name, address, port, printerType, isActive, hasFontSettings: !!fontSettings });
       
       const printer = await storage.upsertPrinter({
         id: req.params.id,
@@ -246,12 +246,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fontSettings: fontSettings || undefined,
       });
 
-      console.log('✅ [API] Printer updated successfully:', printer.id);
+      console.log('? [API] Printer updated successfully:', printer.id);
       res.json(printer);
     } catch (error) {
-      console.error('❌ [API] Failed to update printer:', error);
-      console.error('❌ [API] Error details:', error instanceof Error ? error.message : String(error));
-      console.error('❌ [API] Error stack:', error instanceof Error ? error.stack : '');
+      console.error('? [API] Failed to update printer:', error);
+      console.error('? [API] Error details:', error instanceof Error ? error.message : String(error));
+      console.error('? [API] Error stack:', error instanceof Error ? error.stack : '');
       res.status(500).json({ error: "Failed to update printer", details: error instanceof Error ? error.message : String(error) });
     }
   });
@@ -262,7 +262,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.deletePrinter(req.params.id);
       res.json({ success: true });
     } catch (error) {
-      console.error('❌ Failed to delete printer:', error);
+      console.error('? Failed to delete printer:', error);
       res.status(500).json({ error: "Failed to delete printer" });
     }
   });
@@ -301,19 +301,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       const updateData = req.body;
       
-      console.log("🔍 SERVER: Received PATCH request for menu item", id);
-      console.log("🔍 SERVER: Update data:", updateData);
-      console.log("🔍 SERVER: hasConditionalPricing:", updateData.hasConditionalPricing);
-      console.log("🔍 SERVER: includedToppingsCount:", updateData.includedToppingsCount);
+      console.log("?? SERVER: Received PATCH request for menu item", id);
+      console.log("?? SERVER: Update data:", updateData);
+      console.log("?? SERVER: hasConditionalPricing:", updateData.hasConditionalPricing);
+      console.log("?? SERVER: includedToppingsCount:", updateData.includedToppingsCount);
       
       const updated = await storage.updateMenuItem(id, updateData);
       if (!updated) {
         return res.status(404).json({ error: "Menu item not found" });
       }
       
-      console.log("✅ SERVER: Updated item:", updated);
-      console.log("✅ SERVER: Result hasConditionalPricing:", updated.hasConditionalPricing);
-      console.log("✅ SERVER: Result includedToppingsCount:", updated.includedToppingsCount);
+      console.log("? SERVER: Updated item:", updated);
+      console.log("? SERVER: Result hasConditionalPricing:", updated.hasConditionalPricing);
+      console.log("? SERVER: Result includedToppingsCount:", updated.includedToppingsCount);
       
       res.json(updated);
     } catch (error) {
@@ -510,7 +510,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { items, ...order } = req.body;
       
       // Log branch info for debugging
-      console.log('📝 Creating order with branch_id:', order.branchId, 'for customer:', order.customerName);
+      console.log('?? Creating order with branch_id:', order.branchId, 'for customer:', order.customerName);
       
       // Calculate totals
       let subtotal = 0;
@@ -538,7 +538,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Handle toppings as objects with name and price
           const toppingNames = item.toppings.map((topping: any) => {
             if (typeof topping === 'object' && topping.name) {
-              return `${topping.name} (+€${parseFloat(topping.price || 0).toFixed(2)})`;
+              return `${topping.name} (+�${parseFloat(topping.price || 0).toFixed(2)})`;
             }
             return topping; // fallback for string toppings
           });
@@ -576,7 +576,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalAmount: totalAmount.toFixed(2),
       });
       
-      console.log('✅ Order created:', newOrder.orderNumber, 'with branch_id:', newOrder.branchId);
+      console.log('? Order created:', newOrder.orderNumber, 'with branch_id:', newOrder.branchId);
       
       // Create order items
       for (const item of validatedItems) {
@@ -697,25 +697,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const folder = req.body.folder || 'menu-items';
       
       if (!file) {
-        console.error('❌ No file provided in request');
+        console.error('? No file provided in request');
         return res.status(400).json({ error: "Image file is required" });
       }
       
-      console.log('📸 Uploading image for folder:', folder);
-      console.log('📁 File details:', {
+      console.log('?? Uploading image for folder:', folder);
+      console.log('?? File details:', {
         originalname: file.originalname,
         mimetype: file.mimetype,
         size: file.size
       });
       
       // Upload to Hostinger FTP (using plain FTP, not FTPS)
-      console.log('📡 Uploading to Hostinger FTP...');
+      console.log('?? Uploading to Hostinger FTP...');
       const imageUrl = await uploadImageToHostinger(file, folder);
-      console.log('✅ Image uploaded successfully:', imageUrl);
+      console.log('? Image uploaded successfully:', imageUrl);
       
       res.json({ imageUrl });
     } catch (error) {
-      console.error("❌ Error uploading image:", error);
+      console.error("? Error uploading image:", error);
       console.error("Error stack:", error instanceof Error ? error.stack : 'No stack trace');
       res.status(500).json({ 
         error: "Failed to upload image",
@@ -727,7 +727,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Test Hostinger FTP connection
   app.get("/api/test-hostinger", requireAuth, async (req, res) => {
     try {
-      console.log('🔌 Testing Hostinger FTP connection...');
+      console.log('?? Testing Hostinger FTP connection...');
       const isConnected = await testHostingerConnection();
       
       if (isConnected) {
@@ -763,7 +763,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // No need to ensure storage bucket for Cloudinary
-      console.log('📸 Uploading menu item image to Cloudinary for restaurant:', restaurantName, 'menu item:', id);
+      console.log('?? Uploading menu item image to Cloudinary for restaurant:', restaurantName, 'menu item:', id);
       
       // Upload image to Cloudinary with restaurant-specific folder
       const imageUrl = await uploadImageToSupabase(file, restaurantName, 'menu-items');

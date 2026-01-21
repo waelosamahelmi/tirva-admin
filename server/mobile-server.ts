@@ -1,4 +1,4 @@
-﻿import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
@@ -34,35 +34,35 @@ const corsOptions = {
       'ionic://localhost',
       'http://localhost',
       'https://localhost',
-      'https://pizzeria-antonio.fly.io',
-      'https://antonioadmin.fly.io',
-      'https://pizzeriaantonio.fi',
-      'http://pizzeriaantonio.fi'
+      'https://tirvan-kahvila.fly.io',
+      'https://tirvaadmin.fly.io',
+      'https://tirvankahvila.fi',
+      'http://tirvankahvila.fi'
     ];
     
     // Allow any localhost with different ports and IPs
     if (origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('192.168.') || origin.includes('172.')) {
-      console.log(`✅ CORS allowed: localhost/local network origin ${origin}`);
+      console.log(`? CORS allowed: localhost/local network origin ${origin}`);
       return callback(null, true);
     }
     
     // Allow Capacitor schemes
     if (origin.startsWith('capacitor://') || origin.startsWith('ionic://')) {
-      console.log(`✅ CORS allowed: mobile app origin ${origin}`);
+      console.log(`? CORS allowed: mobile app origin ${origin}`);
       return callback(null, true);
     }
     
     // Allow Netlify domains
     if (origin.includes('fly.io')) {
-      console.log(`✅ CORS allowed: Netlify domain ${origin}`);
+      console.log(`? CORS allowed: Netlify domain ${origin}`);
       return callback(null, true);
     }
     
     if (allowedOrigins.includes(origin)) {
-      console.log(`✅ CORS allowed: whitelisted origin ${origin}`);
+      console.log(`? CORS allowed: whitelisted origin ${origin}`);
       callback(null, true);
     } else {
-      console.log(`✅ CORS allowed: development mode - allowing all origins ${origin}`);
+      console.log(`? CORS allowed: development mode - allowing all origins ${origin}`);
       callback(null, true); // Allow all origins in development
     }
   },
@@ -160,7 +160,7 @@ app.use((req, res, next) => {
       }
 
       if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+        logLine = logLine.slice(0, 79) + "�";
       }
 
       log(logLine);
@@ -289,17 +289,17 @@ app.get('/api/mobile/status', (req, res) => {
     const host = process.env.HOST || "0.0.0.0"; // Allow external connections
     
     httpServer.listen(port, host, () => {
-      log(`🚀 Mobile backend serving on http://${host}:${port}`);
-      log(`📱 Capacitor apps can connect to this server`);
-      log(`🔧 Health check: http://${host}:${port}/health`);
-      log(`📡 Mobile API: http://${host}:${port}/api/mobile/status`);
-      log(`🔌 WebSocket server running on ws://${host}:${port}/ws`);
+      log(`?? Mobile backend serving on http://${host}:${port}`);
+      log(`?? Capacitor apps can connect to this server`);
+      log(`?? Health check: http://${host}:${port}/health`);
+      log(`?? Mobile API: http://${host}:${port}/api/mobile/status`);
+      log(`?? WebSocket server running on ws://${host}:${port}/ws`);
     }).on('error', (err: any) => {
       if (err.code === 'EADDRINUSE') {
         log(`Port ${port} is in use, trying port ${port + 1}`);
         httpServer.listen(port + 1, host, () => {
-          log(`🚀 Mobile backend serving on http://${host}:${port + 1}`);
-          log(`🔌 WebSocket server running on ws://${host}:${port + 1}/ws`);
+          log(`?? Mobile backend serving on http://${host}:${port + 1}`);
+          log(`?? WebSocket server running on ws://${host}:${port + 1}/ws`);
         });
       } else {
         log(`Server error: ${err.message}`);

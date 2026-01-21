@@ -1,4 +1,4 @@
-﻿import { 
+import { 
   Category, MenuItem, Order, OrderItem, Topping, ToppingGroup, ToppingGroupItem, MenuItemToppingGroup, CategoryToppingGroup, RestaurantSettings, Printer,
   InsertCategory, InsertMenuItem, InsertOrder, InsertOrderItem, InsertTopping, InsertToppingGroup, InsertToppingGroupItem, InsertMenuItemToppingGroup, InsertCategoryToppingGroup, InsertRestaurantSettings, InsertPrinter,
   categories, menuItems, orders, orderItems, toppings, toppingGroups, toppingGroupItems, menuItemToppingGroups, categoryToppingGroups, restaurantSettings, printers
@@ -148,7 +148,7 @@ export class MemStorage implements IStorage {
         categoryId: 2,
         name: "Lammaskebab",
         nameEn: "Lamb Kebab",
-        description: "Marinoidut lampaan liha, pitaleipä, vihannekset",
+        description: "Marinoidut lampaan liha, pitaleip�, vihannekset",
         descriptionEn: "Marinated lamb, pita bread, vegetables",
         price: "16.50",
         imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
@@ -159,7 +159,7 @@ export class MemStorage implements IStorage {
         categoryId: 3,
         name: "Buffalo Siivet",
         nameEn: "Buffalo Wings",
-        description: "Paistettuja kanansiipiä, buffalo-kastiketta",
+        description: "Paistettuja kanansiipi�, buffalo-kastiketta",
         descriptionEn: "Fried chicken wings, buffalo sauce",
         price: "11.90",
         imageUrl: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
@@ -422,10 +422,10 @@ export class DatabaseStorage implements IStorage {
         
         // Chicken
         { name: "Broileri-lautanen", nameEn: "Chicken Plate", price: "14.90", categoryId: insertedCategories[2].id, description: "Grillattu broileri, perunat, salaatti", descriptionEn: "Grilled chicken, potatoes, salad", isGlutenFree: true, isAvailable: true, displayOrder: 1 },
-        { name: "Buffalo Wings", nameEn: "Buffalo Wings", price: "11.90", categoryId: insertedCategories[2].id, description: "Tulisia kanansiipiä, dippi", descriptionEn: "Spicy chicken wings, dip", isGlutenFree: true, isAvailable: true, displayOrder: 2 },
+        { name: "Buffalo Wings", nameEn: "Buffalo Wings", price: "11.90", categoryId: insertedCategories[2].id, description: "Tulisia kanansiipi�, dippi", descriptionEn: "Spicy chicken wings, dip", isGlutenFree: true, isAvailable: true, displayOrder: 2 },
         
         // Burgers
-        { name: "antonio Burger", nameEn: "antonio Burger", price: "13.90", categoryId: insertedCategories[3].id, description: "Naudanliha, juusto, salaatti, tomaatti", descriptionEn: "Beef patty, cheese, lettuce, tomato", isAvailable: true, displayOrder: 1 },
+        { name: "Tirva Burger", nameEn: "Tirva Burger", price: "13.90", categoryId: insertedCategories[3].id, description: "Naudanliha, juusto, salaatti, tomaatti", descriptionEn: "Beef patty, cheese, lettuce, tomato", isAvailable: true, displayOrder: 1 },
         { name: "Veggie Burger", nameEn: "Veggie Burger", price: "12.90", categoryId: insertedCategories[3].id, description: "Kasvispatty, juusto, salaatti", descriptionEn: "Veggie patty, cheese, lettuce", isVegetarian: true, isVegan: true, isAvailable: true, displayOrder: 2 },
         
         // Salads
@@ -685,7 +685,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertPrinter(printer: InsertPrinter): Promise<Printer> {
-    console.log('🔵 [DATABASE] Upserting printer:', {
+    console.log('?? [DATABASE] Upserting printer:', {
       id: printer.id,
       name: printer.name,
       address: printer.address,
@@ -697,7 +697,7 @@ export class DatabaseStorage implements IStorage {
     const existing = await this.getPrinter(printer.id);
     
     if (existing) {
-      console.log('🔄 [DATABASE] Updating existing printer:', printer.id);
+      console.log('?? [DATABASE] Updating existing printer:', printer.id);
       const [updated] = await db
         .update(printers)
         .set({
@@ -711,15 +711,15 @@ export class DatabaseStorage implements IStorage {
         })
         .where(eq(printers.id, printer.id))
         .returning();
-      console.log('✅ [DATABASE] Printer updated successfully:', updated.id);
+      console.log('? [DATABASE] Printer updated successfully:', updated.id);
       return updated;
     } else {
-      console.log('➕ [DATABASE] Creating new printer:', printer.id);
+      console.log('? [DATABASE] Creating new printer:', printer.id);
       const [created] = await db
         .insert(printers)
         .values(printer)
         .returning();
-      console.log('✅ [DATABASE] Printer created successfully:', created.id);
+      console.log('? [DATABASE] Printer created successfully:', created.id);
       return created;
     }
   }

@@ -1,4 +1,4 @@
-﻿import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { db } from "./db";
 import { users, type User, type InsertUser } from "@shared/schema";
 import { eq } from "drizzle-orm";
@@ -77,11 +77,11 @@ export class AuthService {
       const [existingAdmin] = await db
         .select()
         .from(users)
-        .where(eq(users.email, "info@pizzeriaantonio.fi"));
+        .where(eq(users.email, "info@tirvankahvila.fi"));
 
       if (!existingAdmin) {
         await this.createUser({
-          email: "info@pizzeriaantonio.fi",
+          email: "info@tirvankahvila.fi",
           password: "antonio@2025",
           role: "admin",
           isActive: true,

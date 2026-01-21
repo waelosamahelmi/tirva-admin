@@ -1,4 +1,4 @@
-ï»¿/**
+/**
  * Star Printer Test Script
  * Send test receipts directly to Star mC-Print3 at 192.168.1.106:9100
  * 
@@ -20,14 +20,14 @@ function encode(text) {
   
   for (const char of text) {
     switch (char) {
-      case 'Ã¤': bytes.push(0x84); break;
-      case 'Ã„': bytes.push(0x8E); break;
-      case 'Ã¶': bytes.push(0x94); break;
-      case 'Ã–': bytes.push(0x99); break;
-      case 'Ã¥': bytes.push(0x86); break;
-      case 'Ã…': bytes.push(0x8F); break;
-      case 'Ã©': bytes.push(0x82); break;
-      case 'â‚¬': bytes.push(0xEE); break;
+      case 'ä': bytes.push(0x84); break;
+      case 'Ä': bytes.push(0x8E); break;
+      case 'ö': bytes.push(0x94); break;
+      case 'Ö': bytes.push(0x99); break;
+      case 'å': bytes.push(0x86); break;
+      case 'Å': bytes.push(0x8F); break;
+      case 'é': bytes.push(0x82); break;
+      case '€': bytes.push(0xEE); break;
       default:
         const code = char.charCodeAt(0);
         bytes.push(code < 128 ? code : 0x3F);
@@ -56,7 +56,7 @@ function generateReceipt() {
   // Restaurant name - 3x3 bold
   cmd.push(ESC, 0x45, 0x01); // Bold on
   cmd.push(GS, 0x21, 0x22); // 3x3 size
-  cmd.push(...encode('antonio'));
+  cmd.push(...encode('tirva'));
   cmd.push(LF);
   
   // Subtitle - 2x2 bold
@@ -70,9 +70,9 @@ function generateReceipt() {
   cmd.push(LF);
   
   // Address & phone
-  cmd.push(...encode('Rauhankatu 19 c, 15110 Lahti'));
+  cmd.push(...encode('Pasintie 2, 45410 Utti'));
   cmd.push(LF);
-  cmd.push(...encode('+358-3589-9089'));
+  cmd.push(...encode('+358 41 3152619'));
   cmd.push(LF, LF);
   
   // Separator
@@ -127,7 +127,7 @@ function generateReceipt() {
   cmd.push(ESC, 0x45, 0x01); // Bold on
   cmd.push(...encode('Nimi: '));
   cmd.push(ESC, 0x45, 0x00); // Bold off
-  cmd.push(...encode('Matti MeikÃ¤lÃ¤inen'));
+  cmd.push(...encode('Matti Meikäläinen'));
   cmd.push(LF);
   
   cmd.push(ESC, 0x45, 0x01); // Bold on
@@ -142,7 +142,7 @@ function generateReceipt() {
   cmd.push(ESC, 0x45, 0x00); // Bold off
   cmd.push(...encode('  Esimerkkikatu 123'));
   cmd.push(LF);
-  cmd.push(...encode('  15110 Lahti'));
+  cmd.push(...encode('  45410 Utti'));
   cmd.push(LF, LF);
   
   // Center align
@@ -168,17 +168,17 @@ function generateReceipt() {
   cmd.push(GS, 0x21, 0x11); // 2x2 size
   cmd.push(...encode('2x Pizza Margherita'));
   cmd.push(...encode('                '));
-  cmd.push(...encode('25.00â‚¬'));
+  cmd.push(...encode('25.00€'));
   cmd.push(LF);
   cmd.push(GS, 0x21, 0x00); // Normal size
   cmd.push(ESC, 0x45, 0x00); // Bold off
   
   // Toppings
-  cmd.push(...encode('  LisÃ¤tteet:'));
+  cmd.push(...encode('  Lisätteet:'));
   cmd.push(LF);
   cmd.push(...encode('    + Extra juusto'));
   cmd.push(...encode('                  '));
-  cmd.push(...encode('+2.00â‚¬'));
+  cmd.push(...encode('+2.00€'));
   cmd.push(LF);
   cmd.push(...encode('    + Oliivit'));
   cmd.push(LF, LF);
@@ -192,7 +192,7 @@ function generateReceipt() {
   cmd.push(GS, 0x21, 0x11); // 2x2 size
   cmd.push(...encode('1x Coca-Cola 0.5L'));
   cmd.push(...encode('                  '));
-  cmd.push(...encode('3.50â‚¬'));
+  cmd.push(...encode('3.50€'));
   cmd.push(LF);
   cmd.push(GS, 0x21, 0x00); // Normal size
   cmd.push(ESC, 0x45, 0x00); // Bold off
@@ -217,22 +217,22 @@ function generateReceipt() {
   cmd.push(ESC, 0x61, 0x00);
   cmd.push(GS, 0x21, 0x11); // 2x2 size
   
-  cmd.push(...encode('VÃ¤lisumma:'));
+  cmd.push(...encode('Välisumma:'));
   cmd.push(...encode('        '));
-  cmd.push(...encode('30.50â‚¬'));
+  cmd.push(...encode('30.50€'));
   cmd.push(LF);
   
   cmd.push(...encode('Toimitusmaksu:'));
   cmd.push(...encode('    '));
-  cmd.push(...encode('3.00â‚¬'));
+  cmd.push(...encode('3.00€'));
   cmd.push(LF, LF);
   
   // Total - 3x3 bold
   cmd.push(ESC, 0x45, 0x01); // Bold on
   cmd.push(GS, 0x21, 0x22); // 3x3 size
-  cmd.push(...encode('YHTEENSÃ„:'));
+  cmd.push(...encode('YHTEENSÄ:'));
   cmd.push(...encode('   '));
-  cmd.push(...encode('33.50â‚¬'));
+  cmd.push(...encode('33.50€'));
   cmd.push(LF);
   cmd.push(ESC, 0x45, 0x00); // Bold off
   cmd.push(GS, 0x21, 0x00); // Normal size
@@ -250,7 +250,7 @@ function generateReceipt() {
   cmd.push(LF, LF);
   
   // QR Code
-  const url = 'https://pizzeriaantonio.fi';
+  const url = 'https://tirvankahvila.fi';
   const qrData = encode(url);
   const pL = (qrData.length + 3) % 256;
   const pH = Math.floor((qrData.length + 3) / 256);
@@ -267,7 +267,7 @@ function generateReceipt() {
   cmd.push(GS, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x51, 0x30);
   
   cmd.push(LF, LF);
-  cmd.push(...encode('pizzeriaantonio.fi'));
+  cmd.push(...encode('tirvankahvila.fi'));
   cmd.push(LF, LF, LF);
   
   // Cut paper
@@ -280,47 +280,47 @@ function generateReceipt() {
  * Send receipt to printer
  */
 function sendToPrinter(host, port) {
-  console.log(`\nðŸ–¨ï¸  ===== STAR PRINTER TEST =====`);
-  console.log(`ðŸ“ Target: ${host}:${port}`);
-  console.log(`ðŸŒŸ Using StarModernReceipt format`);
-  console.log(`ðŸ“„ CP850 encoding for Finnish characters\n`);
+  console.log(`\n???  ===== STAR PRINTER TEST =====`);
+  console.log(`?? Target: ${host}:${port}`);
+  console.log(`?? Using StarModernReceipt format`);
+  console.log(`?? CP850 encoding for Finnish characters\n`);
   
   const receipt = generateReceipt();
-  console.log(`ðŸ“¦ Generated ${receipt.length} bytes of print data`);
+  console.log(`?? Generated ${receipt.length} bytes of print data`);
   
   const client = new net.Socket();
   
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('âŒ Connection timeout');
+    console.error('? Connection timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`âŒ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`âœ… Connected to ${host}:${port}`);
-    console.log(`ðŸ“¤ Sending receipt...`);
+    console.log(`? Connected to ${host}:${port}`);
+    console.log(`?? Sending receipt...`);
     
     client.write(receipt, () => {
-      console.log(`âœ… Receipt sent successfully!`);
-      console.log(`â±ï¸  Waiting for printer to process...\n`);
+      console.log(`? Receipt sent successfully!`);
+      console.log(`??  Waiting for printer to process...\n`);
       
       setTimeout(() => {
         client.end();
-        console.log(`âœ… ===== TEST COMPLETE =====\n`);
+        console.log(`? ===== TEST COMPLETE =====\n`);
         console.log(`Check your printer for the receipt!\n`);
         process.exit(0);
       }, 1000);
     });
   });
   
-  console.log(`ðŸ”Œ Connecting to printer...`);
+  console.log(`?? Connecting to printer...`);
   client.connect(port, host);
 }
 

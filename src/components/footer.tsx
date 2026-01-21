@@ -1,4 +1,4 @@
-Ôªøimport { useLanguage } from "@/lib/language-context";
+import { useLanguage } from "@/lib/language-context";
 import { UtensilsCrossed, Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "wouter";
 
@@ -15,13 +15,13 @@ export function Footer() {
                 <UtensilsCrossed className="text-white text-lg" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">pizzeria antonio</h3>
-                <p className="text-gray-400 text-sm">{t("Lahti, Suomi", "Rauhankatu 19 c, 15110")}</p>
+                <h3 className="text-xl font-bold">Tirvan Kahvila</h3>
+                <p className="text-gray-400 text-sm">{t("Lahti, Suomi", "Pasintie 2, 45410 Utti")}</p>
               </div>
             </div>
             <p className="text-gray-400 mb-4">
               {t(
-                "Palvelemme teit√§ rakkaudella ja intohimolla suomalaiseen ruokaan jo yli 20 vuoden ajan.",
+                "Palvelemme teit‰ rakkaudella ja intohimolla suomalaiseen ruokaan jo yli 20 vuoden ajan.",
                 "We serve you with love and passion for Finnish food for over 20 years."
               )}
             </p>
@@ -39,7 +39,7 @@ export function Footer() {
               </li>
               <li>
                 <a href="about" className="hover:text-white transition-colors">
-                  {t("Meist√§", "About")}
+                  {t("Meist‰", "About")}
                 </a>
               </li>
               <li>
@@ -62,7 +62,7 @@ export function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li>
                 <Link href="/terms" className="hover:text-white transition-colors">
-                  {t("K√§ytt√∂ehdot", "Terms & Conditions")}
+                  {t("K‰yttˆehdot", "Terms & Conditions")}
                 </Link>
               </li>
               <li>
@@ -80,15 +80,15 @@ export function Footer() {
             <ul className="space-y-2 text-gray-400 text-sm">
               <li className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
-                <span>+358-3589-9089</span>
+                <span>+358 41 3152619</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="w-4 h-4" />
-                <span>info@pizzeriaantonio.fi</span>
+                <span>info@tirvankahvila.fi</span>
               </li>
               <li className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4" />
-                <span>Rauhankatu 19 c, 15110 Lahti</span>
+                <span>Pasintie 2, 45410 Utti</span>
               </li>
             </ul>
           </div>
@@ -96,8 +96,8 @@ export function Footer() {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
           <p>
-            &copy; 2024 pizzeria antonio.{" "}
-            {t("Kaikki oikeudet pid√§tet√§√§n.", "All rights reserved.")}
+            &copy; 2024 Tirvan Kahvila.{" "}
+            {t("Kaikki oikeudet pid‰tet‰‰n.", "All rights reserved.")}
           </p>
         </div>
       </div>

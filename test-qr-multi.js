@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer - QR Code Multi-Method Test
  * Try different QR code commands to find which works
  */
@@ -15,7 +15,7 @@ function encode(text) {
 
 function generateQRTests() {
   const cmd = [];
-  const url = 'https://antonio.fi';
+  const url = 'https://tirva.fi';
   const urlBytes = encode(url);
   
   // Initialize
@@ -111,32 +111,32 @@ function generateQRTests() {
 }
 
 function sendToPrinter(host, port) {
-  console.log(`\n🖨️  ===== QR CODE TESTS =====`);
-  console.log(`📍 Target: ${host}:${port}\n`);
+  console.log(`\n???  ===== QR CODE TESTS =====`);
+  console.log(`?? Target: ${host}:${port}\n`);
   
   const receipt = generateQRTests();
-  console.log(`📦 Generated ${receipt.length} bytes\n`);
+  console.log(`?? Generated ${receipt.length} bytes\n`);
   
   const client = new net.Socket();
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Timeout');
+    console.error('? Timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected!`);
-    console.log(`📤 Sending QR code tests...\n`);
+    console.log(`? Connected!`);
+    console.log(`?? Sending QR code tests...\n`);
     
     client.write(receipt, () => {
-      console.log(`✅ Sent!\n`);
+      console.log(`? Sent!\n`);
       console.log(`Check the receipt:`);
       console.log(`  - Should see 4 test labels`);
       console.log(`  - One or more should show QR code`);
@@ -154,7 +154,7 @@ function sendToPrinter(host, port) {
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

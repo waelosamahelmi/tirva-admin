@@ -1,4 +1,4 @@
-﻿import multer from 'multer';
+import multer from 'multer';
 import path from 'path';
 import { uploadImageToCloudinary, deleteImageFromCloudinary } from './cloudinary';
 import { uploadImageToHostinger, deleteImageFromHostinger } from './hostinger-upload';
@@ -33,14 +33,14 @@ export async function uploadImageToSupabase(
   try {
     // Choose upload strategy
     if (UPLOAD_STRATEGY === 'hostinger') {
-      console.log('📸 Uploading image to Hostinger FTP...');
+      console.log('?? Uploading image to Hostinger FTP...');
       const imageUrl = await uploadImageToHostinger(file, folder);
-      console.log('✅ Image uploaded successfully to Hostinger:', imageUrl);
+      console.log('? Image uploaded successfully to Hostinger:', imageUrl);
       return imageUrl;
     } else {
-      console.log('📸 Uploading image to Cloudinary...');
+      console.log('?? Uploading image to Cloudinary...');
       const imageUrl = await uploadImageToCloudinary(file, restaurantName, folder);
-      console.log('✅ Image uploaded successfully to Cloudinary:', imageUrl);
+      console.log('? Image uploaded successfully to Cloudinary:', imageUrl);
       return imageUrl;
     }
     
@@ -53,10 +53,10 @@ export async function uploadImageToSupabase(
 // Function to delete image (supports both Hostinger and Cloudinary)
 export async function deleteImageFromSupabase(imageUrl: string): Promise<boolean> {
   try {
-    console.log('🗑️ Deleting image...');
+    console.log('??? Deleting image...');
     
     // Detect storage provider from URL
-    const isHostinger = imageUrl.includes('pizzeriaantonio.fi') || imageUrl.includes('images.pizzeriaantonio.fi');
+    const isHostinger = imageUrl.includes('tirvankahvila.fi') || imageUrl.includes('images.tirvankahvila.fi');
     
     let success: boolean;
     if (isHostinger) {
@@ -66,9 +66,9 @@ export async function deleteImageFromSupabase(imageUrl: string): Promise<boolean
     }
     
     if (success) {
-      console.log('✅ Image deleted successfully');
+      console.log('? Image deleted successfully');
     } else {
-      console.warn('⚠️ Image deletion failed or was skipped');
+      console.warn('?? Image deletion failed or was skipped');
     }
     
     return success;
@@ -81,9 +81,9 @@ export async function deleteImageFromSupabase(imageUrl: string): Promise<boolean
 // Function to ensure storage is ready
 export async function ensureStorageBucket(): Promise<void> {
   if (UPLOAD_STRATEGY === 'hostinger') {
-    console.log('📦 Using Hostinger FTP for image storage');
+    console.log('?? Using Hostinger FTP for image storage');
   } else {
-    console.log('📦 Using Cloudinary for image storage');
+    console.log('?? Using Cloudinary for image storage');
   }
 }
 

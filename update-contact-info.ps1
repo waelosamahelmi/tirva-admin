@@ -1,4 +1,4 @@
-# Script to replace contact information in antonio-admin folder
+# Script to replace contact information in tirva-admin folder
 # Updates address and phone number
 
 $rootPath = $PSScriptRoot
@@ -33,15 +33,15 @@ Write-Host "Found $($files.Count) files to process" -ForegroundColor Cyan
 
 # Order matters - more specific patterns first
 $replacements = @(
-    @{Old = "Vapaudenkatu 28, 15140"; New = "Rauhankatu 19 c, 15110"}
-    @{Old = "Vapaudenkatu 28"; New = "Rauhankatu 19 c"}
-    @{Old = "15140"; New = "15110"}
-    @{Old = "Lahti, Finland"; New = "Rauhankatu 19 c, 15110"}
+    @{Old = "Vapaudenkatu 28, 15140"; New = "Pasintie 2, 45410 Utti"}
+    @{Old = "Vapaudenkatu 28"; New = "Pasintie 2"}
+    @{Old = "15140"; New = "45410"}
+    @{Old = "Utti, Finland"; New = "Pasintie 2, 45410 Utti"}
     @{Old = "+358-3-781-2222"; New = "+358-3-589-9089"}
-    @{Old = "+358-3781-2222"; New = "+358-3589-9089"}
+    @{Old = "+358-3781-2222"; New = "+358 41 3152619"}
     @{Old = "+35837812222"; New = "+35835899089"}
-    @{Old = "+358 3 781 2222"; New = "+358 3 589 9089"}
-    @{Old = "+358 50 304 8009"; New = "+358 3 589 9089"}
+    @{Old = "+358 3 781 2222"; New = "+358 41 3152619"}
+    @{Old = "+358 50 304 8009"; New = "+358 41 3152619"}
     @{Old = "+358503048009"; New = "+358358990089"}
     @{Old = "050 304 8009"; New = "3 589 9089"}
     @{Old = "3-781-2222"; New = "3-589-9089"}

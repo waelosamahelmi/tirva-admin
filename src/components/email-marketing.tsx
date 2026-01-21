@@ -1,4 +1,4 @@
-Ôªøimport { useState } from "react";
+import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useQuery } from "@tanstack/react-query";
 import { sendMarketingEmail } from "@/lib/email-service";
@@ -126,7 +126,7 @@ const emailTemplates = {
         <div class="container">
           <div class="header">
             <img src="{{LOGO_URL}}" alt="Restaurant Logo" class="logo">
-            <h1 style="margin: 0; color: white; font-size: 26px;">üì¢ {{TITLE}}</h1>
+            <h1 style="margin: 0; color: white; font-size: 26px;">?? {{TITLE}}</h1>
           </div>
           <div class="content">
             <div class="highlight">
@@ -230,7 +230,7 @@ export function EmailMarketing() {
       
       // Get branch info and restaurant config
       const branch = branches?.find(b => b.id === selectedBranch);
-      const logoUrl = (restaurantConfig?.logo as any)?.imageUrl || 'https://pizzeriaantonio.fi/wp-content/uploads/2023/06/logo-header-01.webp';
+      const logoUrl = (restaurantConfig?.logo as any)?.imageUrl || 'https://tirvankahvila.fi/wp-content/uploads/2023/06/logo-header-01.webp';
       const socialMedia = (restaurantConfig?.socialMedia || {}) as any;
       
       // Build social media icons HTML
@@ -260,9 +260,9 @@ export function EmailMarketing() {
       html = html.replace('{{SUBTITLE}}', emailSubject);
       html = html.replace('{{CONTENT}}', imageHtml + emailContent.replace(/\n/g, '<br>'));
       html = html.replace('{{LINK}}', emailLink || '#');
-      html = html.replace(/{{RESTAURANT_NAME}}/g, restaurantConfig?.name || 'Restaurant antonio');
-      html = html.replace(/{{RESTAURANT_ADDRESS}}/g, branch?.address?.street || (branch?.address as any) || 'Rauhankatu 19 c, 15110');
-      html = html.replace(/{{RESTAURANT_PHONE}}/g, branch?.phone || restaurantConfig?.phone || '+358 3 589 9089');
+      html = html.replace(/{{RESTAURANT_NAME}}/g, restaurantConfig?.name || 'Tirvan Kahvila');
+      html = html.replace(/{{RESTAURANT_ADDRESS}}/g, branch?.address?.street || (branch?.address as any) || 'Pasintie 2, 45410 Utti');
+      html = html.replace(/{{RESTAURANT_PHONE}}/g, branch?.phone || restaurantConfig?.phone || '+358 41 3152619');
       html = html.replace('{{SOCIAL_MEDIA}}', socialMediaHtml);
 
       // Get recipient emails
@@ -325,7 +325,7 @@ export function EmailMarketing() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Mail className="w-5 h-5" />
-            {t("S√§hk√∂postimarkkinointi", "Email Marketing")}
+            {t("S‰hkˆpostimarkkinointi", "Email Marketing")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -358,7 +358,7 @@ export function EmailMarketing() {
               <p className="text-sm text-gray-600">
                 {customersLoading 
                   ? t("Ladataan asiakkaita...", "Loading customers...") 
-                  : `${customers.length} ${t("asiakasta l√∂ydetty", "customers found")}`
+                  : `${customers.length} ${t("asiakasta lˆydetty", "customers found")}`
                 }
               </p>
             )}
@@ -403,7 +403,7 @@ export function EmailMarketing() {
 
           {/* Email Content */}
           <div className="space-y-2">
-            <Label>{t("Sis√§lt√∂", "Content")}</Label>
+            <Label>{t("Sis‰ltˆ", "Content")}</Label>
             <Textarea
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
@@ -519,12 +519,12 @@ export function EmailMarketing() {
             {isSending ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {t("L√§hetet√§√§n...", "Sending...")}
+                {t("L‰hetet‰‰n...", "Sending...")}
               </>
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2" />
-                {t("L√§het√§ s√§hk√∂postit", "Send Emails")}
+                {t("L‰het‰ s‰hkˆpostit", "Send Emails")}
               </>
             )}
           </Button>
@@ -533,7 +533,7 @@ export function EmailMarketing() {
           {emailSent && (
             <div className="flex items-center gap-2 p-4 bg-green-50 text-green-800 rounded-lg">
               <CheckCircle className="w-5 h-5" />
-              <span>{t("S√§hk√∂postit l√§hetetty onnistuneesti!", "Emails sent successfully!")}</span>
+              <span>{t("S‰hkˆpostit l‰hetetty onnistuneesti!", "Emails sent successfully!")}</span>
             </div>
           )}
         </CardContent>
@@ -547,13 +547,13 @@ export function EmailMarketing() {
         <CardContent>
           <div className="border rounded-lg p-4 bg-gray-50">
             <p className="text-sm text-gray-600 mb-4 text-center">
-              {t("T√§m√§ on likim√§√§r√§inen esikatselu. Todellinen s√§hk√∂posti voi n√§ytt√§√§ hieman erilaiselta.", 
+              {t("T‰m‰ on likim‰‰r‰inen esikatselu. Todellinen s‰hkˆposti voi n‰ytt‰‰ hieman erilaiselta.", 
                  "This is an approximate preview. The actual email may look slightly different.")}
             </p>
             <div className="bg-white rounded border overflow-hidden max-w-[600px] mx-auto shadow-lg">
               <div className="bg-black text-white p-8 text-center">
                 <img 
-                  src={(restaurantConfig?.logo as any)?.imageUrl || 'https://pizzeriaantonio.fi/wp-content/uploads/2023/06/logo-header-01.webp'}
+                  src={(restaurantConfig?.logo as any)?.imageUrl || 'https://tirvankahvila.fi/wp-content/uploads/2023/06/logo-header-01.webp'}
                   alt="Restaurant Logo" 
                   className="max-w-[200px] h-auto mx-auto mb-4 block"
                   onError={(e) => {
@@ -583,7 +583,7 @@ export function EmailMarketing() {
                 )}
               </div>
               <div className="bg-gray-100 p-6 text-center border-t">
-                <p className="font-bold text-gray-900 mb-2">{restaurantConfig?.name || 'Restaurant antonio'}</p>
+                <p className="font-bold text-gray-900 mb-2">{restaurantConfig?.name || 'Tirvan Kahvila'}</p>
                 {selectedBranch && branches?.find(b => b.id === selectedBranch) && (
                   <>
                     <p className="text-sm text-gray-600 mb-1">

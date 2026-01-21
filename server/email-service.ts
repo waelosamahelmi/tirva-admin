@@ -1,4 +1,4 @@
-ï»¿import sgMail from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail';
 
 // Initialize SendGrid with your API key
 // Make sure to set SENDGRID_API_KEY in your environment variables
@@ -41,7 +41,7 @@ export async function sendOrderConfirmationEmail(orderData: OrderEmailData): Pro
     // Create HTML content for items
     const itemsHtml = items.map(item => {
       const toppingsHtml = item.toppings && item.toppings.length > 0
-        ? `<br>Toppings: ${item.toppings.map(t => `${t.name} (â‚¬${t.price.toFixed(2)})`).join(', ')}`
+        ? `<br>Toppings: ${item.toppings.map(t => `${t.name} (€${t.price.toFixed(2)})`).join(', ')}`
         : '';
 
       return `
@@ -50,7 +50,7 @@ export async function sendOrderConfirmationEmail(orderData: OrderEmailData): Pro
             ${item.name} x${item.quantity}${toppingsHtml}
           </td>
           <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
-            â‚¬${item.totalPrice.toFixed(2)}
+            €${item.totalPrice.toFixed(2)}
           </td>
         </tr>
       `;
@@ -80,9 +80,9 @@ export async function sendOrderConfirmationEmail(orderData: OrderEmailData): Pro
             ${itemsHtml}
             <tr>
               <td style="padding: 10px; text-align: right;" colspan="2">
-                <strong>Subtotal:</strong> â‚¬${subtotal.toFixed(2)}<br>
-                ${deliveryFee > 0 ? `<strong>Delivery Fee:</strong> â‚¬${deliveryFee.toFixed(2)}<br>` : ''}
-                <strong>Total:</strong> â‚¬${totalAmount.toFixed(2)}
+                <strong>Subtotal:</strong> €${subtotal.toFixed(2)}<br>
+                ${deliveryFee > 0 ? `<strong>Delivery Fee:</strong> €${deliveryFee.toFixed(2)}<br>` : ''}
+                <strong>Total:</strong> €${totalAmount.toFixed(2)}
               </td>
             </tr>
           </tbody>
@@ -95,17 +95,17 @@ export async function sendOrderConfirmationEmail(orderData: OrderEmailData): Pro
         </div>
 
         <div style="text-align: center; margin-top: 30px; color: #666;">
-          <p>Thank you for choosing pizzeria antonio!</p>
-          <p>For any questions, please contact us at +358-3589-9089</p>
-          <p>Rauhankatu 19 c, 15110 Lahti</p>
+          <p>Thank you for choosing Tirvan Kahvila!</p>
+          <p>For any questions, please contact us at +358 41 3152619</p>
+          <p>Pasintie 2, 45410 Utti</p>
         </div>
       </div>
     `;
 
     const msg = {
       to: customerEmail,
-      from: process.env.SENDGRID_FROM_EMAIL || 'orders@pizzeriaantonio.fi',
-      subject: `Order Confirmation #${orderNumber} - pizzeria antonio`,
+      from: process.env.SENDGRID_FROM_EMAIL || 'orders@tirvankahvila.fi',
+      subject: `Order Confirmation #${orderNumber} - Tirvan Kahvila`,
       html: emailContent,
     };
 

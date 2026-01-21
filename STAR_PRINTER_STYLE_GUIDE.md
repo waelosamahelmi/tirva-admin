@@ -1,4 +1,4 @@
-Ôªø# Star mC-Print3 Complete Style Guide
+# Star mC-Print3 Complete Style Guide
 **Production-Ready Command Reference**
 
 ## Overview
@@ -66,7 +66,7 @@ ESC i [height] [width]
 ```
 
 ### Parameter Order
-‚ö†Ô∏è **CRITICAL:** Parameters are `height √ó width` (NOT width √ó height)
+?? **CRITICAL:** Parameters are `height ◊ width` (NOT width ◊ height)
 
 ### Size Range
 - **Minimum:** 1 (normal size)
@@ -92,12 +92,12 @@ setSize(cmd, 4, 4);  // Huge text (4x4)
 ### Visual Size Chart
 
 ```
-1x1: Normal       ‚úì Body text, toppings, notes
-1x2: Wide         ‚úì Section headers
-2x1: Tall         ‚úì Prices (vertical emphasis)
-2x2: Large        ‚úì Item names, subtotals
-3x3: Extra Large  ‚úì Restaurant name, order number
-4x4: Huge         ‚úì Final total only
+1x1: Normal       ? Body text, toppings, notes
+1x2: Wide         ? Section headers
+2x1: Tall         ? Prices (vertical emphasis)
+2x2: Large        ? Item names, subtotals
+3x3: Extra Large  ? Restaurant name, order number
+4x4: Huge         ? Final total only
 ```
 
 ### Best Practices
@@ -139,7 +139,7 @@ setAlign(cmd, 2);  // Right
 ```javascript
 // Header: Center aligned
 setAlign(cmd, 1);
-text(cmd, 'antonio pizzeria');
+text(cmd, 'tirva kahvila');
 
 // Items: Left aligned
 setAlign(cmd, 0);
@@ -147,7 +147,7 @@ text(cmd, '1x Pizza Margherita');
 
 // Prices: Right aligned
 setAlign(cmd, 2);
-text(cmd, '12.50‚Ç¨');
+text(cmd, '12.50Ä');
 ```
 
 ### Layout Patterns
@@ -162,7 +162,7 @@ newline(cmd);
 // Right column (same line ideally, but requires manual spacing)
 // Simpler approach: separate lines
 setAlign(cmd, 2);
-text(cmd, '12.50‚Ç¨');
+text(cmd, '12.50Ä');
 newline(cmd);
 ```
 
@@ -213,7 +213,7 @@ newline(cmd);
 
 ## QR Codes (Method 3 - VERIFIED)
 
-### ‚ö†Ô∏è CRITICAL: Method 3 Only!
+### ?? CRITICAL: Method 3 Only!
 Only **Method 3** (Star Alt syntax) works on Star mC-Print3. Methods 1 & 2 fail.
 
 ### Command Sequence
@@ -242,13 +242,13 @@ function qrCode(cmd, data) {
 | len_hi | Calculated | Length high byte |
 
 ### Size Recommendations
-- **Size 5:** Small QR (50mm √ó 50mm approx)
-- **Size 8:** Medium QR (80mm √ó 80mm) - **RECOMMENDED**
-- **Size 10:** Large QR (100mm √ó 100mm)
+- **Size 5:** Small QR (50mm ◊ 50mm approx)
+- **Size 8:** Medium QR (80mm ◊ 80mm) - **RECOMMENDED**
+- **Size 10:** Large QR (100mm ◊ 100mm)
 
 ### Data Format
 Any text string:
-- URLs: `https://pizzeriaantonio.fi`
+- URLs: `https://tirvankahvila.fi`
 - Order tracking: `https://order.example.com/track?id=1234`
 - Phone numbers: `tel:+358400123456`
 - Plain text: `Order #1234`
@@ -264,7 +264,7 @@ setAlign(cmd, 1);
 newline(cmd, 2);
 
 // QR code
-qrCode(cmd, 'https://pizzeriaantonio.fi/order/1234');
+qrCode(cmd, 'https://tirvankahvila.fi/order/1234');
 newline(cmd, 2);
 
 // Text below QR
@@ -308,7 +308,7 @@ feedAndCut(cmd);   // Feed and cut
 
 ### Finnish Characters
 
-**Problem:** Direct UTF-8 doesn't work for √§, √∂, √•.
+**Problem:** Direct UTF-8 doesn't work for ‰, ˆ, Â.
 
 **Solution:** Character code mapping
 
@@ -318,17 +318,17 @@ function encode(text) {
     const code = c.charCodeAt(0);
     
     // Finnish lowercase
-    if (c === '√§') return 0x7B;
-    if (c === '√∂') return 0x7C;
-    if (c === '√•') return 0x7D;
+    if (c === '‰') return 0x7B;
+    if (c === 'ˆ') return 0x7C;
+    if (c === 'Â') return 0x7D;
     
     // Finnish uppercase
-    if (c === '√Ñ') return 0x5B;
-    if (c === '√ñ') return 0x5C;
-    if (c === '√Ö') return 0x5D;
+    if (c === 'ƒ') return 0x5B;
+    if (c === '÷') return 0x5C;
+    if (c === '≈') return 0x5D;
     
     // Euro symbol
-    if (c === '‚Ç¨') return 0x80;
+    if (c === 'Ä') return 0x80;
     
     return code;
   });
@@ -339,13 +339,13 @@ function encode(text) {
 
 | Character | Code | Notes |
 |-----------|------|-------|
-| √§ | `0x7B` | a with diaeresis |
-| √∂ | `0x7C` | o with diaeresis |
-| √• | `0x7D` | a with ring |
-| √Ñ | `0x5B` | A with diaeresis |
-| √ñ | `0x5C` | O with diaeresis |
-| √Ö | `0x5D` | A with ring |
-| ‚Ç¨ | `0x80` | Euro symbol |
+| ‰ | `0x7B` | a with diaeresis |
+| ˆ | `0x7C` | o with diaeresis |
+| Â | `0x7D` | a with ring |
+| ƒ | `0x5B` | A with diaeresis |
+| ÷ | `0x5C` | O with diaeresis |
+| ≈ | `0x5D` | A with ring |
+| Ä | `0x80` | Euro symbol |
 
 ---
 
@@ -375,18 +375,18 @@ See `test-complete-receipt.js` for full production-ready example with:
 setAlign(cmd, 1);
 emphasisOn(cmd);
 setSize(cmd, 3, 3);
-text(cmd, 'antonio');
+text(cmd, 'tirva');
 newline(cmd);
 emphasisOff(cmd);
 
 // Subtitle - Secondary emphasis
 setSize(cmd, 2, 2);
-text(cmd, 'pizzeria');
+text(cmd, 'kahvila');
 newline(cmd);
 
 // Contact Info - Normal
 setSize(cmd, 1, 1);
-text(cmd, 'Rauhankatu 19 c, 15110 Lahti');
+text(cmd, 'Pasintie 2, 45410 Utti');
 newline(cmd);
 text(cmd, 'Puh: +358-3-589-9089');
 newline(cmd, 2);
@@ -456,7 +456,7 @@ emphasisOff(cmd);
 setAlign(cmd, 2);
 emphasisOn(cmd);
 setSize(cmd, 2, 2);
-text(cmd, '25.00‚Ç¨');
+text(cmd, '25.00Ä');
 newline(cmd);
 emphasisOff(cmd);
 
@@ -467,7 +467,7 @@ text(cmd, '  Lisatteet:');
 newline(cmd);
 text(cmd, '    + Extra juusto');
 setAlign(cmd, 2);
-text(cmd, '+2.00‚Ç¨');
+text(cmd, '+2.00Ä');
 newline(cmd);
 
 // Special instructions - Normal, italic (if supported)
@@ -489,13 +489,13 @@ setAlign(cmd, 0);
 setSize(cmd, 2, 2);
 text(cmd, 'Valisumma:');
 setAlign(cmd, 2);
-text(cmd, '43.00‚Ç¨');
+text(cmd, '43.00Ä');
 newline(cmd);
 
 setAlign(cmd, 0);
 text(cmd, 'Toimitus:');
 setAlign(cmd, 2);
-text(cmd, '3.50‚Ç¨');
+text(cmd, '3.50Ä');
 newline(cmd);
 
 // Grand Total - HUGE
@@ -507,7 +507,7 @@ newline(cmd);
 
 setAlign(cmd, 2);
 setSize(cmd, 4, 4);
-text(cmd, '48.50‚Ç¨');
+text(cmd, '48.50Ä');
 newline(cmd);
 emphasisOff(cmd);
 ```
@@ -525,11 +525,11 @@ text(cmd, 'Tervetuloa uudelleen!');
 newline(cmd, 2);
 
 // QR Code - Centered
-qrCode(cmd, 'https://pizzeriaantonio.fi');
+qrCode(cmd, 'https://tirvankahvila.fi');
 newline(cmd, 2);
 
 // URL - Small, centered
-text(cmd, 'pizzeriaantonio.fi');
+text(cmd, 'tirvankahvila.fi');
 newline(cmd, 3);
 
 // Cut
@@ -571,26 +571,26 @@ text(cmd, '- - - - - - - - - - - - - - - -');  // Dotted separator
 
 ## Common Pitfalls
 
-### ‚ùå DON'T: Wrong parameter order
+### ? DON'T: Wrong parameter order
 ```javascript
 setSize(cmd, 2, 3);  // width, height - WRONG!
 ```
 
-### ‚úÖ DO: Correct parameter order
+### ? DO: Correct parameter order
 ```javascript
 setSize(cmd, 3, 2);  // height, width - CORRECT!
 ```
 
 ---
 
-### ‚ùå DON'T: Forget to turn off bold
+### ? DON'T: Forget to turn off bold
 ```javascript
 emphasisOn(cmd);
 text(cmd, 'Bold text');
 // Missing emphasisOff() - all subsequent text will be bold!
 ```
 
-### ‚úÖ DO: Always turn off
+### ? DO: Always turn off
 ```javascript
 emphasisOn(cmd);
 text(cmd, 'Bold text');
@@ -599,12 +599,12 @@ emphasisOff(cmd);  // Clean state
 
 ---
 
-### ‚ùå DON'T: Use wrong QR method
+### ? DON'T: Use wrong QR method
 ```javascript
 // Method 1 or 2 - DOESN'T WORK on mC-Print3
 ```
 
-### ‚úÖ DO: Use Method 3 only
+### ? DO: Use Method 3 only
 ```javascript
 // ESC GS y S 0x30 0x00 [size] [len_lo] [len_hi] [data]
 qrCode(cmd, 'https://example.com');
@@ -612,13 +612,13 @@ qrCode(cmd, 'https://example.com');
 
 ---
 
-### ‚ùå DON'T: Forget initialization
+### ? DON'T: Forget initialization
 ```javascript
 const cmd = [];
 setSize(cmd, 2, 2);  // Won't work without init!
 ```
 
-### ‚úÖ DO: Always initialize
+### ? DO: Always initialize
 ```javascript
 const cmd = [];
 init(cmd);  // Enable Star Line Mode first
@@ -646,11 +646,11 @@ setAlign(0); emphasisOn(); text('Name: '); emphasisOff(); text('Customer');
 
 // ITEMS
 setSize(2,2); emphasisOn(); text('2x Pizza'); emphasisOff();
-setAlign(2); emphasisOn(); text('25.00‚Ç¨'); emphasisOff();
+setAlign(2); emphasisOn(); text('25.00Ä'); emphasisOff();
 
 // TOTALS
 setAlign(0); setSize(3,3); emphasisOn(); text('TOTAL:');
-setAlign(2); setSize(4,4); text('48.50‚Ç¨'); emphasisOff();
+setAlign(2); setSize(4,4); text('48.50Ä'); emphasisOff();
 
 // FOOTER
 setAlign(1); setSize(1,1); text('Thank you!');
@@ -669,12 +669,12 @@ node test-complete-receipt.js
 ```
 
 Expected output:
-- ‚úì All text sizes (1x1 through 4x4)
-- ‚úì Bold emphasis on headers and totals
-- ‚úì Proper alignment (left/center/right)
-- ‚úì Finnish characters (√§, √∂, √•, ‚Ç¨)
-- ‚úì QR code (scannable)
-- ‚úì Clean paper cut
+- ? All text sizes (1x1 through 4x4)
+- ? Bold emphasis on headers and totals
+- ? Proper alignment (left/center/right)
+- ? Finnish characters (‰, ˆ, Â, Ä)
+- ? QR code (scannable)
+- ? Clean paper cut
 
 ---
 
@@ -687,7 +687,7 @@ When implementing Star printer support:
 - [ ] Use `ESC GS a align` for alignment
 - [ ] Use `ESC E / ESC F` for bold
 - [ ] Use Method 3 QR only (`ESC GS y S 0x30 0x00`)
-- [ ] Encode Finnish chars (√§‚Üí0x7B, √∂‚Üí0x7C, √•‚Üí0x7D)
+- [ ] Encode Finnish chars (‰?0x7B, ˆ?0x7C, Â?0x7D)
 - [ ] Always turn off bold after use
 - [ ] Feed 2-3 lines before cutting
 - [ ] Test with `test-complete-receipt.js` before deploying
@@ -707,4 +707,4 @@ When implementing Star printer support:
 **Document Version:** 1.0  
 **Last Updated:** 2025-11-30  
 **Verified Printer:** Star mC-Print3 (192.168.1.106:9100)  
-**Verified Commands:** All commands tested and working ‚úÖ
+**Verified Commands:** All commands tested and working ?

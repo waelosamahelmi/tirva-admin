@@ -1,4 +1,4 @@
-﻿import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import { Readable } from 'stream';
 
 // Configure Cloudinary
@@ -27,7 +27,7 @@ export async function uploadImageToCloudinary(
       throw new Error('Cloudinary not configured. Please check environment variables.');
     }
 
-    console.log('📸 Uploading image to Cloudinary...');
+    console.log('?? Uploading image to Cloudinary...');
 
     // Create a sanitized restaurant name for folder structure
     const sanitizedRestaurantName = restaurantName
@@ -36,7 +36,7 @@ export async function uploadImageToCloudinary(
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
 
-    // Create folder path: restaurant-name/folder (e.g., "pizzeria-antonio/menu")
+    // Create folder path: restaurant-name/folder (e.g., "tirvan-kahvila/menu")
     const folderPath = `${sanitizedRestaurantName}/${folder}`;
 
     // Convert buffer to stream
@@ -69,12 +69,12 @@ export async function uploadImageToCloudinary(
       stream.pipe(uploadStream);
     });
 
-    console.log('✅ Image uploaded successfully to Cloudinary folder:', folderPath);
-    console.log('📁 Image URL:', result.secure_url);
+    console.log('? Image uploaded successfully to Cloudinary folder:', folderPath);
+    console.log('?? Image URL:', result.secure_url);
     return result.secure_url;
 
   } catch (error) {
-    console.error('❌ Error uploading image to Cloudinary:', error);
+    console.error('? Error uploading image to Cloudinary:', error);
     throw error;
   }
 }
@@ -98,20 +98,20 @@ export async function deleteImageFromCloudinary(imageUrl: string): Promise<boole
     const publicIdWithExt = urlParts.slice(uploadIndex + 2).join('/');
     const publicId = publicIdWithExt.replace(/\.[^/.]+$/, '');
 
-    console.log('🗑️ Deleting image from Cloudinary:', publicId);
+    console.log('??? Deleting image from Cloudinary:', publicId);
 
     const result = await cloudinary.uploader.destroy(publicId);
     
     if (result.result === 'ok') {
-      console.log('✅ Image deleted successfully from Cloudinary');
+      console.log('? Image deleted successfully from Cloudinary');
       return true;
     } else {
-      console.warn('⚠️ Image deletion result:', result);
+      console.warn('?? Image deletion result:', result);
       return false;
     }
 
   } catch (error) {
-    console.error('❌ Error deleting image from Cloudinary:', error);
+    console.error('? Error deleting image from Cloudinary:', error);
     return false;
   }
 }
@@ -126,11 +126,11 @@ export async function testCloudinaryConnection(): Promise<boolean> {
 
     // Simple API call to test connection
     const result = await cloudinary.api.ping();
-    console.log('✅ Cloudinary connection test successful:', result);
+    console.log('? Cloudinary connection test successful:', result);
     return true;
 
   } catch (error) {
-    console.error('❌ Cloudinary connection test failed:', error);
+    console.error('? Cloudinary connection test failed:', error);
     return false;
   }
 }

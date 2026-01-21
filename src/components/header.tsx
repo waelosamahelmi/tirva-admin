@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCart } from "@/lib/cart-context";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
@@ -61,7 +61,7 @@ export function Header({ onCartClick }: HeaderProps) {
               </div>
               <div>
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  <span className="hidden sm:inline">pizzeria antonio</span>
+                  <span className="hidden sm:inline">Tirvan Kahvila</span>
                   <span className="sm:hidden">antonio</span>
                 </h1>
               </div>
@@ -91,7 +91,7 @@ export function Header({ onCartClick }: HeaderProps) {
                 href="about"
                 className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors font-medium"
               >
-                {t("Meistä", "About")}
+                {t("Meist�", "About")}
               </a>
               <a
                 href="contact"
@@ -122,7 +122,7 @@ export function Header({ onCartClick }: HeaderProps) {
                     setIsLanguageMenuOpen(!isLanguageMenuOpen);
                   }}
                   className="px-2 py-2 flex items-center space-x-1"
-                  title={t("Vaihda kieli", "Change language", "تغيير اللغة")}
+                  title={t("Vaihda kieli", "Change language", "????? ?????")}
                 >
                   <Globe className="w-4 h-4" />
                   <span className="text-xs font-medium hidden sm:inline">
@@ -142,7 +142,7 @@ export function Header({ onCartClick }: HeaderProps) {
                         language === "fi" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : ""
                       }`}
                     >
-                      🇫🇮 Suomi
+                      ???? Suomi
                     </button>
                     <button
                       onClick={(e) => {
@@ -154,7 +154,7 @@ export function Header({ onCartClick }: HeaderProps) {
                         language === "en" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" : ""
                       }`}
                     >
-                      🇺🇸 English
+                      ???? English
                     </button>
 
                   </div>
@@ -203,7 +203,7 @@ export function Header({ onCartClick }: HeaderProps) {
                   size="sm"
                   onClick={() => setShowLoginModal(true)}
                   className="px-2 py-2"
-                  title={t("Kirjaudu sisään", "Login")}
+                  title={t("Kirjaudu sis��n", "Login")}
                 >
                   <User className="w-4 h-4" />
                 </Button>
@@ -279,7 +279,7 @@ export function Header({ onCartClick }: HeaderProps) {
                   className="block text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors font-medium py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("Meistä", "About")}
+                  {t("Meist�", "About")}
                 </a>
                 <a
                   href="contact"
@@ -318,7 +318,7 @@ export function Header({ onCartClick }: HeaderProps) {
                           : "hover:bg-gray-100 dark:hover:bg-gray-700"
                       }`}
                     >
-                      🇫🇮 Suomi
+                      ???? Suomi
                     </button>
                     <button
                       onClick={() => {
@@ -331,7 +331,7 @@ export function Header({ onCartClick }: HeaderProps) {
                           : "hover:bg-gray-100 dark:hover:bg-gray-700"
                       }`}
                     >
-                      🇺🇸 English
+                      ???? English
                     </button>
 
                   </div>
@@ -368,7 +368,7 @@ export function Header({ onCartClick }: HeaderProps) {
                     className="w-full justify-start"
                   >
                     <User className="w-4 h-4 mr-2" />
-                    {t("Kirjaudu sisään", "Login")}
+                    {t("Kirjaudu sis��n", "Login")}
                   </Button>
                 )}
               </div>

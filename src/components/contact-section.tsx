@@ -1,4 +1,4 @@
-Ôªøimport { useLanguage } from "@/lib/language-context";
+import { useLanguage } from "@/lib/language-context";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -22,11 +22,11 @@ export function ContactSection() {
         {/* Contact Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t("Ota yhteytt√§", "Get in Touch")}
+            {t("Ota yhteytt‰", "Get in Touch")}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             {t(
-              "Olemme t√§√§ll√§ auttamassa sinua. Ota yhteytt√§ tai tule k√§ym√§√§n meill√§ Utissa.",
+              "Olemme t‰‰ll‰ auttamassa sinua. Ota yhteytt‰ tai tule k‰ym‰‰n meill‰ Utissa.",
               "We're here to help you. Get in touch or visit us in Lahti."
             )}
           </p>
@@ -51,8 +51,8 @@ export function ContactSection() {
                       {t("Osoite", "Address")}
                     </h4>
                     <p className="text-gray-600 dark:text-gray-300">
-                      Rauhankatu 19 c<br />
-                      15110 Rauhankatu 19 c, 15110
+                      Pasintie 2<br />
+                      45410 Pasintie 2, 45410 Utti
                     </p>
                   </div>
                 </div>
@@ -69,7 +69,7 @@ export function ContactSection() {
                       href="tel:+35835899089" 
                       className="text-blue-600 hover:underline text-lg font-medium"
                     >
-                      +358-3589-9089
+                      +358 41 3152619
                     </a>
                   </div>
                 </div>
@@ -83,12 +83,12 @@ export function ContactSection() {
                       {t("Facebook", "Facebook")}
                     </h4>
                     <a 
-                      href="https://fi-fi.facebook.com/pizzeriaantonio/" 
+                      href="https://fi-fi.facebook.com/tirvankahvila/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-purple-600 hover:underline"
                     >
-                      Facebook - pizzeria antonio
+                      Facebook - Tirvan Kahvila
                     </a>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export function ContactSection() {
                       <span className="font-medium">10:00 - 14:30</span>
                     </div>
                     <p className="text-sm text-purple-600 dark:text-purple-400">
-                      {t("Sis√§lt√§√§ kahvin ja j√§lkiruoan", "Includes coffee and dessert")}
+                      {t("Sis‰lt‰‰ kahvin ja j‰lkiruoan", "Includes coffee and dessert")}
                     </p>
                   </div>
                 </div>
@@ -198,14 +198,14 @@ export function ContactSection() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <span>{t("Kuljetusalue 0 - 10km", "Delivery area 0 - 10km")}</span>
-                    <span className="font-bold text-green-600">3,00 ‚Ç¨</span>
+                    <span className="font-bold text-green-600">3,00 Ä</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <span>{t("Kuljetusalue yli 10km", "Delivery area over 10km")}</span>
-                    <span className="font-bold text-orange-600">8,00 ‚Ç¨</span>
+                    <span className="font-bold text-orange-600">8,00 Ä</span>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {t("* Yli 10km toimituksissa minimitilaus 20,00 ‚Ç¨", "* For deliveries over 10km, minimum order ‚Ç¨20.00")}
+                    {t("* Yli 10km toimituksissa minimitilaus 20,00 Ä", "* For deliveries over 10km, minimum order Ä20.00")}
                   </p>
                 </div>
               </div>
@@ -216,7 +216,7 @@ export function ContactSection() {
                 </h4>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">
                   {t(
-                    "Toimitamme ruokaa Utin ja l√§hialueiden koteihin ja ty√∂paikoille. Tarkista toimitusmahdollisuus soittamalla meille.",
+                    "Toimitamme ruokaa Utin ja l‰hialueiden koteihin ja tyˆpaikoille. Tarkista toimitusmahdollisuus soittamalla meille.",
                     "We deliver food to homes and workplaces in Lahti and surrounding areas. Check delivery availability by calling us."
                   )}
                 </p>
@@ -243,7 +243,7 @@ export function ContactSection() {
                   {t("Kartta tulossa pian", "Map coming soon")}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                  Rauhankatu 19 c, 15110 Lahti
+                  Pasintie 2, 45410 Utti
                 </p>
               </div>
             </div>

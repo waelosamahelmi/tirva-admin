@@ -1,18 +1,18 @@
-﻿import { Client as FTPClient } from 'basic-ftp';
+import { Client as FTPClient } from 'basic-ftp';
 import path from 'path';
 import { Readable } from 'stream';
 import sharp from 'sharp';
 
 // Hostinger FTP Configuration
 const FTP_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || 'ftp.pizzeriaantonio.fi',
+  host: process.env.HOSTINGER_FTP_HOST || 'ftp.tirvankahvila.fi',
   user: process.env.HOSTINGER_FTP_USER,
   password: process.env.HOSTINGER_FTP_PASSWORD,
   secure: true, // Use FTPS (FTP over SSL) with cert validation disabled
   port: 21,
 };
 
-const IMAGE_CDN_URL = process.env.IMAGE_CDN_URL || 'https://images.pizzeriaantonio.fi';
+const IMAGE_CDN_URL = process.env.IMAGE_CDN_URL || 'https://images.tirvankahvila.fi';
 
 /**
  * Upload image to Hostinger via FTP
@@ -33,7 +33,7 @@ export async function uploadImageToHostinger(
       throw new Error('Hostinger FTP credentials not configured. Please set HOSTINGER_FTP_USER and HOSTINGER_FTP_PASSWORD environment variables.');
     }
 
-    console.log('📡 Connecting to Hostinger FTP...');
+    console.log('?? Connecting to Hostinger FTP...');
     
     // Temporarily disable TLS certificate validation
     const originalTLSReject = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
@@ -58,10 +58,10 @@ export async function uploadImageToHostinger(
       delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
     }
 
-    console.log('✅ Connected to Hostinger FTP');
+    console.log('? Connected to Hostinger FTP');
 
     // Process image: optimize and convert to WebP
-    console.log('🖼️ Optimizing image...');
+    console.log('??? Optimizing image...');
     const optimizedBuffer = await sharp(file.buffer)
       .resize(1200, 900, {
         fit: 'inside',
@@ -84,25 +84,25 @@ export async function uploadImageToHostinger(
 
     // Ensure directory exists (create if needed)
     const remoteDir = path.dirname(remotePath).replace(/\\/g, '/');
-    console.log('📁 Ensuring remote directory exists:', remoteDir);
+    console.log('?? Ensuring remote directory exists:', remoteDir);
     await client.ensureDir(remoteDir);
 
     // Upload file
-    console.log('⬆️ Uploading to:', remotePath);
+    console.log('?? Uploading to:', remotePath);
     const readable = Readable.from(optimizedBuffer);
     await client.uploadFrom(readable, remotePath);
 
-    console.log('✅ Image uploaded successfully to Hostinger');
+    console.log('? Image uploaded successfully to Hostinger');
 
     // Build public URL
-    // Since images.pizzeriaantonio.fi points to /public_html, we need /uploads/... in the URL
+    // Since images.tirvankahvila.fi points to /public_html, we need /uploads/... in the URL
     const publicUrl = `${IMAGE_CDN_URL}/uploads/${year}/${month}/${folder}/${fileName}`;
-    console.log('🔗 Public URL:', publicUrl);
+    console.log('?? Public URL:', publicUrl);
 
     return publicUrl;
 
   } catch (error) {
-    console.error('❌ Error uploading to Hostinger:', error);
+    console.error('? Error uploading to Hostinger:', error);
     throw new Error(`Failed to upload image to Hostinger: ${error instanceof Error ? error.message : 'Unknown error'}`);
   } finally {
     // Always close FTP connection
@@ -127,12 +127,12 @@ export async function deleteImageFromHostinger(imageUrl: string): Promise<boolea
     }
 
     // Extract path from URL
-    // Example: https://images.pizzeriaantonio.fi/uploads/2024/11/menu-items/123456-abc123.webp
+    // Example: https://images.tirvankahvila.fi/uploads/2024/11/menu-items/123456-abc123.webp
     // Extract: /uploads/2024/11/menu-items/123456-abc123.webp
     const url = new URL(imageUrl);
     const remotePath = url.pathname;
 
-    console.log('🗑️ Deleting image from Hostinger:', remotePath);
+    console.log('??? Deleting image from Hostinger:', remotePath);
 
     // Connect to FTP server
     await client.access({
@@ -145,12 +145,12 @@ export async function deleteImageFromHostinger(imageUrl: string): Promise<boolea
 
     // Delete file
     await client.remove(remotePath);
-    console.log('✅ Image deleted successfully from Hostinger');
+    console.log('? Image deleted successfully from Hostinger');
 
     return true;
 
   } catch (error) {
-    console.error('❌ Error deleting from Hostinger:', error);
+    console.error('? Error deleting from Hostinger:', error);
     return false;
   } finally {
     client.close();
@@ -165,11 +165,11 @@ export async function testHostingerConnection(): Promise<boolean> {
   
   try {
     if (!FTP_CONFIG.user || !FTP_CONFIG.password) {
-      console.error('❌ FTP credentials not configured');
+      console.error('? FTP credentials not configured');
       return false;
     }
 
-    console.log('🔌 Testing Hostinger FTP connection...');
+    console.log('?? Testing Hostinger FTP connection...');
     
     await client.access({
       host: FTP_CONFIG.host,
@@ -179,16 +179,16 @@ export async function testHostingerConnection(): Promise<boolean> {
       port: FTP_CONFIG.port,
     });
 
-    console.log('✅ Hostinger FTP connection successful');
+    console.log('? Hostinger FTP connection successful');
     
     // Test directory listing
     const list = await client.list('/');
-    console.log('📂 Root directory contents:', list.length, 'items');
+    console.log('?? Root directory contents:', list.length, 'items');
 
     return true;
 
   } catch (error) {
-    console.error('❌ Hostinger FTP connection failed:', error);
+    console.error('? Hostinger FTP connection failed:', error);
     return false;
   } finally {
     client.close();

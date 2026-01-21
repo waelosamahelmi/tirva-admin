@@ -1,4 +1,4 @@
-﻿import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -12,7 +12,7 @@ const getApiBaseUrl = () => {
   // Check for cloud/production API URL first
   const cloudApiUrl = import.meta.env.VITE_API_URL;
   if (cloudApiUrl) {
-    console.log('🌐 QueryClient using cloud API URL:', cloudApiUrl);
+    console.log('?? QueryClient using cloud API URL:', cloudApiUrl);
     return cloudApiUrl;
   }
 
@@ -24,24 +24,24 @@ const getApiBaseUrl = () => {
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       // Try to get the actual network IP from Android context if available
       if (typeof (window as any).Android !== 'undefined') {
-        console.log('📱 QueryClient detected Android WebView, using network IP');
+        console.log('?? QueryClient detected Android WebView, using network IP');
         // You might need to configure this based on your network setup
         const networkIp = '192.168.1.233'; // Replace with your computer's IP
         return `http://${networkIp}:5000`;
       }
-      console.log('🏠 QueryClient using local development API URL');
-      return 'https://antonioadmin.fly.io/';
+      console.log('?? QueryClient using local development API URL');
+      return 'https://tirvaadmin.fly.io/';
     } else {
       // Use the same hostname as the frontend but port 5000
       const localUrl = `http://${hostname}:5000`;
-      console.log('🏠 QueryClient using local network API URL:', localUrl);
+      console.log('?? QueryClient using local network API URL:', localUrl);
       return localUrl;
     }
   }
   
   // Default fallback
-  console.log('🏠 QueryClient using default local API URL');
-  return 'https://antonioadmin.fly.io/';
+  console.log('?? QueryClient using default local API URL');
+  return 'https://tirvaadmin.fly.io/';
 };
 
 // Helper to build full URL

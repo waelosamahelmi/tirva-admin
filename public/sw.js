@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'antonio-admin-v1';
+const CACHE_NAME = 'tirva-admin-v1';
 const urlsToCache = [
   '/',
   '/admin',
@@ -7,7 +7,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('📱 Service Worker: Installing...');
+  console.log('?? Service Worker: Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(urlsToCache))
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
         }
         // Try to fetch, but handle failures gracefully
         return fetch(event.request).catch((error) => {
-          console.warn('📱 Service Worker: Fetch failed for', url.pathname, '- returning offline response');
+          console.warn('?? Service Worker: Fetch failed for', url.pathname, '- returning offline response');
           // Return a basic response for navigation requests when offline
           if (event.request.mode === 'navigate') {
             return caches.match('/');
@@ -58,7 +58,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('📱 Service Worker: Activating...');
+  console.log('?? Service Worker: Activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -77,7 +77,7 @@ self.addEventListener('activate', (event) => {
 
 // Handle background sync for offline orders
 self.addEventListener('sync', (event) => {
-  console.log('📱 Service Worker: Background sync triggered:', event.tag);
+  console.log('?? Service Worker: Background sync triggered:', event.tag);
   
   if (event.tag === 'background-sync-orders') {
     event.waitUntil(syncOrders());
@@ -86,7 +86,7 @@ self.addEventListener('sync', (event) => {
 
 // Handle push notifications
 self.addEventListener('push', (event) => {
-  console.log('📱 Service Worker: Push notification received:', event.data?.text());
+  console.log('?? Service Worker: Push notification received:', event.data?.text());
   
   if (event.data) {
     const data = event.data.json();
@@ -102,15 +102,15 @@ self.addEventListener('push', (event) => {
       actions: [
         {
           action: 'accept',
-          title: '✅ Accept Order'
+          title: '? Accept Order'
         },
         {
           action: 'decline',
-          title: '❌ Decline Order'
+          title: '? Decline Order'
         },
         {
           action: 'view',
-          title: '👁️ View Details'
+          title: '??? View Details'
         }
       ]
     };
@@ -123,7 +123,7 @@ self.addEventListener('push', (event) => {
 
 // Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
-  console.log('📱 Service Worker: Notification clicked:', event.action);
+  console.log('?? Service Worker: Notification clicked:', event.action);
   
   event.notification.close();
 
@@ -176,7 +176,7 @@ self.addEventListener('notificationclick', (event) => {
 // Keep connection alive for realtime updates
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'KEEP_ALIVE') {
-    console.log('📱 Service Worker: Keep alive message received');
+    console.log('?? Service Worker: Keep alive message received');
     // Send response back to keep connection active
     event.ports[0].postMessage({ type: 'KEEP_ALIVE_RESPONSE' });
   }
@@ -185,17 +185,17 @@ self.addEventListener('message', (event) => {
 // Background sync function
 async function syncOrders() {
   try {
-    console.log('📱 Service Worker: Syncing orders in background...');
+    console.log('?? Service Worker: Syncing orders in background...');
     
     // Get offline orders from IndexedDB if any
     // This would be implemented based on your offline storage strategy
     
     // For now, just log that sync is happening
-    console.log('📱 Service Worker: Background sync completed');
+    console.log('?? Service Worker: Background sync completed');
     
     return Promise.resolve();
   } catch (error) {
-    console.error('📱 Service Worker: Background sync failed:', error);
+    console.error('?? Service Worker: Background sync failed:', error);
     throw error;
   }
 }

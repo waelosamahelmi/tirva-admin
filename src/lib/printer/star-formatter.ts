@@ -1,4 +1,4 @@
-ï»¿/**
+/**
  * Star mC-Print3 / StarPRNT Formatter
  * Optimized for Star thermal printers using StarPRNT command set
  */
@@ -15,13 +15,13 @@ function translatePaymentMethod(method: string): string {
     'card': 'Kortti',
     'credit card': 'Kortti',
     'debit card': 'Kortti',
-    'cash': 'KÃ¤teinen',
-    'kÃ¤teinen': 'KÃ¤teinen',
+    'cash': 'Käteinen',
+    'käteinen': 'Käteinen',
     'kortti': 'Kortti',
     'stripe': 'Kortti',
     'online': 'Verkkomaksu',
-    'cash_or_card': 'KÃ¤teinen tai kortti',
-    'cash or card': 'KÃ¤teinen tai kortti'
+    'cash_or_card': 'Käteinen tai kortti',
+    'cash or card': 'Käteinen tai kortti'
   };
   
   return translations[methodLower] || method;
@@ -66,7 +66,7 @@ export class StarFormatter {
     // Initialize printer
     commands.push(...this.initialize());
 
-    // Set CP850 encoding for Finnish characters (Ã¤, Ã¶, Ã¥)
+    // Set CP850 encoding for Finnish characters (ä, ö, å)
     commands.push(...this.setEncoding('CP850'));
     
     // Set character spacing from settings
@@ -80,7 +80,7 @@ export class StarFormatter {
     commands.push(...this.textSize(this.fontSettings.restaurantName.width, this.fontSettings.restaurantName.height));
     commands.push(...this.text('pizzeria'));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('antonio'));
+    commands.push(...this.text('tirva'));
     commands.push(...this.lineFeed(2));
     commands.push(...this.bold(false));
 
@@ -89,9 +89,9 @@ export class StarFormatter {
     // ============================================
     commands.push(...this.center());
     commands.push(...this.textSize(this.fontSettings.header.width, this.fontSettings.header.height));
-    commands.push(...this.text('Rauhankatu 19 c, 15110 Lahti'));
+    commands.push(...this.text('Pasintie 2, 45410 Utti'));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('+358-3589-9089'));
+    commands.push(...this.text('+358 41 3152619'));
     commands.push(...this.lineFeed(2));
     
     commands.push(...this.text('================================'));
@@ -249,7 +249,7 @@ export class StarFormatter {
 
         // Toppings - parse from array properly
         if (item.toppings && Array.isArray(item.toppings) && item.toppings.length > 0) {
-          commands.push(...this.text('  LisÃ¤tÃ¤ytteet:'));
+          commands.push(...this.text('  Lisätäytteet:'));
           commands.push(...this.lineFeed());
           
           // Check for conditional pricing from originalOrder
@@ -379,7 +379,7 @@ export class StarFormatter {
 
     if (originalOrder) {
       if (originalOrder.subtotal) {
-        commands.push(...this.twoColumn('VÃ¤lisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`, 48));
+        commands.push(...this.twoColumn('Välisumma:', `${parseFloat(originalOrder.subtotal).toFixed(2)}e`, 48));
       }
 
       if (originalOrder.deliveryFee && parseFloat(originalOrder.deliveryFee) > 0) {
@@ -387,7 +387,7 @@ export class StarFormatter {
       }
 
       if (originalOrder.smallOrderFee && parseFloat(originalOrder.smallOrderFee) > 0) {
-        commands.push(...this.twoColumn('PientilauslisÃ¤:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`, 48));
+        commands.push(...this.twoColumn('Pientilauslisä:', `${parseFloat(originalOrder.smallOrderFee).toFixed(2)}e`, 48));
       }
 
       if (originalOrder.discount && parseFloat(originalOrder.discount) > 0) {
@@ -419,11 +419,11 @@ export class StarFormatter {
     commands.push(...this.lineFeed(2));
     
     // Generate QR code for website
-    commands.push(...this.generateQRCode('https://pizzeriaantonio.fi', 4));
+    commands.push(...this.generateQRCode('https://tirvankahvila.fi', 4));
     
     commands.push(...this.lineFeed(2));
     commands.push(...this.bold(true));
-    commands.push(...this.text('pizzeriaantonio.fi'));
+    commands.push(...this.text('tirvankahvila.fi'));
     commands.push(...this.lineFeed());
     commands.push(...this.bold(false));
     commands.push(...this.lineFeed(2));
@@ -643,7 +643,7 @@ export class StarFormatter {
     commands.push(...this.lineFeed());
     commands.push(...this.text('Star mC-Print3 Test'));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('pizzeria antonio'));
+    commands.push(...this.text('Tirvan Kahvila'));
     commands.push(...this.lineFeed(2));
     commands.push(...this.left());
     commands.push(...this.text(`Date: ${new Date().toLocaleDateString('fi-FI')}`));
@@ -652,7 +652,7 @@ export class StarFormatter {
     commands.push(...this.lineFeed(2));
     commands.push(...this.text('Printer Status: OK'));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('UTF-8 Test: Ã¤ Ã¶ Ã¥ Ã„ Ã– Ã… â‚¬ Ã±'));
+    commands.push(...this.text('UTF-8 Test: ä ö å Ä Ö Å € ñ'));
     commands.push(...this.lineFeed(3));
     commands.push(...this.cutPaper());
 

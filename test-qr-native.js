@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer QR Code Test - Native Star QR Command
  * Using ESC GS y S 0 (Star's QR code command)
  */
@@ -30,12 +30,12 @@ function generateStarQRReceipt() {
   
   // Test 1: Star native QR code command
   // ESC GS y S 0 n1 n2 n d1...dk
-  const url = 'https://antonio.fi';
+  const url = 'https://tirva.fi';
   const urlBytes = encode(url);
   const dataLen = urlBytes.length;
   
-  console.log(`→ Star QR Code command for: ${url}`);
-  console.log(`→ Data length: ${dataLen} bytes`);
+  console.log(`? Star QR Code command for: ${url}`);
+  console.log(`? Data length: ${dataLen} bytes`);
   
   // ESC GS y S 0 = Star 2D barcode (QR)
   // Size: 0x08 (medium), Error correction: L (0x00)
@@ -49,7 +49,7 @@ function generateStarQRReceipt() {
   cmd.push(LF, LF, LF);
   
   // Test 2: Try different QR format (ESC GS ( k)
-  console.log(`→ Alternative QR format (if first doesn't work)`);
+  console.log(`? Alternative QR format (if first doesn't work)`);
   
   const url2 = 'https://google.com';
   const url2Bytes = encode(url2);
@@ -76,36 +76,36 @@ function generateStarQRReceipt() {
 }
 
 function sendToPrinter(host, port) {
-  console.log(`🖨️  ===== STAR QR CODE TEST =====`);
-  console.log(`📍 Target: ${host}:${port}\n`);
+  console.log(`???  ===== STAR QR CODE TEST =====`);
+  console.log(`?? Target: ${host}:${port}\n`);
   
   const receipt = generateStarQRReceipt();
-  console.log(`📦 Generated ${receipt.length} bytes\n`);
+  console.log(`?? Generated ${receipt.length} bytes\n`);
   
   const client = new net.Socket();
   
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Timeout');
+    console.error('? Timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected!`);
-    console.log(`📤 Sending QR test...\n`);
+    console.log(`? Connected!`);
+    console.log(`?? Sending QR test...\n`);
     
     client.write(receipt, () => {
-      console.log(`✅ Sent!\n`);
+      console.log(`? Sent!\n`);
       console.log(`Check receipt:`);
       console.log(`  - Should see 2 QR codes`);
-      console.log(`  - First one: https://antonio.fi`);
+      console.log(`  - First one: https://tirva.fi`);
       console.log(`  - Second one: https://google.com`);
       console.log(`  - Try scanning with phone\n`);
       console.log(`If you see text instead of QR:`);
@@ -119,7 +119,7 @@ function sendToPrinter(host, port) {
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

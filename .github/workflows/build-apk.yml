@@ -72,7 +72,7 @@ jobs:
         if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == ''
         uses: actions/upload-artifact@v4
         with:
-          name: antonio-admin-debug
+          name: tirva-admin-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
@@ -80,7 +80,7 @@ jobs:
         if: github.event.inputs.build_type == 'release'
         uses: actions/upload-artifact@v4
         with:
-          name: antonio-admin-release
+          name: tirva-admin-release
           path: android/app/build/outputs/apk/release/app-release-unsigned.apk
           retention-days: 30
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer QR Code Test
  * Testing QR code generation with Star native commands
  */
@@ -31,9 +31,9 @@ function generateQRTest() {
   cmd.push(LF, LF);
   
   // Test 1: Star QR Code (2D barcode)
-  console.log('→ Generating Star QR Code...');
+  console.log('? Generating Star QR Code...');
   
-  const url = 'https://pizzeriaantonio.fi';
+  const url = 'https://tirvankahvila.fi';
   const qrData = encode(url);
   
   // Star QR Code command: ESC GS y S 0
@@ -47,11 +47,11 @@ function generateQRTest() {
   cmd.push(0x1E); // End of data
   
   cmd.push(LF, LF);
-  cmd.push(...encode('pizzeriaantonio.fi'));
+  cmd.push(...encode('tirvankahvila.fi'));
   cmd.push(LF, LF, LF);
   
   // Test 2: Alternative QR method - Star 2D Code
-  console.log('→ Generating 2D Code (alternative)...');
+  console.log('? Generating 2D Code (alternative)...');
   
   cmd.push(...encode('ALTERNATIVE METHOD:'));
   cmd.push(LF, LF);
@@ -83,7 +83,7 @@ function generateQRTest() {
   cmd.push(LF, LF, LF);
   
   // Test 3: Simple barcode (1D)
-  console.log('→ Generating 1D Barcode...');
+  console.log('? Generating 1D Barcode...');
   
   cmd.push(...encode('1D BARCODE:'));
   cmd.push(LF);
@@ -103,42 +103,42 @@ function generateQRTest() {
 }
 
 function sendToPrinter(host, port) {
-  console.log(`🖨️  ===== QR CODE TEST =====`);
-  console.log(`📍 Target: ${host}:${port}\n`);
+  console.log(`???  ===== QR CODE TEST =====`);
+  console.log(`?? Target: ${host}:${port}\n`);
   
   const receipt = generateQRTest();
-  console.log(`📦 Generated ${receipt.length} bytes\n`);
+  console.log(`?? Generated ${receipt.length} bytes\n`);
   
   const client = new net.Socket();
   
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Timeout');
+    console.error('? Timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected!`);
-    console.log(`📤 Sending QR code commands...\n`);
+    console.log(`? Connected!`);
+    console.log(`?? Sending QR code commands...\n`);
     
     client.write(receipt, () => {
-      console.log(`✅ Sent successfully!\n`);
+      console.log(`? Sent successfully!\n`);
       console.log(`Expected output:`);
       console.log(`  1. "QR CODE TEST" header`);
       console.log(`  2. QR code (scannable square)`);
-      console.log(`  3. "pizzeriaantonio.fi" text`);
+      console.log(`  3. "tirvankahvila.fi" text`);
       console.log(`  4. Alternative QR code method`);
       console.log(`  5. "TEST123" QR code`);
       console.log(`  6. 1D Barcode for "12345"\n`);
       console.log(`Scan the QR codes with your phone!`);
-      console.log(`They should open pizzeriaantonio.fi\n`);
+      console.log(`They should open tirvankahvila.fi\n`);
       
       setTimeout(() => {
         client.end();
@@ -147,7 +147,7 @@ function sendToPrinter(host, port) {
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

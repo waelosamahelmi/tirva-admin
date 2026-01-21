@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer Test Script - StarPRNT Mode
  * Send test receipts using Star's native command set
  * 
@@ -37,7 +37,7 @@ function generateStarReceipt() {
   
   // Test 2: Character width/height
   cmd.push(ESC, 0x69, 0x02, 0x02); // Double width, Double height
-  cmd.push(...encode('antonio'));
+  cmd.push(...encode('tirva'));
   cmd.push(LF);
   
   cmd.push(ESC, 0x69, 0x01, 0x01); // Normal
@@ -62,12 +62,12 @@ function generateStarReceipt() {
   cmd.push(ESC, 0x69, 0x01, 0x01); // Normal
   cmd.push(LF);
   
-  // Test 5: Nordic characters (å, ä, ö)
+  // Test 5: Nordic characters (�, �, �)
   cmd.push(ESC, 0x1D, 0x61, 0x00); // Left align
   cmd.push(...encode('Nordic chars: '));
-  cmd.push(0x5B); // å
-  cmd.push(0x7B); // ä  
-  cmd.push(0x7C); // ö
+  cmd.push(0x5B); // �
+  cmd.push(0x7B); // �  
+  cmd.push(0x7C); // �
   cmd.push(LF, LF);
   
   // Test 6: Line breaks and spacing
@@ -88,52 +88,52 @@ function generateStarReceipt() {
  * Send receipt to printer
  */
 function sendToPrinter(host, port) {
-  console.log(`\n🖨️  ===== STAR PRNT MODE TEST =====`);
-  console.log(`📍 Target: ${host}:${port}`);
-  console.log(`🌟 Using StarPRNT commands\n`);
+  console.log(`\n???  ===== STAR PRNT MODE TEST =====`);
+  console.log(`?? Target: ${host}:${port}`);
+  console.log(`?? Using StarPRNT commands\n`);
   
   const receipt = generateStarReceipt();
-  console.log(`📦 Generated ${receipt.length} bytes`);
-  console.log(`📄 Raw data (hex):`, receipt.toString('hex').substring(0, 100), '...\n');
+  console.log(`?? Generated ${receipt.length} bytes`);
+  console.log(`?? Raw data (hex):`, receipt.toString('hex').substring(0, 100), '...\n');
   
   const client = new net.Socket();
   
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Connection timeout');
+    console.error('? Connection timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected to ${host}:${port}`);
-    console.log(`📤 Sending test receipt...`);
+    console.log(`? Connected to ${host}:${port}`);
+    console.log(`?? Sending test receipt...`);
     
     client.write(receipt, () => {
-      console.log(`✅ Data sent!`);
-      console.log(`⏱️  Waiting for printer...\n`);
+      console.log(`? Data sent!`);
+      console.log(`??  Waiting for printer...\n`);
       
       setTimeout(() => {
         client.end();
-        console.log(`✅ ===== TEST COMPLETE =====\n`);
+        console.log(`? ===== TEST COMPLETE =====\n`);
         console.log(`Check the printer output:`);
         console.log(`  - Should see different text sizes`);
-        console.log(`  - antonio should be large`);
+        console.log(`  - tirva should be large`);
         console.log(`  - Bold text should be darker`);
-        console.log(`  - Nordic characters (å, ä, ö) should display`);
+        console.log(`  - Nordic characters (�, �, �) should display`);
         console.log(``);
         process.exit(0);
       }, 1000);
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

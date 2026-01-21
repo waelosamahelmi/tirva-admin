@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Star Printer Complete Test
  * Testing correct sizing order and QR code
  */
@@ -29,7 +29,7 @@ function generateCompleteTest() {
   cmd.push(LF, LF);
   
   // Test sizing with HEIGHT x WIDTH order
-  console.log('→ Testing ESC i [height] [width]');
+  console.log('? Testing ESC i [height] [width]');
   
   // Normal
   console.log('  ESC i 1 1 (height=1, width=1)');
@@ -66,14 +66,14 @@ function generateCompleteTest() {
   cmd.push(LF, LF);
   
   // Test Bold
-  console.log('→ Testing emphasis (bold)');
+  console.log('? Testing emphasis (bold)');
   cmd.push(ESC, 0x45); // Emphasis ON
   cmd.push(...encode('BOLD TEXT'));
   cmd.push(ESC, 0x46); // Emphasis OFF
   cmd.push(LF, LF);
   
   // Combined: Large + Bold
-  console.log('→ Testing combined: 2x2 + Bold');
+  console.log('? Testing combined: 2x2 + Bold');
   cmd.push(ESC, 0x45); // Emphasis ON
   cmd.push(ESC, 0x69, 0x02, 0x02); // 2x2
   cmd.push(...encode('LARGE BOLD'));
@@ -83,13 +83,13 @@ function generateCompleteTest() {
   cmd.push(LF, LF, LF);
   
   // QR Code Test
-  console.log('→ Testing QR Code (Star native format)');
+  console.log('? Testing QR Code (Star native format)');
   cmd.push(...encode('=== QR CODE TEST ==='));
   cmd.push(LF, LF);
   
   // Star QR Code command: ESC GS y S 0 [model] [size] [ecc] [data]
   // Model 2 (recommended), Size 5 (medium), ECC L (low)
-  const qrUrl = 'https://pizzeriaantonio.fi';
+  const qrUrl = 'https://tirvankahvila.fi';
   const qrData = encode(qrUrl);
   const qrLength = qrData.length;
   
@@ -116,33 +116,33 @@ function generateCompleteTest() {
 }
 
 function sendToPrinter(host, port) {
-  console.log(`🖨️  ===== COMPLETE STAR TEST =====`);
-  console.log(`📍 Target: ${host}:${port}\n`);
+  console.log(`???  ===== COMPLETE STAR TEST =====`);
+  console.log(`?? Target: ${host}:${port}\n`);
   
   const receipt = generateCompleteTest();
-  console.log(`📦 Generated ${receipt.length} bytes\n`);
+  console.log(`?? Generated ${receipt.length} bytes\n`);
   
   const client = new net.Socket();
   
   client.setTimeout(5000);
   
   client.on('timeout', () => {
-    console.error('❌ Timeout');
+    console.error('? Timeout');
     client.destroy();
     process.exit(1);
   });
   
   client.on('error', (err) => {
-    console.error(`❌ Error: ${err.message}`);
+    console.error(`? Error: ${err.message}`);
     process.exit(1);
   });
   
   client.on('connect', () => {
-    console.log(`✅ Connected!`);
-    console.log(`📤 Sending complete test...\n`);
+    console.log(`? Connected!`);
+    console.log(`?? Sending complete test...\n`);
     
     client.write(receipt, () => {
-      console.log(`✅ Sent!\n`);
+      console.log(`? Sent!\n`);
       console.log(`Check the receipt:`);
       console.log(`  1. "2x1 TALL" should be TALL (stretched vertically)`);
       console.log(`  2. "1x2 WIDE" should be WIDE (stretched horizontally)`);
@@ -151,7 +151,7 @@ function sendToPrinter(host, port) {
       console.log(`  5. "BOLD TEXT" should be darker`);
       console.log(`  6. "LARGE BOLD" should be big AND dark`);
       console.log(`  7. QR code should appear and be scannable`);
-      console.log(`     (scan it to verify it goes to pizzeriaantonio.fi)\n`);
+      console.log(`     (scan it to verify it goes to tirvankahvila.fi)\n`);
       
       setTimeout(() => {
         client.end();
@@ -160,7 +160,7 @@ function sendToPrinter(host, port) {
     });
   });
   
-  console.log(`🔌 Connecting...`);
+  console.log(`?? Connecting...`);
   client.connect(port, host);
 }
 

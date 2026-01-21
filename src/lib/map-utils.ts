@@ -1,8 +1,8 @@
-﻿// Restaurant location in Rauhankatu 19 c, 15110
+// Restaurant location in Pasintie 2, 45410 Utti
 export const RESTAURANT_LOCATION = {
-  lat: 60.905728, // Exact restaurant coordinates
-  lng: 27.012103,
-  address: "Rauhankatu 19 c, 15110 Rauhankatu 19 c, 15110"
+  lat: 60.8912,  // Utti coordinates
+  lng: 26.9567,
+  address: "Pasintie 2, 45410 Utti"
 };
 
 // Calculate distance between two coordinates using Haversine formula

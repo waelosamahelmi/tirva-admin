@@ -1,12 +1,12 @@
-﻿# CloudPRNT Integration - Implementation Summary
+# CloudPRNT Integration - Implementation Summary
 
-## ✅ Completed Implementation
+## ? Completed Implementation
 
-I've successfully integrated **Star Micronics CloudPRNT** protocol into your antonio restaurant admin app with modern thermal receipt design. Here's what was implemented:
+I've successfully integrated **Star Micronics CloudPRNT** protocol into your tirva restaurant admin app with modern thermal receipt design. Here's what was implemented:
 
 ---
 
-## 🎯 Key Features Delivered
+## ?? Key Features Delivered
 
 ### 1. **CloudPRNT Server** (`server/cloudprnt-server.ts`)
 - Full CloudPRNT HTTP protocol implementation
@@ -18,10 +18,10 @@ I've successfully integrated **Star Micronics CloudPRNT** protocol into your ant
 - API endpoints for job submission and status monitoring
 
 ### 2. **Modern Receipt Formatter** (`src/lib/printer/modern-receipt-formatter.ts`)
-- ✅ **antonio Logo**: Text-based logo at the top
-- ✅ **QR Code**: Links to pizzeriaantonio.fi at the bottom
-- ✅ **Finnish Character Support**: Proper CP850 encoding for ä, ö, å
-- ✅ **All Order Information**: Complete order details including:
+- ? **tirva Logo**: Text-based logo at the top
+- ? **QR Code**: Links to tirvankahvila.fi at the bottom
+- ? **Finnish Character Support**: Proper CP850 encoding for �, �, �
+- ? **All Order Information**: Complete order details including:
   - Order number (large, prominent display)
   - Date and time
   - Order type (delivery/pickup)
@@ -34,13 +34,13 @@ I've successfully integrated **Star Micronics CloudPRNT** protocol into your ant
   - Special instructions
   - Subtotal, delivery fees, discounts
   - Large total amount
-- ✅ **Professional Layout**: Clean, modern design with proper spacing
+- ? **Professional Layout**: Clean, modern design with proper spacing
 
 ### 3. **Enhanced Star Formatter** (`src/lib/printer/star-formatter.ts`)
 - Updated with QR code generation
 - Proper CP850 encoding for Finnish
 - Modern receipt layout
-- QR code linking to pizzeriaantonio.fi
+- QR code linking to tirvankahvila.fi
 
 ### 4. **Receipt Graphics Module** (`src/lib/printer/receipt-graphics.ts`)
 - QR code generation for ESC/POS printers
@@ -57,22 +57,22 @@ I've successfully integrated **Star Micronics CloudPRNT** protocol into your ant
 
 ---
 
-## 📝 How Finnish Characters Work
+## ?? How Finnish Characters Work
 
 The implementation uses **CP850 (Multilingual Latin I)** encoding, which properly maps Finnish characters:
 
 | Character | CP850 Code | Display |
 |-----------|------------|---------|
-| ä | 0x84 | ä |
-| Ä | 0x8E | Ä |
-| ö | 0x94 | ö |
-| Ö | 0x99 | Ö |
-| å | 0x86 | å |
-| Å | 0x8F | Å |
+| � | 0x84 | � |
+| � | 0x8E | � |
+| � | 0x94 | � |
+| � | 0x99 | � |
+| � | 0x86 | � |
+| � | 0x8F | � |
 
 Example Finnish text in receipt:
 ```
-Lisätäytteet:
+Lis�t�ytteet:
   + Juusto
   + Paprika
 
@@ -82,18 +82,18 @@ Tervetuloa uudelleen!
 
 ---
 
-## 🖨️ Receipt Layout
+## ??? Receipt Layout
 
 Here's what your modern receipt looks like:
 
 ```
-        antonio
+        tirva
       
-      pizzeria
+      kahvila
       
-   Rauhankatu 19 c
-     15110 Lahti
-   +358-3589-9089
+   Pasintie 2
+     45410 Utti
+   +358 41 3152619
 
 ================================
 
@@ -117,7 +117,7 @@ Email: john@example.com
 
 Osoite:
   Vapaudenkatu 1
-  15110 Lahti
+  45410 Utti
 
 ================================
       TUOTTEET
@@ -125,7 +125,7 @@ Osoite:
 
 2x Pizza Margherita    24.00e
 
-  Lisätäytteet:
+  Lis�t�ytteet:
     + Extra juusto     ILMAINEN
     + Oliivit          ILMAINEN
     + Pepperoni        +2.00e
@@ -137,7 +137,7 @@ Osoite:
      YHTEENVETO
 ================================
 
-Välisumma:            22.00e
+V�lisumma:            22.00e
 Toimitusmaksu:         5.00e
 --------------------------------
 
@@ -149,7 +149,7 @@ Toimitusmaksu:         5.00e
 
    [QR CODE HERE]
 
- pizzeriaantonio.fi
+ tirvankahvila.fi
 
 ================================
        Kiitos!
@@ -159,7 +159,7 @@ Toimitusmaksu:         5.00e
 
 ---
 
-## 🚀 How to Use CloudPRNT
+## ?? How to Use CloudPRNT
 
 ### Step 1: Configure Your Printer
 
@@ -200,7 +200,7 @@ console.log(`Job ${result.jobId} queued successfully!`);
 
 ---
 
-## 📚 Documentation
+## ?? Documentation
 
 I've created comprehensive documentation:
 
@@ -219,7 +219,7 @@ I've created comprehensive documentation:
 
 ---
 
-## 🎨 What Makes This Modern?
+## ?? What Makes This Modern?
 
 1. **Visual Hierarchy**: 
    - Large order number
@@ -247,7 +247,7 @@ I've created comprehensive documentation:
 
 ---
 
-## 🔧 Technical Highlights
+## ?? Technical Highlights
 
 ### Intelligent Topping Pricing
 ```typescript
@@ -265,9 +265,9 @@ if (itemSize === "perhe") {
 ```typescript
 // Finnish characters properly encoded
 switch (char) {
-  case 'ä': bytes.push(0x84); break;
-  case 'Ä': bytes.push(0x8E); break;
-  case 'ö': bytes.push(0x94); break;
+  case '�': bytes.push(0x84); break;
+  case '�': bytes.push(0x8E); break;
+  case '�': bytes.push(0x94); break;
   // ... etc
 }
 ```
@@ -275,37 +275,37 @@ switch (char) {
 ### Native QR Code Generation
 ```typescript
 // ESC/POS QR code commands
-const qrCommands = generateQRCodeESCPOS('https://pizzeriaantonio.fi', 6);
+const qrCommands = generateQRCodeESCPOS('https://tirvankahvila.fi', 6);
 
 // Star printer QR code commands
-commands.push(...this.generateQRCode('https://pizzeriaantonio.fi', 4));
+commands.push(...this.generateQRCode('https://tirvankahvila.fi', 4));
 ```
 
 ---
 
-## ✨ What's Different from Before?
+## ? What's Different from Before?
 
 ### Before:
-- ❌ Basic text-only receipts
-- ❌ Finnish characters displayed incorrectly (ä→a, ö→o)
-- ❌ No logo
-- ❌ No QR code
-- ❌ Direct printer connection required
+- ? Basic text-only receipts
+- ? Finnish characters displayed incorrectly (�?a, �?o)
+- ? No logo
+- ? No QR code
+- ? Direct printer connection required
 
 ### After:
-- ✅ Modern, professional receipt design
-- ✅ Finnish characters display perfectly (ä, ö, å)
-- ✅ antonio logo at top
-- ✅ QR code to pizzeriaantonio.fi at bottom
-- ✅ CloudPRNT for remote printing
-- ✅ Structured, easy-to-read layout
-- ✅ All order information included
-- ✅ Conditional pricing support
-- ✅ Size information clearly shown
+- ? Modern, professional receipt design
+- ? Finnish characters display perfectly (�, �, �)
+- ? tirva logo at top
+- ? QR code to tirvankahvila.fi at bottom
+- ? CloudPRNT for remote printing
+- ? Structured, easy-to-read layout
+- ? All order information included
+- ? Conditional pricing support
+- ? Size information clearly shown
 
 ---
 
-## 🎯 Next Steps
+## ?? Next Steps
 
 1. **Test the Implementation**:
    ```bash
@@ -333,7 +333,7 @@ commands.push(...this.generateQRCode('https://pizzeriaantonio.fi', 4));
 
 ---
 
-## 📞 Support
+## ?? Support
 
 If you encounter any issues:
 
@@ -344,16 +344,16 @@ If you encounter any issues:
 
 ---
 
-## 🎉 Summary
+## ?? Summary
 
 You now have a **fully functional CloudPRNT integration** with:
-- ✅ Modern receipt design
-- ✅ antonio logo
-- ✅ QR code to your website
-- ✅ Perfect Finnish character support
-- ✅ Complete order information
-- ✅ Conditional pricing logic
-- ✅ Remote printing capability
-- ✅ Comprehensive documentation
+- ? Modern receipt design
+- ? tirva logo
+- ? QR code to your website
+- ? Perfect Finnish character support
+- ? Complete order information
+- ? Conditional pricing logic
+- ? Remote printing capability
+- ? Comprehensive documentation
 
 The receipts will look professional, display all information correctly, and engage customers with a scannable QR code!

@@ -174,10 +174,23 @@ export const restaurantSettings = pgTable("restaurant_settings", {
   defaultPrinterId: text("default_printer_id"),
   printerAutoReconnect: boolean("printer_auto_reconnect").default(true),
   printerTabSticky: boolean("printer_tab_sticky").default(true),
+  receiptFormat: text("receipt_format").default('text'),
+  directPrintEnabled: boolean("direct_print_enabled").default(true),
+  // Payment methods
+  paymentMethods: jsonb("payment_methods").default([
+    {"id": "cash", "nameFi": "Käteinen", "nameEn": "Cash", "enabled": true, "icon": "banknote"},
+    {"id": "card", "nameFi": "Kortti", "nameEn": "Card", "enabled": true, "icon": "credit-card"}
+  ]),
   // Stripe payment settings
   stripeEnabled: boolean("stripe_enabled").default(false),
   stripePublishableKey: text("stripe_publishable_key"),
   stripeSecretKey: text("stripe_secret_key"),
+  stripeWebhookSecret: text("stripe_webhook_secret"),
+  stripeTestMode: boolean("stripe_test_mode").default(true),
+  stripeConnectAccountId: text("stripe_connect_account_id"),
+  stripeAccountEmail: text("stripe_account_email"),
+  stripeAccountCountry: text("stripe_account_country"),
+  stripePaymentMethodsConfig: jsonb("stripe_payment_methods_config").default({}),
   // Online payment service fee
   onlinePaymentServiceFee: numeric("online_payment_service_fee", { precision: 10, scale: 2 }).default('0.00'),
   onlinePaymentServiceFeeType: text("online_payment_service_fee_type").default('fixed'), // 'fixed' or 'percentage'
