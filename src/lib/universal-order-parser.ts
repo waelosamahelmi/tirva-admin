@@ -70,16 +70,17 @@ export class UniversalOrderParser {
   private static parseSupabaseOrder(order: any): ReceiptData {
     console.log('📋 PARSER: Trying Supabase format');
     
-    const orderItems = order.order_items || [];
+    // Check for both camelCase (after formatSupabaseResponse) and snake_case (raw Supabase)
+    const orderItems = order.orderItems || order.order_items || [];
     if (!Array.isArray(orderItems) || orderItems.length === 0) {
-      console.log('❌ PARSER: No order_items array found or empty');
+      console.log('❌ PARSER: No order_items/orderItems array found or empty');
       console.log('📋 PARSER: Available order keys:', Object.keys(order));
       throw new Error('No order_items found or not an array');
     }
 
-    // Parse items
+    // Parse items - check both camelCase and snake_case versions
     const parsedItems: OrderItem[] = orderItems.map((item: any, index: number) => {
-      const menuItem = item.menu_items || item.menu_item || item.menuItems || item.menuItem || item;
+      const menuItem = item.menuItems || item.menu_items || item.menuItem || item.menu_item || item;
       
       const parsedItem: OrderItem = {
         name: menuItem.name || "Unknown Item",

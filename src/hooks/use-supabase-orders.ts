@@ -111,23 +111,39 @@ export function useSupabaseUpdateOrderStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, status }: { id: number; status: string }) => {
-      console.log('📦 Updating order status in Supabase:', id, '->', status);
+    mutationFn: async ({ id, status, prep_time }: { id: number; status: string; prep_time?: number }) => {
+      console.log('📦 Updating order status in Supabase:', id, '->', status, prep_time ? `prep_time: ${prep_time}` : '');
+      
+      // Build update data
+      const updateData: any = { 
+        status, 
+        updated_at: new Date().toISOString() 
+      };
+      
+      // Add prep_time if provided
+      if (prep_time !== undefined) {
+        updateData.prep_time = prep_time;
+      }
       
       const { data, error } = await supabase
         .from('orders')
-        .update({ status, updated_at: new Date().toISOString() })
+        .update(updateData)
         .eq('id', id)
-        .select()
-        .single();
+        .select();
 
       if (error) {
         console.error('❌ Failed to update order status:', error);
         handleSupabaseError(error);
       }
+      
+      // Check if any rows were updated
+      if (!data || data.length === 0) {
+        console.error('❌ No rows updated - order may not exist or RLS policy blocking');
+        throw new Error('Order not found or access denied. Please check your permissions.');
+      }
 
-      console.log('✅ Order status updated successfully:', data?.id, data?.status);
-      return formatSupabaseResponse(data);
+      console.log('✅ Order status updated successfully:', data[0]?.id, data[0]?.status);
+      return formatSupabaseResponse(data[0]);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["supabase-orders"] });

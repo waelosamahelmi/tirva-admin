@@ -160,16 +160,21 @@ export function useUpdateRestaurantConfig() {
         .from('restaurant_config')
         .update(dbData)
         .eq('id', id)
-        .select()
-        .single();
+        .select();
 
       if (error) {
         console.error('❌ Failed to update restaurant config:', error);
         handleSupabaseError(error);
       }
 
+      // Check if any rows were updated
+      if (!data || data.length === 0) {
+        console.error('❌ No rows updated - config may not exist or RLS policy blocking');
+        throw new Error('Config not found or access denied. Please check your permissions.');
+      }
+
       console.log('✅ Restaurant config updated successfully');
-      return transformFromDatabase(data);
+      return transformFromDatabase(data[0]);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["restaurant-config"] });
