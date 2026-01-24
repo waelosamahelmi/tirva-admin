@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.util.Log;
 import com.getcapacitor.BridgeActivity;
-import com.restaurant.admin.PairedBluetoothHelper;
 import java.util.ArrayList;
 
 /**
