@@ -97,6 +97,13 @@ export interface ReceiptData {
   paymentMethod?: string;
   paymentStatus?: string;
   tableNumber?: string;
+  // Branch information (loaded from database)
+  branchName?: string;
+  branchAddress?: string;
+  branchCity?: string;
+  branchPostalCode?: string;
+  branchPhone?: string;
+  branchEmail?: string;
 }
 
 export interface ReceiptSection {

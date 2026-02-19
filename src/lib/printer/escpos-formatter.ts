@@ -286,16 +286,23 @@ export class ESCPOSFormatter {
     try {
       // ============================================
       // HEADER SECTION - TEXT ONLY
+      // Use branch data if available, otherwise fallback to defaults
       // ============================================
-      
+      const branchName = receiptData.branchName || 'Tirvan Kahvila';
+      const branchAddress = receiptData.branchAddress || 'Rauhankatu 19 c';
+      const branchCity = receiptData.branchCity || 'Lahti';
+      const branchPostalCode = receiptData.branchPostalCode || '15110';
+      const branchPhone = receiptData.branchPhone || '+358-3589-9089';
+      const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+
       formatter
         .align('center')
         .bold(true)
         .customSize(formatter.fontSettings.restaurantName.width, formatter.fontSettings.restaurantName.height)
-        .text('Tirvan Kahvila')
+        .text(branchName)
         .newLine()
         .customSize(formatter.fontSettings.header.width, formatter.fontSettings.header.height)
-        .text('Rauhankatu 19 c, 15110 Lahti')
+        .text(fullAddress)
         .newLine()
         .text('+358-3589-9089')
         .newLine()

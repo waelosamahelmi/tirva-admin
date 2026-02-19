@@ -176,18 +176,25 @@ export class ModernReceiptFormatter {
       formatter.newLine();
       
       // ═══════════════════════════════════════
-      // RESTAURANT INFO
+      // RESTAURANT INFO (from branch data or hardcoded fallback)
       // ═══════════════════════════════════════
       formatter.size(2, 2);
       formatter.text('pizzeria');
       formatter.newLine();
       formatter.size(1, 1);
       formatter.newLine();
-      formatter.text('Rauhankatu 19 c');
+
+      // Use branch data if available, otherwise use fallback
+      const address = receiptData.branchAddress || 'Rauhankatu 19 c';
+      const city = receiptData.branchCity || 'Lahti';
+      const postalCode = receiptData.branchPostalCode || '15110';
+      const phone = receiptData.branchPhone || '+358-3589-9089';
+
+      formatter.text(address);
       formatter.newLine();
-      formatter.text('15110 Lahti');
+      formatter.text(`${postalCode} ${city}`);
       formatter.newLine();
-      formatter.text('+358-3589-9089');
+      formatter.text(phone);
       formatter.newLine(2);
       
       formatter.text(getDecorativeBorder(48));

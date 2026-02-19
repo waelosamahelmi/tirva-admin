@@ -350,6 +350,14 @@ export default function Admin() {
       if (status === "accepted" && prepTime !== undefined) {
         const order = orders?.find((o: any) => o.id === orderId);
         if (order && (order.customer_email || order.customerEmail)) {
+          // Extract branch information from order
+          const branch = order.branches || order.branch || {};
+          const branchName = branch.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || 'Rauhankatu 19 c';
+          const branchCity = branch.city || 'Lahti';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
+          const branchPhone = branch.phone || '+358-3589-9089';
+
           // Send order accepted email
           const emailData = {
             customerName: order.customer_name || order.customerName || 'Customer',
@@ -366,9 +374,11 @@ export default function Admin() {
             totalAmount: parseFloat(order.total_amount || order.totalAmount || '0'),
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'Tirvan Kahvila',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: branchName,
+            branchPhone: branchPhone,
+            branchAddress: branchAddress,
+            branchCity: branchCity,
+            branchPostalCode: branchPostalCode,
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: order.payment_method || order.paymentMethod || 'Cash',
             prepTime: prepTime
@@ -446,6 +456,14 @@ export default function Admin() {
             }
           }
           
+          // Extract branch information from order
+          const branch = order.branches || order.branch || {};
+          const branchName = branch.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || 'Rauhankatu 19 c';
+          const branchCity = branch.city || 'Lahti';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
+          const branchPhone = branch.phone || '+358-3589-9089';
+
           const emailData = {
             customerName: order.customer_name || order.customerName || 'Customer',
             customerEmail: order.customer_email || order.customerEmail,
@@ -460,9 +478,11 @@ export default function Admin() {
             totalAmount: totalAmount,
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'Tirvan Kahvila',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: branchName,
+            branchPhone: branchPhone,
+            branchAddress: branchAddress,
+            branchCity: branchCity,
+            branchPostalCode: branchPostalCode,
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: paymentMethod,
             refundAmount: refundAmount,
@@ -485,6 +505,14 @@ export default function Admin() {
       if (status === "delivered") {
         const order = orders?.find((o: any) => o.id === orderId);
         if (order && (order.customer_email || order.customerEmail)) {
+          // Extract branch information from order
+          const branch = order.branches || order.branch || {};
+          const branchName = branch.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || 'Rauhankatu 19 c';
+          const branchCity = branch.city || 'Lahti';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
+          const branchPhone = branch.phone || '+358-3589-9089';
+
           const emailData = {
             customerName: order.customer_name || order.customerName || 'Customer',
             customerEmail: order.customer_email || order.customerEmail,
@@ -499,9 +527,11 @@ export default function Admin() {
             totalAmount: parseFloat(order.total_amount || order.totalAmount || '0'),
             orderType: (order.order_type || order.orderType || 'pickup') as 'delivery' | 'pickup',
             deliveryAddress: order.delivery_address || order.deliveryAddress,
-            branchName: 'Tirvan Kahvila',
-            branchPhone: '+358-3589-9089',
-            branchAddress: 'Rauhankatu 19 c, 15110 Lahti',
+            branchName: branchName,
+            branchPhone: branchPhone,
+            branchAddress: branchAddress,
+            branchCity: branchCity,
+            branchPostalCode: branchPostalCode,
             specialInstructions: order.special_instructions || order.specialInstructions,
             paymentMethod: order.payment_method || order.paymentMethod || 'Cash',
             reviewLink: 'https://share.google/lgfzGpNmPplzeeIBI'

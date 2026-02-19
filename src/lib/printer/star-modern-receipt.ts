@@ -129,13 +129,19 @@ export class StarModernReceipt {
     
     // Restaurant name - 1x1 (small, no bold)
     r.setSize(1, 1);
-    r.text('Tirvan Kahvila');
+    r.text(data.branchName || 'Tirvan Kahvila');
     r.nl();
-    
-    // Contact info - 1x1 (small)
-    r.text(data.restaurantAddress || 'Rauhankatu 19 c, 15110 Lahti');
+
+    // Contact info - 1x1 (small) - use branch data if available
+    const branchAddress = data.branchAddress || 'Rauhankatu 19 c';
+    const branchCity = data.branchCity || 'Lahti';
+    const branchPostalCode = data.branchPostalCode || '15110';
+    const branchPhone = data.branchPhone || '+358-3-589-9089';
+    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+
+    r.text(fullAddress);
     r.nl();
-    r.text(data.restaurantPhone || 'Puh: +358-3-589-9089');
+    r.text(`Puh: ${branchPhone}`);
     r.nl();
     
     r.text('====================');

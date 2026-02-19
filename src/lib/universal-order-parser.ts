@@ -754,15 +754,24 @@ export class UniversalOrderParser {
       });
     }
 
+    // Extract branch information from order if available
+    const branch = order.branch || order.branches || order.branch_data;
+    const branchName = branch?.name || order.branchName || order.branch_name || 'Tirvan Kahvila';
+    const branchAddress = branch?.address || order.branchAddress || order.branch_address || '';
+    const branchCity = branch?.city || order.branchCity || order.branch_city || '';
+    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '';
+    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '';
+    const branchEmail = branch?.email || order.branchEmail || order.branch_email || '';
+
     return {
       header: {
-        text: 'Tirvan Kahvila\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
+        text: `${branchName}\n================\n${branchAddress ? branchAddress + '\n' : ''}${branchPostalCode ? branchPostalCode + ' ' : ''}${branchCity}${branchCity ? '\n' : ''}${branchPhone}`,
         alignment: 'center',
         bold: true
       },
       items,
       footer: {
-        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\nTirvan Kahvila\nAvoinna: Ma-Su 10:00-20:00',
+        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\n' + branchName + '\nAvoinna: Ma-Su 10:00-20:00',
         alignment: 'center'
       },
       total,
@@ -775,7 +784,14 @@ export class UniversalOrderParser {
       deliveryAddress: order.delivery_address || order.deliveryAddress,
       paymentMethod: order.payment_method || order.paymentMethod,
       paymentStatus: order.payment_status || order.paymentStatus,
-      tableNumber: order.table_number || order.tableNumber
+      tableNumber: order.table_number || order.tableNumber,
+      // Branch information
+      branchName,
+      branchAddress: branchAddress || 'Rauhankatu 19 c',
+      branchCity: branchCity || 'Lahti',
+      branchPostalCode: branchPostalCode || '15110',
+      branchPhone: branchPhone || '+358-3589-9089',
+      branchEmail: branchEmail || ''
     };
   }
 

@@ -34,6 +34,9 @@ export interface OrderEmailData {
   branchName?: string;
   branchPhone?: string;
   branchAddress?: string;
+  branchCity?: string;
+  branchPostalCode?: string;
+  branchEmail?: string;
   specialInstructions?: string;
   paymentMethod: string;
   prepTime?: number; // Preparation time in minutes
@@ -193,9 +196,9 @@ export async function sendOrderAcceptedEmail(
             ` : ''}
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
-              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing Tirvan Kahvila!</p>
+              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
               <p style="margin: 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress || 'Rauhankatu 19 c, 15110 Lahti'}</p>
+              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
               <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions about your order, please contact us.
               </p>
@@ -323,7 +326,7 @@ export async function sendOrderCancelledEmail(
               <p style="margin: 5px 0; font-size: 14px;">We apologize for any inconvenience.</p>
               <p style="margin: 5px 0; font-size: 14px;">We hope to serve you again soon!</p>
               <p style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress || 'Rauhankatu 19 c, 15110 Lahti'}</p>
+              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
               <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions, please contact us.
               </p>
@@ -448,10 +451,10 @@ export async function sendOrderDeliveredEmail(
             </div>
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
-              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing Tirvan Kahvila!</p>
+              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
               <p style="margin: 5px 0; font-size: 14px;">We look forward to serving you again!</p>
               <p style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress || 'Rauhankatu 19 c, 15110 Lahti'}</p>
+              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
               <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions, please contact us.
               </p>

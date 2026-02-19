@@ -426,12 +426,17 @@ class ThermalPrinterService {
 
   // Generate test receipt
   private generateTestReceipt(): string {
+    // These should be loaded from branch settings, but using defaults for test
+    const branchName = 'Tirvan Kahvila';
+    const branchAddress = 'Rauhankatu 19 c, 15110 Lahti';
+    const branchPhone = '+358-3589-9089';
+
     return `
 ==============================
-        Tirvan Kahvila
+        ${branchName}
 ==============================
-      Rauhankatu 19 c, 15110 Lahti
-        +358-3589-9089
+      ${branchAddress}
+        ${branchPhone}
 
 ------------------------------
            TEST PRINT
@@ -461,13 +466,21 @@ printer connectivity.
     
     let receipt = escInit;
     
-    // Header
+    // Header - Use branch info from order if available
+    const branch = order.branch || order.branches || order.branch_data;
+    const branchName = branch?.name || order.branchName || order.branch_name || 'Tirvan Kahvila';
+    const branchAddress = branch?.address || order.branchAddress || order.branch_address || 'Rauhankatu 19 c';
+    const branchCity = branch?.city || order.branchCity || order.branch_city || 'Lahti';
+    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '15110';
+    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '+358-3589-9089';
+    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+
     receipt += escCenter + escBold + escLarge;
-    receipt += 'Tirvan Kahvila' + lineFeed;
+    receipt += branchName + lineFeed;
     receipt += escNormal + escBoldOff;
     receipt += '==============================' + lineFeed;
-    receipt += 'Rauhankatu 19 c, 15110 Lahti' + lineFeed;
-    receipt += '+358-3589-9089' + lineFeed;
+    receipt += fullAddress + lineFeed;
+    receipt += branchPhone + lineFeed;
     receipt += 'www.tirvankahvila.fi' + lineFeed;
     receipt += lineFeed;
     

@@ -5,16 +5,18 @@ import { useSupabaseAuth } from "@/lib/supabase-auth-context";
 // Get all orders
 export function useSupabaseOrders() {
   const { user, userBranch, loading } = useSupabaseAuth();
-  
+
   return useQuery({
     queryKey: ["supabase-orders", userBranch],
     queryFn: async () => {
       console.log('📦 Fetching orders from Supabase...', { userBranch, loading });
-      
+
       let query = supabase
         .from('orders')
         .select(`
           *,
+          branch_id,
+          branches!inner (*),
           order_items (
             *,
             menu_items (*)

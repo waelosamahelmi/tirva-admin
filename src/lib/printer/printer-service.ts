@@ -753,16 +753,25 @@ export class PrinterService {
     const orderNumber = order.order_number || order.orderNumber || order.id || 'N/A';
     const customerName = order.customer_name || order.customerName || 'Guest';
     const orderSpecialInstructions = order.specialInstructions || order.special_instructions || '';
-    
+
+    // Extract branch information from order if available
+    const branch = order.branch || order.branches || order.branch_data;
+    const branchName = branch?.name || order.branchName || order.branch_name || 'Tirvan Kahvila';
+    const branchAddress = branch?.address || order.branchAddress || order.branch_address || 'Rauhankatu 19 c';
+    const branchCity = branch?.city || order.branchCity || order.branch_city || 'Lahti';
+    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '15110';
+    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '+358-3589-9089';
+    const branchEmail = branch?.email || order.branchEmail || order.branch_email || '';
+
     const receiptData = {
       header: {
-        text: 'Tirvan Kahvila\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
+        text: `${branchName}\n================\n${branchAddress}\n${branchPostalCode} ${branchCity}\n${branchPhone}`,
         alignment: 'center' as const,
         bold: true
       },
       items: items,
       footer: {
-        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\nTirvan Kahvila\nAvoinna: Ma-Su 10:00-20:00',
+        text: 'Kiitos tilauksestasi!\nThank you for your order!\n\n' + branchName + '\nAvoinna: Ma-Su 10:00-20:00',
         alignment: 'center' as const
       },
       total: total,
@@ -776,7 +785,14 @@ export class PrinterService {
       paymentMethod: order.payment_method || order.paymentMethod,
       paymentStatus: order.payment_status || order.paymentStatus,
       tableNumber: order.table_number || order.tableNumber,
-      orderSpecialInstructions: orderSpecialInstructions // Add order-level special instructions
+      orderSpecialInstructions: orderSpecialInstructions, // Add order-level special instructions
+      // Branch information
+      branchName,
+      branchAddress,
+      branchCity,
+      branchPostalCode,
+      branchPhone,
+      branchEmail
     };
 
     console.log(`📄 Final receipt data:`, {

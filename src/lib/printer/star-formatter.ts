@@ -74,13 +74,21 @@ export class StarFormatter {
 
     // ============================================
     // RESTAURANT NAME AS TITLE
+    // Use branch data if available, otherwise fallback to defaults
     // ============================================
+    const branchName = data.branchName || 'Tirvan Kahvila';
+    const branchAddress = data.branchAddress || 'Rauhankatu 19 c';
+    const branchCity = data.branchCity || 'Lahti';
+    const branchPostalCode = data.branchPostalCode || '15110';
+    const branchPhone = data.branchPhone || '+358-3589-9089';
+    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+
     commands.push(...this.center());
     commands.push(...this.bold(true));
     commands.push(...this.textSize(this.fontSettings.restaurantName.width, this.fontSettings.restaurantName.height));
     commands.push(...this.text('pizzeria'));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('Tirvan Kahvila'));
+    commands.push(...this.text(branchName));
     commands.push(...this.lineFeed(2));
     commands.push(...this.bold(false));
 
@@ -89,9 +97,9 @@ export class StarFormatter {
     // ============================================
     commands.push(...this.center());
     commands.push(...this.textSize(this.fontSettings.header.width, this.fontSettings.header.height));
-    commands.push(...this.text('Rauhankatu 19 c, 15110 Lahti'));
+    commands.push(...this.text(fullAddress));
     commands.push(...this.lineFeed());
-    commands.push(...this.text('+358-3589-9089'));
+    commands.push(...this.text(branchPhone));
     commands.push(...this.lineFeed(2));
     
     commands.push(...this.text('================================'));
