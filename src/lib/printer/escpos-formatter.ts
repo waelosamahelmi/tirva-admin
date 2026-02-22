@@ -289,11 +289,11 @@ export class ESCPOSFormatter {
       // Use branch data if available, otherwise fallback to defaults
       // ============================================
       const branchName = receiptData.branchName || 'Tirvan Kahvila';
-      const branchAddress = receiptData.branchAddress || 'Rauhankatu 19 c';
-      const branchCity = receiptData.branchCity || 'Lahti';
-      const branchPostalCode = receiptData.branchPostalCode || '15110';
-      const branchPhone = receiptData.branchPhone || '+358-3589-9089';
-      const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+      const branchAddress = receiptData.branchAddress || '';
+      const branchCity = receiptData.branchCity || '';
+      const branchPostalCode = receiptData.branchPostalCode || '';
+      const branchPhone = receiptData.branchPhone || '';
+      const fullAddress = [branchAddress, [branchPostalCode, branchCity].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
       formatter
         .align('center')
@@ -301,11 +301,14 @@ export class ESCPOSFormatter {
         .customSize(formatter.fontSettings.restaurantName.width, formatter.fontSettings.restaurantName.height)
         .text(branchName)
         .newLine()
-        .customSize(formatter.fontSettings.header.width, formatter.fontSettings.header.height)
-        .text(fullAddress)
-        .newLine()
-        .text('+358-3589-9089')
-        .newLine()
+        .customSize(formatter.fontSettings.header.width, formatter.fontSettings.header.height);
+      if (fullAddress) {
+        formatter.text(fullAddress).newLine();
+      }
+      if (branchPhone) {
+        formatter.text(branchPhone).newLine();
+      }
+      formatter
         .bold(false)
         .lines(1);
 
@@ -802,11 +805,22 @@ export class ESCPOSFormatter {
       .size('double')
       .bold(true)
       .underline(true)
-      .line('Tirvan Kahvila')
+      .line(receiptData.branchName || '')
       .underline(false)
       .bold(false)
       .size('normal')
-      .lines(1)
+      .lines(1);
+
+    // Address and phone - only print if available
+    const basicFullAddress = [receiptData.branchAddress, [receiptData.branchPostalCode, receiptData.branchCity].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+    if (basicFullAddress) {
+      formatter.line(basicFullAddress);
+    }
+    if (receiptData.branchPhone) {
+      formatter.line(`Puh: ${receiptData.branchPhone}`);
+    }
+
+    formatter
       .separator('=', 48)
       .lines(1);
 

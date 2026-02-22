@@ -426,20 +426,11 @@ class ThermalPrinterService {
 
   // Generate test receipt
   private generateTestReceipt(): string {
-    // These should be loaded from branch settings, but using defaults for test
-    const branchName = 'Tirvan Kahvila';
-    const branchAddress = 'Rauhankatu 19 c, 15110 Lahti';
-    const branchPhone = '+358-3589-9089';
-
     return `
 ==============================
-        ${branchName}
+       TEST PRINT
 ==============================
-      ${branchAddress}
-        ${branchPhone}
 
-------------------------------
-           TEST PRINT
 ------------------------------
 Date: ${new Date().toLocaleDateString('fi-FI')}
 Time: ${new Date().toLocaleTimeString('fi-FI')}
@@ -468,20 +459,25 @@ printer connectivity.
     
     // Header - Use branch info from order if available
     const branch = order.branch || order.branches || order.branch_data;
-    const branchName = branch?.name || order.branchName || order.branch_name || 'Tirvan Kahvila';
-    const branchAddress = branch?.address || order.branchAddress || order.branch_address || 'Rauhankatu 19 c';
-    const branchCity = branch?.city || order.branchCity || order.branch_city || 'Lahti';
-    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '15110';
-    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '+358-3589-9089';
-    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+    const branchName = branch?.name || order.branchName || order.branch_name || '';
+    const branchAddress = branch?.address || order.branchAddress || order.branch_address || '';
+    const branchCity = branch?.city || order.branchCity || order.branch_city || '';
+    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '';
+    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '';
+    const fullAddress = [branchAddress, [branchPostalCode, branchCity].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
     receipt += escCenter + escBold + escLarge;
-    receipt += branchName + lineFeed;
+    if (branchName) {
+      receipt += branchName + lineFeed;
+    }
     receipt += escNormal + escBoldOff;
     receipt += '==============================' + lineFeed;
-    receipt += fullAddress + lineFeed;
-    receipt += branchPhone + lineFeed;
-    receipt += 'www.tirvankahvila.fi' + lineFeed;
+    if (fullAddress) {
+      receipt += fullAddress + lineFeed;
+    }
+    if (branchPhone) {
+      receipt += branchPhone + lineFeed;
+    }
     receipt += lineFeed;
     
     // Order info
@@ -984,6 +980,39 @@ printer connectivity.
     console.log(`🔍 EXTRACT TOPPINGS WITH PRICING - Input item:`, JSON.stringify(item, null, 2));
     
     const toppings: string[] = [];
+    
+    // Check for Supabase relational order_item_toppings (from DB join)
+    const orderItemToppings = item.order_item_toppings || item.orderItemToppings;
+    if (orderItemToppings && Array.isArray(orderItemToppings) && orderItemToppings.length > 0) {
+      console.log(`✅ Found order_item_toppings from DB:`, orderItemToppings);
+      
+      const specialInstructions = item.specialInstructions || item.special_instructions || '';
+      const sizeMatch = specialInstructions.match(/Size:\s*([^;]+)/i);
+      const size = sizeMatch ? sizeMatch[1].trim() : 'normal';
+      
+      orderItemToppings.forEach((oit: any) => {
+        const toppingData = oit.toppings || oit.topping;
+        const toppingName = toppingData?.name || oit.name || '';
+        const basePrice = parseFloat(oit.unit_price || oit.unitPrice || toppingData?.price || '0');
+        
+        if (toppingName) {
+          let adjustedPrice = basePrice;
+          if (size === "perhe") {
+            adjustedPrice = basePrice * 2;
+          } else if (size === "large" && Math.abs(basePrice - 1.00) < 0.01) {
+            adjustedPrice = 2.00;
+          }
+          
+          const displayText = adjustedPrice > 0 ? `${toppingName} (+€${adjustedPrice.toFixed(2)})` : toppingName;
+          toppings.push(displayText);
+        }
+      });
+      
+      if (toppings.length > 0) {
+        console.log(`✅ Extracted ${toppings.length} toppings from DB:`, toppings);
+        return toppings;
+      }
+    }
     
     // Extract size for pricing calculation
     const specialInstructions = item.specialInstructions || item.special_instructions || '';

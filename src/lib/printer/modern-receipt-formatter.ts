@@ -185,17 +185,24 @@ export class ModernReceiptFormatter {
       formatter.newLine();
 
       // Use branch data if available, otherwise use fallback
-      const address = receiptData.branchAddress || 'Rauhankatu 19 c';
-      const city = receiptData.branchCity || 'Lahti';
-      const postalCode = receiptData.branchPostalCode || '15110';
-      const phone = receiptData.branchPhone || '+358-3589-9089';
+      const address = receiptData.branchAddress || '';
+      const city = receiptData.branchCity || '';
+      const postalCode = receiptData.branchPostalCode || '';
+      const phone = receiptData.branchPhone || '';
 
-      formatter.text(address);
+      if (address) {
+        formatter.text(address);
+        formatter.newLine();
+      }
+      if (postalCode || city) {
+        formatter.text([postalCode, city].filter(Boolean).join(' '));
+        formatter.newLine();
+      }
+      if (phone) {
+        formatter.text(phone);
+        formatter.newLine();
+      }
       formatter.newLine();
-      formatter.text(`${postalCode} ${city}`);
-      formatter.newLine();
-      formatter.text(phone);
-      formatter.newLine(2);
       
       formatter.text(getDecorativeBorder(48));
       formatter.newLine(2);

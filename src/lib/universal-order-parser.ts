@@ -201,6 +201,21 @@ export class UniversalOrderParser {
         console.log(`✅ PARSER: Extracted ${toppings.length} toppings, size: ${extractedSize || 'none'}, notes: ${extractedNotes || 'none'}`);
       }
       
+      // Check for Supabase relational order_item_toppings (from DB join)
+      if (toppings.length === 0) {
+        const orderItemToppings = item.order_item_toppings || item.orderItemToppings;
+        if (orderItemToppings && Array.isArray(orderItemToppings) && orderItemToppings.length > 0) {
+          console.log(`🍕 PARSER: Found order_item_toppings from DB for item ${index + 1}:`, orderItemToppings);
+          toppings = orderItemToppings.map((oit: any) => {
+            const toppingData = oit.toppings || oit.topping;
+            const toppingName = toppingData?.name || oit.name || '';
+            const basePrice = parseFloat(oit.unit_price || oit.unitPrice || toppingData?.price || '0');
+            return { name: toppingName, price: basePrice };
+          }).filter((t: any) => t.name);
+          console.log(`✅ PARSER: Extracted ${toppings.length} toppings from DB relation`);
+        }
+      }
+
       // Fallback: also check for direct toppings field (for legacy compatibility)
       if (toppings.length === 0 && item.toppings) {
         try {
@@ -700,7 +715,7 @@ export class UniversalOrderParser {
 
     return {
       header: {
-        text: 'Tirvan Kahvila\n================\nRauhankatu 19 c, 15110 Lahti\n+358-3589-9089',
+        text: '',
         alignment: 'center',
         bold: true
       },
@@ -787,10 +802,10 @@ export class UniversalOrderParser {
       tableNumber: order.table_number || order.tableNumber,
       // Branch information
       branchName,
-      branchAddress: branchAddress || 'Rauhankatu 19 c',
-      branchCity: branchCity || 'Lahti',
-      branchPostalCode: branchPostalCode || '15110',
-      branchPhone: branchPhone || '+358-3589-9089',
+      branchAddress: branchAddress || '',
+      branchCity: branchCity || '',
+      branchPostalCode: branchPostalCode || '',
+      branchPhone: branchPhone || '',
       branchEmail: branchEmail || ''
     };
   }

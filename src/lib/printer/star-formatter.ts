@@ -77,11 +77,11 @@ export class StarFormatter {
     // Use branch data if available, otherwise fallback to defaults
     // ============================================
     const branchName = data.branchName || 'Tirvan Kahvila';
-    const branchAddress = data.branchAddress || 'Rauhankatu 19 c';
-    const branchCity = data.branchCity || 'Lahti';
-    const branchPostalCode = data.branchPostalCode || '15110';
-    const branchPhone = data.branchPhone || '+358-3589-9089';
-    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+    const branchAddress = data.branchAddress || '';
+    const branchCity = data.branchCity || '';
+    const branchPostalCode = data.branchPostalCode || '';
+    const branchPhone = data.branchPhone || '';
+    const fullAddress = [branchAddress, [branchPostalCode, branchCity].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
     commands.push(...this.center());
     commands.push(...this.bold(true));
@@ -97,10 +97,15 @@ export class StarFormatter {
     // ============================================
     commands.push(...this.center());
     commands.push(...this.textSize(this.fontSettings.header.width, this.fontSettings.header.height));
-    commands.push(...this.text(fullAddress));
+    if (fullAddress) {
+      commands.push(...this.text(fullAddress));
+      commands.push(...this.lineFeed());
+    }
+    if (branchPhone) {
+      commands.push(...this.text(branchPhone));
+      commands.push(...this.lineFeed());
+    }
     commands.push(...this.lineFeed());
-    commands.push(...this.text(branchPhone));
-    commands.push(...this.lineFeed(2));
     
     commands.push(...this.text('================================'));
     commands.push(...this.lineFeed(2));

@@ -19,7 +19,11 @@ export function useSupabaseOrders() {
           branches (*),
           order_items (
             *,
-            menu_items (*)
+            menu_items (*),
+            order_item_toppings (
+              *,
+              toppings (*)
+            )
           )
         `);
       
@@ -62,7 +66,11 @@ export function useSupabaseOrder(id: number) {
           *,
           order_items (
             *,
-            menu_items (*)
+            menu_items (*),
+            order_item_toppings (
+              *,
+              toppings (*)
+            )
           )
         `)
         .eq('id', id)

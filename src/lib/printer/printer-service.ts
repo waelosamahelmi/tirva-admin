@@ -757,10 +757,10 @@ export class PrinterService {
     // Extract branch information from order if available
     const branch = order.branch || order.branches || order.branch_data;
     const branchName = branch?.name || order.branchName || order.branch_name || 'Tirvan Kahvila';
-    const branchAddress = branch?.address || order.branchAddress || order.branch_address || 'Rauhankatu 19 c';
-    const branchCity = branch?.city || order.branchCity || order.branch_city || 'Lahti';
-    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '15110';
-    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '+358-3589-9089';
+    const branchAddress = branch?.address || order.branchAddress || order.branch_address || '';
+    const branchCity = branch?.city || order.branchCity || order.branch_city || '';
+    const branchPostalCode = branch?.postalCode || order.branchPostalCode || order.postal_code || '';
+    const branchPhone = branch?.phone || order.branchPhone || order.branch_phone || '';
     const branchEmail = branch?.email || order.branchEmail || order.branch_email || '';
 
     const receiptData = {
@@ -1352,8 +1352,28 @@ export class PrinterService {
     
     const toppings: { name: string; price: number }[] = [];
     
-    // First check if we have direct toppings array
-    if (item.toppings && Array.isArray(item.toppings)) {
+    // First check for Supabase relational order_item_toppings (from the DB join)
+    const orderItemToppings = item.order_item_toppings || item.orderItemToppings;
+    if (orderItemToppings && Array.isArray(orderItemToppings) && orderItemToppings.length > 0) {
+      console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Found order_item_toppings from DB:`, orderItemToppings);
+      orderItemToppings.forEach((oit: any) => {
+        const toppingData = oit.toppings || oit.topping;
+        const toppingName = toppingData?.name || oit.name || '';
+        const basePrice = parseFloat(oit.unit_price || oit.unitPrice || toppingData?.price || '0');
+        const qty = parseInt(oit.quantity || '1');
+        
+        if (toppingName) {
+          const adjustedPrice = this.calculateToppingPrice(basePrice, size);
+          for (let i = 0; i < qty; i++) {
+            toppings.push({ name: toppingName, price: adjustedPrice });
+          }
+          console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Added DB topping: "${toppingName}" x${qty} @ €${adjustedPrice}`);
+        }
+      });
+    }
+    
+    // Then check if we have direct toppings array (from order creation payload)
+    if (toppings.length === 0 && item.toppings && Array.isArray(item.toppings)) {
       console.log(`✅ [EXTRACT TOPPINGS WITH PRICING] Found direct toppings array:`, item.toppings);
       item.toppings.forEach((topping: any) => {
         let toppingName = '';

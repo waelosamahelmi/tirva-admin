@@ -133,16 +133,20 @@ export class StarModernReceipt {
     r.nl();
 
     // Contact info - 1x1 (small) - use branch data if available
-    const branchAddress = data.branchAddress || 'Rauhankatu 19 c';
-    const branchCity = data.branchCity || 'Lahti';
-    const branchPostalCode = data.branchPostalCode || '15110';
-    const branchPhone = data.branchPhone || '+358-3-589-9089';
-    const fullAddress = `${branchAddress}, ${branchPostalCode} ${branchCity}`;
+    const branchAddress = data.branchAddress || '';
+    const branchCity = data.branchCity || '';
+    const branchPostalCode = data.branchPostalCode || '';
+    const branchPhone = data.branchPhone || '';
+    const fullAddress = [branchAddress, [branchPostalCode, branchCity].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
-    r.text(fullAddress);
-    r.nl();
-    r.text(`Puh: ${branchPhone}`);
-    r.nl();
+    if (fullAddress) {
+      r.text(fullAddress);
+      r.nl();
+    }
+    if (branchPhone) {
+      r.text(`Puh: ${branchPhone}`);
+      r.nl();
+    }
     
     r.text('====================');
     r.nl();
