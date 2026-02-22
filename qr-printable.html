@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirvan Kahvila - Download QR Code</title>
+    <style>
+        @media print {
+            .no-print { display: none; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border: 3px solid #16A34A;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+
+        .instructions ol {
+            margin: 10px 0 0 20px;
+            color: #333;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .button-group {
+            margin-top: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #16A34A 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .url-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .card {
+                box-shadow: none;
+                border: 2px solid #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>?? Tirvan Kahvila Admin</h1>
+        <p class="subtitle">Scan to Download Kitchen App</p>
+
+        <div id="qrcode"></div>
+
+        <div class="url-display" id="urlDisplay">
+            Loading URL...
+        </div>
+
+        <div class="instructions">
+            <h3>?? How to Install:</h3>
+            <ol>
+                <li>Scan this QR code with your Android phone</li>
+                <li>The APK will download automatically</li>
+                <li>Open the downloaded file</li>
+                <li>Allow installation from unknown sources if prompted</li>
+                <li>Install and enjoy!</li>
+            </ol>
+        </div>
+
+        <div class="button-group no-print">
+            <button onclick="window.print()">??? Print QR Code</button>
+            <button onclick="downloadQR()">?? Download Image</button>
+        </div>
+
+        <div class="footer">
+            Always points to the latest version � Auto-updated
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const DOWNLOAD_PAGE_URL = 'https://waelosamahelmi.github.io/tirva-admin/';
+
+        function createQRCode(url) {
+            const qrcodeContainer = document.getElementById('qrcode');
+            qrcodeContainer.innerHTML = '';
+            
+            new QRCode(qrcodeContainer, {
+                text: url,
+                width: 250,
+                height: 250,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            document.getElementById('urlDisplay').textContent = url;
+        }
+
+        async function downloadQR() {
+            const qrElement = document.getElementById('qrcode');
+            const canvas = await html2canvas(qrElement, {
+                backgroundColor: '#ffffff',
+                scale: 2
+            });
+            
+            const link = document.createElement('a');
+            link.download = 'tirva-admin-qr.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Initialize QR code
+        createQRCode(DOWNLOAD_PAGE_URL);
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirvan Kahvila - Download Admin App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #16A34A 0%, #059669 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .qr-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #16A34A 0%, #059669 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 20px 0;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: left;
+            font-size: 14px;
+            color: #1565c0;
+        }
+
+        .version-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+
+        .error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #c62828;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #16A34A;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>?? Tirvan Kahvila</h1>
+        <p class="subtitle">Kitchen Admin App - Latest Version</p>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Checking for latest version...</p>
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="info">
+                ?? This page will automatically download the latest APK version.
+                Scan the QR code below on your Android device for quick access!
+            </div>
+
+            <div class="qr-container">
+                <div id="qrcode"></div>
+                <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                    Scan to download on mobile
+                </p>
+            </div>
+
+            <a id="downloadBtn" href="#" class="download-btn">
+                ?? Download Latest APK
+            </a>
+
+            <div class="version-info">
+                <strong>Version:</strong> <span id="version">Loading...</span><br>
+                <strong>Released:</strong> <span id="releaseDate">Loading...</span><br>
+                <strong>Size:</strong> <span id="fileSize">Loading...</span>
+            </div>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            ?? Unable to fetch the latest version. Please try again later or contact support.
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        const GITHUB_REPO = 'waelosamahelmi/tirva-admin';
+        const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
+
+        async function fetchLatestRelease() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Failed to fetch release');
+                
+                const release = await response.json();
+                const apkAsset = release.assets.find(asset => asset.name.endsWith('.apk'));
+                
+                if (!apkAsset) throw new Error('No APK found in release');
+
+                return {
+                    downloadUrl: apkAsset.browser_download_url,
+                    version: release.tag_name,
+                    releaseDate: new Date(release.published_at).toLocaleDateString(),
+                    fileSize: (apkAsset.size / (1024 * 1024)).toFixed(2) + ' MB',
+                    name: apkAsset.name
+                };
+            } catch (error) {
+                console.error('Error fetching release:', error);
+                throw error;
+            }
+        }
+
+        function createQRCode(url) {
+            const qrcodeContainer = document.getElementById('qrcode');
+            qrcodeContainer.innerHTML = ''; // Clear any existing QR code
+            
+            new QRCode(qrcodeContainer, {
+                text: url,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function startAutoDownload(url) {
+            // Auto-download on mobile devices
+            if (/Android/i.test(navigator.userAgent)) {
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 1000);
+            }
+        }
+
+        async function init() {
+            try {
+                const release = await fetchLatestRelease();
+                
+                // Update UI
+                document.getElementById('downloadBtn').href = release.downloadUrl;
+                document.getElementById('version').textContent = release.version;
+                document.getElementById('releaseDate').textContent = release.releaseDate;
+                document.getElementById('fileSize').textContent = release.fileSize;
+                
+                // Generate QR code with current page URL (so it always works)
+                const currentPageUrl = window.location.href;
+                createQRCode(currentPageUrl);
+                
+                // Show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
+                // Start auto-download
+                startAutoDownload(release.downloadUrl);
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>
