@@ -128,27 +128,46 @@ export async function sendOrderAcceptedEmail(
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light dark">
+        <meta name="supported-color-schemes" content="light dark">
+        <style>
+          :root {
+            color-scheme: light dark;
+          }
+          @media (prefers-color-scheme: dark) {
+            .email-body { background-color: #1e293b !important; }
+            .email-container { background-color: #1e293b !important; }
+            .email-content { background-color: #0f172a !important; }
+            .email-text { color: #e2e8f0 !important; }
+            .email-text-muted { color: #94a3b8 !important; }
+            .email-details-box { background-color: #1e293b !important; }
+            .email-table-header { background-color: #1e293b !important; }
+            .email-table-footer { background-color: #1e293b !important; }
+            .email-border { border-color: #334155 !important; }
+            .email-footer { border-color: #334155 !important; }
+          }
+        </style>
       </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+      <body class="email-body" style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
+        <div class="email-container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="margin: 0; font-size: 28px;">🎉 Order Accepted!</h1>
-            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">Tirvan Kahvila</p>
+            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">${data.branchName || 'Tirvan Kahvila'}</p>
           </div>
           
-          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <p style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
+          <div class="email-content" style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <p class="email-text" style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
             
             <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px; margin: 20px 0; border-radius: 4px;">
               <p style="margin: 0; color: #166534; font-weight: 600;">✓ Your order has been accepted and is being prepared!</p>
             </div>
             
-            <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Order Details</h3>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
-              ${data.deliveryAddress ? `<p style="margin: 5px 0; color: #475569;"><strong>Delivery Address:</strong> ${data.deliveryAddress}</p>` : ''}
-              <p style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
+            <div class="email-details-box" style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 class="email-text" style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Order Details</h3>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
+              ${data.deliveryAddress ? `<p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Delivery Address:</strong> ${data.deliveryAddress}</p>` : ''}
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
             </div>
             
             <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
@@ -159,12 +178,12 @@ export async function sendOrderAcceptedEmail(
               <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">(approximately ${data.prepTime} minutes)</p>
             </div>
             
-            <h3 style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
+            <h3 class="email-text" style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
             <table style="width: 100%; border-collapse: collapse;">
               <thead>
-                <tr style="background: #f8fafc;">
-                  <th style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
-                  <th style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
+                <tr class="email-table-header" style="background: #f8fafc;">
+                  <th class="email-text-muted" style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
+                  <th class="email-text-muted" style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -172,17 +191,17 @@ export async function sendOrderAcceptedEmail(
               </tbody>
               <tfoot>
                 <tr>
-                  <td style="padding: 10px; text-align: right; color: #64748b;">Subtotal:</td>
-                  <td style="padding: 10px; text-align: right; color: #64748b;">€${data.subtotal.toFixed(2)}</td>
+                  <td class="email-text-muted" style="padding: 10px; text-align: right; color: #64748b;">Subtotal:</td>
+                  <td class="email-text-muted" style="padding: 10px; text-align: right; color: #64748b;">€${data.subtotal.toFixed(2)}</td>
                 </tr>
                 ${data.deliveryFee > 0 ? `
                 <tr>
-                  <td style="padding: 10px; text-align: right; color: #64748b;">Delivery Fee:</td>
-                  <td style="padding: 10px; text-align: right; color: #64748b;">€${data.deliveryFee.toFixed(2)}</td>
+                  <td class="email-text-muted" style="padding: 10px; text-align: right; color: #64748b;">Delivery Fee:</td>
+                  <td class="email-text-muted" style="padding: 10px; text-align: right; color: #64748b;">€${data.deliveryFee.toFixed(2)}</td>
                 </tr>
                 ` : ''}
-                <tr style="background: #f8fafc;">
-                  <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
+                <tr class="email-table-footer" style="background: #f8fafc;">
+                  <td class="email-text" style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
                   <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #dc2626;">€${data.totalAmount.toFixed(2)}</td>
                 </tr>
               </tfoot>
@@ -195,10 +214,10 @@ export async function sendOrderAcceptedEmail(
             </div>
             ` : ''}
             
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
-              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
-              <p style="margin: 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
+            <div class="email-footer" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
+              <p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
+              ${data.branchPhone ? `<p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone}</p>` : ''}
+              ${data.branchAddress ? `<p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress}${data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : ''}</p>` : ''}
               <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions about your order, please contact us.
               </p>
@@ -268,16 +287,35 @@ export async function sendOrderCancelledEmail(
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light dark">
+        <meta name="supported-color-schemes" content="light dark">
+        <style>
+          :root {
+            color-scheme: light dark;
+          }
+          @media (prefers-color-scheme: dark) {
+            .email-body { background-color: #1e293b !important; }
+            .email-container { background-color: #1e293b !important; }
+            .email-content { background-color: #0f172a !important; }
+            .email-text { color: #e2e8f0 !important; }
+            .email-text-muted { color: #94a3b8 !important; }
+            .email-details-box { background-color: #1e293b !important; }
+            .email-table-header { background-color: #1e293b !important; }
+            .email-table-footer { background-color: #1e293b !important; }
+            .email-border { border-color: #334155 !important; }
+            .email-footer { border-color: #334155 !important; }
+          }
+        </style>
       </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+      <body class="email-body" style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
+        <div class="email-container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="margin: 0; font-size: 28px;">Order Cancelled</h1>
-            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">Tirvan Kahvila</p>
+            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">${data.branchName || 'Tirvan Kahvila'}</p>
           </div>
           
-          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <p style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
+          <div class="email-content" style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <p class="email-text" style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
             
             <div style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; border-radius: 4px;">
               <p style="margin: 0; color: #991b1b; font-weight: 600;">Your order #${data.orderNumber} has been cancelled.</p>
@@ -296,38 +334,38 @@ export async function sendOrderCancelledEmail(
             </div>
             ` : ''}
             
-            <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Cancelled Order Details</h3>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
-              <p style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
+            <div class="email-details-box" style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 class="email-text" style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Cancelled Order Details</h3>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
             </div>
             
-            <h3 style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
+            <h3 class="email-text" style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
             <table style="width: 100%; border-collapse: collapse;">
               <thead>
-                <tr style="background: #f8fafc;">
-                  <th style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
-                  <th style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
+                <tr class="email-table-header" style="background: #f8fafc;">
+                  <th class="email-text-muted" style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
+                  <th class="email-text-muted" style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
                 </tr>
               </thead>
               <tbody>
                 ${itemsHtml}
               </tbody>
               <tfoot>
-                <tr style="background: #f8fafc;">
-                  <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
+                <tr class="email-table-footer" style="background: #f8fafc;">
+                  <td class="email-text" style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
                   <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #dc2626;">€${data.totalAmount.toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
             
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
-              <p style="margin: 5px 0; font-size: 14px;">We apologize for any inconvenience.</p>
-              <p style="margin: 5px 0; font-size: 14px;">We hope to serve you again soon!</p>
-              <p style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
-              <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
+            <div class="email-footer" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
+              <p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">We apologize for any inconvenience.</p>
+              <p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">We hope to serve you again soon!</p>
+              ${data.branchPhone ? `<p class="email-text-muted" style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone}</p>` : ''}
+              ${data.branchAddress ? `<p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress}${data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : ''}</p>` : ''}
+              <p class="email-text-muted" style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions, please contact us.
               </p>
             </div>
@@ -398,42 +436,61 @@ export async function sendOrderDeliveredEmail(
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light dark">
+        <meta name="supported-color-schemes" content="light dark">
+        <style>
+          :root {
+            color-scheme: light dark;
+          }
+          @media (prefers-color-scheme: dark) {
+            .email-body { background-color: #1e293b !important; }
+            .email-container { background-color: #1e293b !important; }
+            .email-content { background-color: #0f172a !important; }
+            .email-text { color: #e2e8f0 !important; }
+            .email-text-muted { color: #94a3b8 !important; }
+            .email-details-box { background-color: #1e293b !important; }
+            .email-table-header { background-color: #1e293b !important; }
+            .email-table-footer { background-color: #1e293b !important; }
+            .email-border { border-color: #334155 !important; }
+            .email-footer { border-color: #334155 !important; }
+          }
+        </style>
       </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+      <body class="email-body" style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc;">
+        <div class="email-container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="margin: 0; font-size: 28px;">✅ Order Delivered!</h1>
-            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">Tirvan Kahvila</p>
+            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">${data.branchName || 'Tirvan Kahvila'}</p>
           </div>
           
-          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <p style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
+          <div class="email-content" style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <p class="email-text" style="font-size: 16px; color: #1e293b; margin: 0 0 20px 0;">Dear ${data.customerName},</p>
             
             <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 15px; margin: 20px 0; border-radius: 4px;">
               <p style="margin: 0; color: #166534; font-weight: 600;">🎉 Your order has been delivered! We hope you enjoy your meal!</p>
             </div>
             
-            <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Order Details</h3>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
-              <p style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
-              <p style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
+            <div class="email-details-box" style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 class="email-text" style="margin: 0 0 15px 0; color: #0f172a; font-size: 18px;">Order Details</h3>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Number:</strong> #${data.orderNumber}</p>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Order Type:</strong> ${data.orderType === 'delivery' ? '🚴 Delivery' : '🛍️ Pickup'}</p>
+              <p class="email-text-muted" style="margin: 5px 0; color: #475569;"><strong>Payment Method:</strong> ${data.paymentMethod}</p>
             </div>
             
-            <h3 style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
+            <h3 class="email-text" style="margin: 25px 0 15px 0; color: #0f172a; font-size: 18px;">Order Items</h3>
             <table style="width: 100%; border-collapse: collapse;">
               <thead>
-                <tr style="background: #f8fafc;">
-                  <th style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
-                  <th style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
+                <tr class="email-table-header" style="background: #f8fafc;">
+                  <th class="email-text-muted" style="padding: 10px; text-align: left; color: #475569; font-weight: 600;">Item</th>
+                  <th class="email-text-muted" style="padding: 10px; text-align: right; color: #475569; font-weight: 600;">Price</th>
                 </tr>
               </thead>
               <tbody>
                 ${itemsHtml}
               </tbody>
               <tfoot>
-                <tr style="background: #f8fafc;">
-                  <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
+                <tr class="email-table-footer" style="background: #f8fafc;">
+                  <td class="email-text" style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #0f172a;">Total:</td>
                   <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #dc2626;">€${data.totalAmount.toFixed(2)}</td>
                 </tr>
               </tfoot>
@@ -450,12 +507,12 @@ export async function sendOrderDeliveredEmail(
               </a>
             </div>
             
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
-              <p style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
-              <p style="margin: 5px 0; font-size: 14px;">We look forward to serving you again!</p>
-              <p style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone || '+358-3589-9089'}</p>
-              <p style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress ? data.branchAddress + (data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : '') : 'Rauhankatu 19 c, 15110 Lahti'}</p>
-              <p style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
+            <div class="email-footer" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b;">
+              <p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">Thank you for choosing ${data.branchName || 'Tirvan Kahvila'}!</p>
+              <p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">We look forward to serving you again!</p>
+              ${data.branchPhone ? `<p class="email-text-muted" style="margin: 15px 0 5px 0; font-size: 14px;">📞 Phone: ${data.branchPhone}</p>` : ''}
+              ${data.branchAddress ? `<p class="email-text-muted" style="margin: 5px 0; font-size: 14px;">📍 Address: ${data.branchAddress}${data.branchCity ? `, ${data.branchPostalCode || ''} ${data.branchCity}` : ''}</p>` : ''}
+              <p class="email-text-muted" style="margin: 15px 0 5px 0; font-size: 12px; color: #94a3b8;">
                 If you have any questions, please contact us.
               </p>
             </div>

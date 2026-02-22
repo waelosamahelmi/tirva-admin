@@ -16,7 +16,7 @@ export function useSupabaseOrders() {
         .select(`
           *,
           branch_id,
-          branches!inner (*),
+          branches (*),
           order_items (
             *,
             menu_items (*)

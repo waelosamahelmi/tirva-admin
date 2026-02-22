@@ -3,6 +3,7 @@ import { NotificationSoundManager } from "@/lib/notification-sound-manager-enhan
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSupabaseOrders, useSupabaseUpdateOrderStatus } from "@/hooks/use-supabase-orders";
 import { useSupabaseMenuItems, useSupabaseUpdateMenuItem, useSupabaseCreateMenuItem, useSupabaseCategories, useSupabaseToppings } from "@/hooks/use-supabase-menu";
+import { useRestaurantConfig } from "@/hooks/use-restaurant-config";
 import { useSupabaseRealtime } from "@/hooks/use-supabase-realtime";
 import { useLanguage } from "@/lib/language-context";
 import { useSupabaseAuth } from "@/lib/supabase-auth-context";
@@ -100,6 +101,7 @@ export default function Admin() {
   const { data: menuItems, isLoading: menuLoading } = useSupabaseMenuItems();
   const { data: categories } = useSupabaseCategories();
   const { data: toppings } = useSupabaseToppings();
+  const { data: restaurantConfig } = useRestaurantConfig();
   const updateOrderStatus = useSupabaseUpdateOrderStatus();
   const updateMenuItem = useSupabaseUpdateMenuItem();
   const createMenuItem = useSupabaseCreateMenuItem();
@@ -247,10 +249,27 @@ export default function Admin() {
 
   // Toggle restaurant busy status
   const toggleRestaurantBusy = async () => {
+    const newStatus = !isRestaurantBusy;
+    
+    // Show confirmation dialog
+    const confirmMessage = newStatus
+      ? adminT(
+          "Haluatko varmasti asettaa ravintolan kiireiseksi? Asiakkaat näkevät tämän.",
+          "Are you sure you want to set the restaurant as busy? Customers will see this.",
+          "هل أنت متأكد أنك تريد تعيين المطعم كمشغول؟ سيرى العملاء هذا."
+        )
+      : adminT(
+          "Haluatko varmasti poistaa kiireisen tilan?",
+          "Are you sure you want to remove busy status?",
+          "هل أنت متأكد أنك تريد إزالة حالة المشغول؟"
+        );
+    
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+    
     setIsUpdatingBusyStatus(true);
     try {
-      const newStatus = !isRestaurantBusy;
-      
       const { error } = await supabase
         .from('restaurant_settings')
         .update({ is_busy: newStatus })
@@ -350,13 +369,13 @@ export default function Admin() {
       if (status === "accepted" && prepTime !== undefined) {
         const order = orders?.find((o: any) => o.id === orderId);
         if (order && (order.customer_email || order.customerEmail)) {
-          // Extract branch information from order
+          // Extract branch information from order, fallback to restaurantConfig
           const branch = order.branches || order.branch || {};
-          const branchName = branch.name || 'Tirvan Kahvila';
-          const branchAddress = branch.address || 'Rauhankatu 19 c';
-          const branchCity = branch.city || 'Lahti';
-          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
-          const branchPhone = branch.phone || '+358-3589-9089';
+          const branchName = branch.name || restaurantConfig?.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || restaurantConfig?.address || '';
+          const branchCity = branch.city || '';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '';
+          const branchPhone = branch.phone || restaurantConfig?.phone || '';
 
           // Send order accepted email
           const emailData = {
@@ -456,13 +475,13 @@ export default function Admin() {
             }
           }
           
-          // Extract branch information from order
+          // Extract branch information from order, fallback to restaurantConfig
           const branch = order.branches || order.branch || {};
-          const branchName = branch.name || 'Tirvan Kahvila';
-          const branchAddress = branch.address || 'Rauhankatu 19 c';
-          const branchCity = branch.city || 'Lahti';
-          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
-          const branchPhone = branch.phone || '+358-3589-9089';
+          const branchName = branch.name || restaurantConfig?.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || restaurantConfig?.address || '';
+          const branchCity = branch.city || '';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '';
+          const branchPhone = branch.phone || restaurantConfig?.phone || '';
 
           const emailData = {
             customerName: order.customer_name || order.customerName || 'Customer',
@@ -505,13 +524,13 @@ export default function Admin() {
       if (status === "delivered") {
         const order = orders?.find((o: any) => o.id === orderId);
         if (order && (order.customer_email || order.customerEmail)) {
-          // Extract branch information from order
+          // Extract branch information from order, fallback to restaurantConfig
           const branch = order.branches || order.branch || {};
-          const branchName = branch.name || 'Tirvan Kahvila';
-          const branchAddress = branch.address || 'Rauhankatu 19 c';
-          const branchCity = branch.city || 'Lahti';
-          const branchPostalCode = branch.postalCode || branch.postal_code || '15110';
-          const branchPhone = branch.phone || '+358-3589-9089';
+          const branchName = branch.name || restaurantConfig?.name || 'Tirvan Kahvila';
+          const branchAddress = branch.address || restaurantConfig?.address || '';
+          const branchCity = branch.city || '';
+          const branchPostalCode = branch.postalCode || branch.postal_code || '';
+          const branchPhone = branch.phone || restaurantConfig?.phone || '';
 
           const emailData = {
             customerName: order.customer_name || order.customerName || 'Customer',
