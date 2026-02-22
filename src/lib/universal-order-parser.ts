@@ -78,114 +78,28 @@ export class UniversalOrderParser {
       throw new Error('No order_items found or not an array');
     }
 
-    // Parse items - check both camelCase and snake_case versions
-    const parsedItems: OrderItem[] = orderItems.map((item: any, index: number) => {
-      const menuItem = item.menuItems || item.menu_items || item.menuItem || item.menu_item || item;
-      
-      const parsedItem: OrderItem = {
-        name: menuItem.name || "Unknown Item",
-        quantity: item.quantity || 1,
-        price: parseFloat(item.unitPrice || menuItem.price || '0'),
-        totalPrice: parseFloat(item.totalPrice || (item.quantity * menuItem.price) || '0'),
-        toppings: item.toppings || []
-      };
-      
-      return parsedItem;
-    });
-    
-    // Calculate totals
-    const subtotal = parsedItems.reduce((sum, item) => sum + item.totalPrice, 0);
-    
-    // Handle delivery fee with more variations and debug logging
-    const possibleDeliveryFeeFields = [
-      'deliveryFee',
-      'delivery_fee',
-      'deliveryfee',
-      'delivery',
-      'shippingFee',
-      'shipping_fee',
-      'shipping'
-    ];
-    
-    let deliveryFee = 0;
-    for (const field of possibleDeliveryFeeFields) {
-      if (order[field] !== undefined && order[field] !== null) {
-        const fee = parseFloat(String(order[field]));
-        if (!isNaN(fee)) {
-          deliveryFee = fee;
-          console.log(`📦 PARSER: Found delivery fee ${fee} from field '${field}'`);
-          break;
-        }
-      }
-    }
-    
-    console.log('📦 PARSER: Final delivery fee:', deliveryFee, 'Original order fields:', order);
-    const total = subtotal + deliveryFee;
-    
-    // Create receipt data
-    const receiptData: ReceiptData = {
-      header: {
-        text: "Tirvan Kahvila",
-        alignment: 'center',
-        fontSize: 'large',
-        bold: true
-      },
-      items: parsedItems.map(item => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-        totalPrice: item.totalPrice
-      })),
-      footer: {
-        text: "Thank you for your order!",
-        alignment: 'center'
-      },
-      total: total,
-      orderNumber: order.orderNumber || order.id?.toString() || "Unknown",
-      timestamp: new Date(order.createdAt || Date.now()),
-      customerName: order.customerName,
-      customerPhone: order.customerPhone,
-      customerEmail: order.customerEmail,
-      orderType: order.orderType,
-      deliveryAddress: order.deliveryAddress,
-      paymentMethod: order.paymentMethod,
-      paymentStatus: order.paymentStatus
-    };
-    
-    // Add delivery fee section if applicable
-    if (deliveryFee > 0) {
-      receiptData.items.push({
-        name: "Delivery Fee / Toimitusmaksu",
-        quantity: 1,
-        price: deliveryFee,
-        totalPrice: deliveryFee
-      });
-    }
-
-    return receiptData;
-
     console.log(`📦 PARSER: Found ${orderItems.length} order items`);
 
     const items: OrderItem[] = orderItems.map((item: any, index: number) => {
       console.log(`📝 PARSER: Processing order item ${index + 1}:`, JSON.stringify(item, null, 2));
       
       // Handle nested menu_items structure - try multiple possible nested structures
-      // Note: Supabase returns 'menu_items' (plural) as the relation name
-      const menuItem = item.menu_items || item.menu_item || item.menuItems || item.menuItem || item;
+      const menuItem = item.menuItems || item.menu_items || item.menuItem || item.menu_item || item;
       
       console.log(`📦 PARSER: Found menuItem for item ${index + 1}:`, JSON.stringify(menuItem, null, 2));
       
       const name = menuItem?.name || item.name || this.extractItemName(item, index);
       const quantity = parseInt(item.quantity || '1');
-      const unitPrice = parseFloat(item.unit_price || menuItem?.price || item.price || '0');
-      const totalPrice = parseFloat(item.total_price || item.totalPrice || (quantity * unitPrice).toString());
+      const unitPrice = parseFloat(item.unitPrice || item.unit_price || menuItem?.price || item.price || '0');
+      const totalPrice = parseFloat(item.totalPrice || item.total_price || (quantity * unitPrice).toString());
 
-      // Parse toppings and other info from special_instructions field
+      // Parse toppings from multiple sources
       let toppings: Array<{ name: string; price: number }> = [];
       let extractedSize: string | undefined;
       let extractedNotes: string | undefined;
       
-      const specialInstructions = item.special_instructions || item.specialInstructions || '';
+      // Source 1: Extract from special_instructions field
+      const specialInstructions = item.specialInstructions || item.special_instructions || '';
       
       if (specialInstructions) {
         console.log(`📋 PARSER: Processing special instructions for item ${index + 1}:`, specialInstructions);
@@ -201,22 +115,22 @@ export class UniversalOrderParser {
         console.log(`✅ PARSER: Extracted ${toppings.length} toppings, size: ${extractedSize || 'none'}, notes: ${extractedNotes || 'none'}`);
       }
       
-      // Check for Supabase relational order_item_toppings (from DB join)
+      // Source 2: Supabase relational order_item_toppings (from DB join)
       if (toppings.length === 0) {
-        const orderItemToppings = item.order_item_toppings || item.orderItemToppings;
+        const orderItemToppings = item.orderItemToppings || item.order_item_toppings;
         if (orderItemToppings && Array.isArray(orderItemToppings) && orderItemToppings.length > 0) {
           console.log(`🍕 PARSER: Found order_item_toppings from DB for item ${index + 1}:`, orderItemToppings);
           toppings = orderItemToppings.map((oit: any) => {
             const toppingData = oit.toppings || oit.topping;
             const toppingName = toppingData?.name || oit.name || '';
-            const basePrice = parseFloat(oit.unit_price || oit.unitPrice || toppingData?.price || '0');
+            const basePrice = parseFloat(oit.unitPrice || oit.unit_price || toppingData?.price || '0');
             return { name: toppingName, price: basePrice };
           }).filter((t: any) => t.name);
           console.log(`✅ PARSER: Extracted ${toppings.length} toppings from DB relation`);
         }
       }
 
-      // Fallback: also check for direct toppings field (for legacy compatibility)
+      // Source 3: Direct toppings field (legacy compatibility)
       if (toppings.length === 0 && item.toppings) {
         try {
           console.log(`🍕 PARSER: Fallback - processing direct toppings for item ${index + 1}:`, item.toppings);
@@ -244,22 +158,19 @@ export class UniversalOrderParser {
         }
       }
 
-      // Include size in the item name for pizzas (similar to PrinterService logic)
+      // Include size in the item name
       let finalName = name;
-      if (extractedSize && (name.toLowerCase().includes('pizza') || name.toLowerCase().includes('piza'))) {
-        // Check if size is already in the name to avoid duplication
-        if (!name.toLowerCase().includes(extractedSize.toLowerCase())) {
-          finalName = `${extractedSize} ${name}`;
-        }
+      if (extractedSize && !name.toLowerCase().includes(extractedSize.toLowerCase())) {
+        finalName = `${name} (${extractedSize})`;
       }
 
-      const parsedItem = {
+      const parsedItem: OrderItem = {
         name: finalName,
         quantity,
         price: unitPrice,
         totalPrice,
         toppings,
-        notes: extractedNotes || '' // Use extracted notes instead of raw special instructions
+        notes: extractedNotes || ''
       };
 
       console.log(`✅ PARSER: Successfully parsed item ${index + 1}:`, {
@@ -268,8 +179,8 @@ export class UniversalOrderParser {
         quantity: parsedItem.quantity,
         price: parsedItem.price,
         totalPrice: parsedItem.totalPrice,
-        toppingsCount: parsedItem.toppings.length,
-        toppingsNames: parsedItem.toppings.map(t => t.name),
+        toppingsCount: parsedItem.toppings?.length || 0,
+        toppingsNames: parsedItem.toppings?.map(t => t.name) || [],
         extractedSize,
         notes: parsedItem.notes
       });
@@ -668,10 +579,29 @@ export class UniversalOrderParser {
       result.size = sizeMatch[1].trim();
     }
     
-    // Extract special instructions
-    const specialMatch = instructions.match(/Special:\s*([^;]+)/i);
+    // Collect all other info sections as notes (Kastike, Juoma, Special, radio groups, etc.)
+    const notesParts: string[] = [];
+    
+    // Extract Special instructions (everything after last "Special:" to end)
+    const specialMatch = instructions.match(/Special:\s*(.+)$/i);
     if (specialMatch) {
-      result.notes = specialMatch[1].trim();
+      notesParts.push(specialMatch[1].trim());
+    }
+    
+    // Extract radio group selections like "Kastike: Valkosipuli", "Juoma: Coca-Cola"
+    const knownPrefixes = ['Toppings:', 'Size:', 'Special:'];
+    const sections = instructions.split(';').map(s => s.trim());
+    for (const section of sections) {
+      if (!section) continue;
+      const isKnown = knownPrefixes.some(prefix => section.toLowerCase().startsWith(prefix.toLowerCase()));
+      if (!isKnown && section.includes(':')) {
+        // This is a radio group selection like "Kastike: Valkosipuli"
+        notesParts.push(section);
+      }
+    }
+    
+    if (notesParts.length > 0) {
+      result.notes = notesParts.join('; ');
     }
     
     return result;
